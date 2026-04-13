@@ -18,7 +18,7 @@ Or clone the full collection:
 git clone https://github.com/thevibethinker/vibe-thinker-skills.git
 ```
 
-## Included Skills (17)
+## Included Skills (18)
 
 | Skill | Description |
 |-------|-------------|
@@ -27,6 +27,7 @@ git clone https://github.com/thevibethinker/vibe-thinker-skills.git
 | [claude-code-window-primer](./claude-code-window-primer/) | Prime Claude Code usage windows so resets land during useful work hours. |
 | [debono-thinking-hats](./debono-thinking-hats/) | Portable Six Thinking Hats persona system for structured parallel thinking. |
 | [frontend](./frontend/) | Generate high-quality landing pages with anti-slop guardrails. |
+| [landing-page-generator](./landing-page-generator/) | Self-contained landing-page generator with bundled design foundations, anti-slop references, templates, and target file structures. |
 | [frontend-design](./frontend-design/) | Create polished, intentional frontend interfaces with strong visual quality. |
 | [frontend-design-anthropic](./frontend-design-anthropic/) | Imported frontend design skill focused on high-quality interface work. |
 | [gamma](./gamma/) | Generate presentations, webpages, and social content using Gamma's API. |

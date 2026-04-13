@@ -49,6 +49,10 @@
       "description": "Generate high-quality landing pages with anti-slop guardrails and multi-platform support. Creates modern, accessible designs for Zo.space, standalone HTML, and Next.js with professional aesthetics ..."
     },
     {
+      "slug": "landing-page-generator",
+      "description": "Self-contained landing-page generator with bundled design foundations, anti-slop references, reusable templates, and target file-structure guidance. Portable across repos with no dependency on N5 or other skills."
+    },
+    {
       "slug": "frontend-design",
       "description": "Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when building web components, pages, dashboards, or applications. Generates creative, polished code..."
     },
