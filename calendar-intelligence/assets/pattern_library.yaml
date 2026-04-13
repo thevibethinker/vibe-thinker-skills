@@ -1,0 +1,95 @@
+version: "1.0"
+
+patterns:
+  - id: meeting-density
+    name: "Meeting Density"
+    description: "Ratio of meeting hours to available work hours"
+    metrics:
+      - daily_avg_hours
+      - weekly_total_hours
+      - busiest_day
+      - lightest_day
+    thresholds:
+      light: {max_daily_avg: 2.0, label: "Light — plenty of open time"}
+      moderate: {max_daily_avg: 4.0, label: "Moderate — balanced"}
+      heavy: {max_daily_avg: 6.0, label: "Heavy — limited free time"}
+      overloaded: {max_daily_avg: 24.0, label: "Overloaded — calendar saturation"}
+
+  - id: buffer-gaps
+    name: "Buffer Time Analysis"
+    description: "Time gaps between consecutive meetings"
+    metrics:
+      - back_to_back_count
+      - avg_gap_minutes
+      - short_gap_count  # < 15 min
+    flags:
+      - {condition: "back_to_back_count > 3 per week", severity: warning}
+      - {condition: "avg_gap_minutes < 10", severity: critical}
+
+  - id: recurring-load
+    name: "Recurring Meeting Load"
+    description: "Portion of calendar consumed by recurring events"
+    metrics:
+      - recurring_count
+      - recurring_hours_weekly
+      - recurring_pct_of_total
+    thresholds:
+      low: {max_pct: 30, label: "Low — flexible calendar"}
+      moderate: {max_pct: 60, label: "Moderate — some rigidity"}
+      high: {max_pct: 100, label: "High — limited scheduling flexibility"}
+
+  - id: collaborator-frequency
+    name: "Top Collaborators"
+    description: "People who appear most often across meetings"
+    metrics:
+      - top_10_attendees  # [{email, name, meeting_count, total_hours}]
+      - unique_attendee_count
+    insights:
+      - "Identify key relationships for priority communication"
+      - "Flag one-time attendees who might need follow-up"
+
+  - id: time-clustering
+    name: "Meeting Time Clustering"
+    description: "When meetings concentrate across the week"
+    metrics:
+      - hourly_heatmap      # meetings per hour slot across the week
+      - day_distribution     # meetings per day of week
+      - morning_vs_afternoon_pct
+    insights:
+      - "Identify natural focus-time windows"
+      - "Detect meeting-heavy days vs light days"
+
+  - id: deep-work-windows
+    name: "Deep Work Windows"
+    description: "Largest uninterrupted blocks available for focused work"
+    metrics:
+      - avg_longest_block_hours
+      - blocks_over_2h_per_week
+      - best_day_for_focus
+    thresholds:
+      starved: {min_blocks_2h: 0, label: "Starved — no meaningful focus blocks"}
+      constrained: {min_blocks_2h: 2, label: "Constrained — limited deep work"}
+      healthy: {min_blocks_2h: 5, label: "Healthy — adequate focus time"}
+
+  - id: context-switching
+    name: "Context Switch Score"
+    description: "How often consecutive meetings involve different people/topics"
+    metrics:
+      - avg_switches_per_day
+      - max_switches_in_a_day
+      - attendee_overlap_between_consecutive  # higher = less switching
+    thresholds:
+      low: {max_avg: 2, label: "Low — meetings are well-grouped"}
+      moderate: {max_avg: 4, label: "Moderate — some fragmentation"}
+      high: {max_avg: 24, label: "High — constant context shifts"}
+
+  - id: meeting-length-distribution
+    name: "Meeting Length Distribution"
+    description: "How meeting durations are distributed"
+    metrics:
+      - distribution  # {15min: N, 30min: N, 45min: N, 60min: N, 90min+: N}
+      - avg_duration_minutes
+      - pct_over_60min
+    insights:
+      - "Detect if most meetings default to 60min (Parkinson's law)"
+      - "Identify opportunities for shorter meetings"

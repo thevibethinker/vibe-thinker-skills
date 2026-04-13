@@ -1,0 +1,6 @@
+config.yaml
+scan_*.json
+analysis_*.md
+recommendations_*.yaml
+roundup_*.md
+attendee_cache.json

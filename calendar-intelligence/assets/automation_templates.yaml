@@ -1,0 +1,126 @@
+version: "1.0"
+
+templates:
+  - id: eod-roundup
+    name: "EOD Roundup"
+    description: |
+      Daily evening digest preparing you for tomorrow. Fetches tomorrow's events,
+      cross-references attendees with recent emails and LinkedIn profiles, and
+      compiles meeting prep notes.
+    always_recommend: true
+    schedule:
+      rrule_template: "DTSTART:{{DTSTART}}\nRRULE:FREQ=DAILY;BYDAY=SU,MO,TU,WE,TH"
+      description: "Runs Sunday-Thursday evenings (covers next business day)"
+      default_time: "21:00"
+    instruction: |
+      Read and execute the "EOD Roundup" section of Skills/calendar-intelligence/SKILL.md.
+      Use the installed config at Skills/calendar-intelligence/data/config.yaml.
+    delivery: "{{preferences.delivery_method}}"
+    trigger_patterns: []
+
+  - id: morning-brief
+    name: "Morning Brief"
+    description: |
+      Quick morning agenda with time-sensitive prep. Lighter than EOD roundup —
+      focuses on today's meetings with any overnight email updates.
+    always_recommend: false
+    schedule:
+      rrule_template: "DTSTART:{{DTSTART}}\nRRULE:FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR"
+      description: "Weekday mornings"
+      default_time: "07:30"
+    instruction: |
+      Fetch today's calendar events using the config at Skills/calendar-intelligence/data/config.yaml.
+      For each meeting, check for overnight emails from attendees. Compile a brief morning agenda
+      with any updates that arrived since yesterday's EOD roundup.
+    delivery: "{{preferences.delivery_method}}"
+    trigger_patterns:
+      - pattern_id: meeting-density
+        condition: "threshold >= moderate"
+        reason: "Your meeting load is moderate or higher — a morning brief helps you prepare"
+
+  - id: buffer-guardian
+    name: "Buffer Guardian"
+    description: |
+      Monitors calendar for new events that create back-to-back situations.
+      Alerts when buffer time drops below threshold.
+    always_recommend: false
+    schedule:
+      rrule_template: "DTSTART:{{DTSTART}}\nRRULE:FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR;INTERVAL=1"
+      description: "Checks twice daily"
+      default_time: "12:00"
+    instruction: |
+      Check this week's calendar using Skills/calendar-intelligence/data/config.yaml.
+      Identify any back-to-back meetings (0-10 min gap). If found, alert with:
+      - Which meetings are back-to-back
+      - Suggested buffer (move one by 15 min if possible)
+      Only alert if NEW back-to-backs appeared since last check.
+    delivery: sms
+    trigger_patterns:
+      - pattern_id: buffer-gaps
+        condition: "back_to_back_count > 3 per week"
+        reason: "You have frequent back-to-back meetings — a buffer guardian can help"
+
+  - id: focus-defender
+    name: "Focus Time Defender"
+    description: |
+      Proactively blocks focus time on your calendar based on your natural
+      open windows. Protects deep work by creating calendar events.
+    always_recommend: false
+    schedule:
+      rrule_template: "DTSTART:{{DTSTART}}\nRRULE:FREQ=WEEKLY;BYDAY=SU"
+      description: "Weekly on Sunday — plans the week ahead"
+      default_time: "20:00"
+    instruction: |
+      Using Skills/calendar-intelligence/data/config.yaml, analyze next week's calendar.
+      Identify the largest open blocks that fall within work hours. For each block > 2 hours,
+      create a calendar event titled "[Focus] Deep Work" to protect that time.
+      Cap at 3 focus blocks per week. Prefer morning blocks.
+    delivery: "{{preferences.delivery_method}}"
+    trigger_patterns:
+      - pattern_id: deep-work-windows
+        condition: "threshold <= constrained"
+        reason: "Your deep work time is limited — auto-blocking focus time can help"
+
+  - id: recurring-audit
+    name: "Recurring Meeting Audit"
+    description: |
+      Weekly review of all recurring meetings. Asks whether each is still
+      valuable and suggests candidates for reduction or elimination.
+    always_recommend: false
+    schedule:
+      rrule_template: "DTSTART:{{DTSTART}}\nRRULE:FREQ=WEEKLY;BYDAY=FR"
+      description: "Friday afternoons"
+      default_time: "16:00"
+    instruction: |
+      Using Skills/calendar-intelligence/data/config.yaml, list all recurring meetings
+      from this week. For each, note: attendee count, duration, frequency, and whether
+      there's been email activity with those attendees outside the meeting.
+      Flag meetings that may be candidates for:
+      - Reducing frequency (weekly → biweekly)
+      - Shortening duration (60 min → 30 min)
+      - Async replacement (meeting → email update)
+    delivery: email
+    trigger_patterns:
+      - pattern_id: recurring-load
+        condition: "threshold >= moderate"
+        reason: "Recurring meetings consume a significant portion of your calendar"
+
+  - id: weekly-trends
+    name: "Weekly Calendar Trends"
+    description: |
+      End-of-week summary comparing this week to your baseline patterns.
+      Tracks whether your calendar health is improving or degrading.
+    always_recommend: false
+    schedule:
+      rrule_template: "DTSTART:{{DTSTART}}\nRRULE:FREQ=WEEKLY;BYDAY=FR"
+      description: "Friday evenings"
+      default_time: "18:00"
+    instruction: |
+      Run the scan and analysis for this week using Skills/calendar-intelligence scripts.
+      Compare against the baseline analysis stored in data/.
+      Report: meeting hours delta, buffer time delta, focus time delta, new patterns.
+    delivery: email
+    trigger_patterns:
+      - pattern_id: meeting-density
+        condition: "threshold >= moderate"
+        reason: "Tracking trends helps maintain calendar health"

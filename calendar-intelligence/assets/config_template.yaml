@@ -1,0 +1,31 @@
+version: "1.0"
+installed_at: null
+
+integrations:
+  calendar:
+    provider: null       # google_calendar | microsoft_outlook
+    email: null          # account email for the calendar integration
+    calendars: []        # [{id: "primary", name: "My Calendar", include: true}]
+  email:
+    provider: null       # gmail | microsoft_outlook
+    email: null          # account email for the email integration
+  linkedin:
+    available: false
+
+preferences:
+  timezone: "America/New_York"
+  scan_window_weeks: 4
+  eod_time: "21:00"
+  delivery_method: email   # email | sms | telegram
+  work_hours:
+    start: "09:00"
+    end: "18:00"
+  work_days: [1, 2, 3, 4, 5]  # 1=Monday, 7=Sunday
+
+automations: []
+# Populated after Phase 4 (Recommend). Each entry:
+# - id: eod-roundup
+#   name: "EOD Roundup"
+#   agent_id: "ag_xxxx"
+#   active: true
+#   activated_at: "2026-04-13"
