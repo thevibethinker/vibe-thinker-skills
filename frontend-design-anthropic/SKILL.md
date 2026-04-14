@@ -1,5 +1,5 @@
 ---
-compatibility: Imported from skills.sh
+compatibility: Imported from Anthropic skills for Zo Computer
 created: '2026-02-07'
 description: Create distinctive, production-grade frontend interfaces with high design
   quality. Use this skill when the user asks to build web components, pages, artifacts,
@@ -8,10 +8,10 @@ description: Create distinctive, production-grade frontend interfaces with high 
   creative, polished code and UI design that avoids generic AI aesthetics.
 last_edited: '2026-02-07'
 metadata:
-  author: anthropics (imported)
+  author: anthropic (imported)
   imported_at: '2026-02-07'
   source: anthropics/skills/frontend-design
-name: frontend-design
+name: frontend-design-anthropic
 provenance: skills-importer
 version: '1.0'
 ---

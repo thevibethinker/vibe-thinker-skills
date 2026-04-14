@@ -53,6 +53,14 @@ This collection intentionally excludes:
 Skills follow the [Agent Skills](https://agentskills.io/specification) spec.
 Each skill should include a `SKILL.md` with clear frontmatter and portable instructions.
 
+## Portability Notes
+
+This collection aims to keep each skill understandable and installable outside the author's private workspace.
+
+- Some skills are zero-dependency; others require paid APIs, secrets, browser access, or Zo-specific capabilities.
+- Each skill should state required accounts/secrets, any message-sending or automation behavior, and any workspace/runtime assumptions.
+- When a skill includes opinionated example assets or service shapes, treat them as examples to adapt rather than defaults to reuse unchanged.
+
 ## License
 
 MIT

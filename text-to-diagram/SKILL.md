@@ -4,8 +4,8 @@ description: |
   Transform text corpora (articles, docs, ideas, decisions) into Excalidraw-ready diagrams 
   through a Socratic dialogue process. Analyzes content for visualizable concepts, engages 
   in clarifying dialogue, then generates hybrid output (Mermaid for flowcharts, raw 
-  Excalidraw JSON for other diagram types). Designed for V's visual thinking and 
-  communication needs.
+  Excalidraw JSON for other diagram types). Designed for collaborative visual thinking and
+  communication.
 compatibility: Created for Zo Computer
 metadata:
   author: thevibethinker
@@ -125,9 +125,9 @@ Best for: **Everything else** (mindmaps, ER diagrams, custom layouts, comparison
 
 ## Aesthetic Defaults
 
-All diagrams target the **<YOUR_GITHUB>.com dark aesthetic**:
-- Background: `#000000` (or transparent)
-- Stroke: `#ffffff` or muted grays
+All diagrams default to a neutral dark Excalidraw aesthetic. Adjust as needed for the project or brand:
+- Background: `#0f1115` (or transparent)
+- Stroke: `#f5f5f5` or muted grays
 - Fill: Minimal, dark tones
 - Font: Excalidraw hand-drawn (Virgil)
 - Theme: Dark mode

@@ -6,7 +6,7 @@ description: |
   Generates creative, polished code that avoids generic AI aesthetics.
 compatibility: Created for Zo Computer
 metadata:
-  author: n5os-ode
+  author: thevibethinker
 ---
 
 # Frontend Design

@@ -4,6 +4,10 @@ description: |
   Convert complex prompts into reusable skills. Assesses prompts for conversion eligibility
   and scaffolds new skill directory structures. Use when prompts have grown complex with
   multiple phases, script references, or structured output requirements.
+compatibility: Created for Zo Computer
+metadata:
+  author: thevibethinker
+  version: "1.0"
 ---
 
 # Prompt to Skill
@@ -85,5 +89,6 @@ python3 Skills/prompt-to-skill/scripts/scaffold.py my-skill-name --base /path/to
 
 - Skill names must be lowercase with hyphens only
 - The scaffold creates a complete directory structure with placeholders
+- Scaffolded files intentionally include `TODO` markers and should be completed before publishing a new skill
 - The assessment uses weighted scoring to prioritize complexity indicators
 - All created skills follow the Agent Skills specification

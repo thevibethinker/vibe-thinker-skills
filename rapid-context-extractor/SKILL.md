@@ -1,6 +1,10 @@
 ---
 name: rapid-context-extractor
 description: Extract and teach key points from a source using seed context, then force active engagement. Use when analyzing articles, documents, transcripts, video/audio transcripts, or mixed media where output must preserve chronological idea flow, include concept explanation, and prompt user reflection.
+compatibility: Created for Zo Computer
+metadata:
+  author: thevibethinker
+  version: "1.0"
 ---
 
 # Rapid Context Extractor
@@ -14,8 +18,10 @@ python3 Skills/rapid-context-extractor/scripts/prepare_payload.py \
   --seed-file "./Research/topic-frame.md" \
   --source-url "https://example.com/article" \
   --auto-semantic \
-  --output "/home/.z/workspaces/con_tFxzWpGw5jorTDon/extraction_packet.md"
+  --output "/home/.z/workspaces/<conversation-id>/extraction_packet.md"
 ```
+
+Replace `<conversation-id>` with your active conversation workspace, or use any other writable output path.
 
 Use one source input per run:
 - `--source-url` for web pages
@@ -26,7 +32,7 @@ Optional seed context:
 - `--seed-file` or `--seed-text`
 
 Optional semantic memory anchoring:
-- `--semantic-query` to retrieve relevant prior concepts from V's semantic memory
+- `--semantic-query` to retrieve relevant prior concepts from your semantic memory
 - `--auto-semantic` to generate semantic query from source title + extracted terms (recommended default)
 - `--semantic-limit` (default 5) to control number of memory anchors
 - `--provenance` to force frontmatter provenance (otherwise inferred from output path conversation ID)
@@ -69,7 +75,7 @@ Use this structure in responses:
 1. `Analytical Frame`
 2. `Chronological Distillation`
 3. `Visual Layer` (if applicable)
-4. `Semantic Integration` (link to V-specific anchors)
+4. `Semantic Integration` (link to user- or project-specific anchors when available)
 : include explicit `aligns` / `extends` / `conflicts` labels
 5. `Concept Decoder`
 6. `Clarifying Questions`
@@ -78,7 +84,7 @@ Use this structure in responses:
 
 ## Content Library Ingestion
 
-Only after explicit approval:
+Only after explicit approval, and only in workspaces that include the N5 ingestion helper:
 
 ```bash
 python3 N5/scripts/content_ingest.py "<artifact_path>" --move

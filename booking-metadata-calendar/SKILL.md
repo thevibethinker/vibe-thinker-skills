@@ -58,6 +58,11 @@ python3 Skills/booking-metadata-calendar/scripts/booking_metadata_calendar.py va
 - Append-only index:
   - `N5/data/booking_metadata/registry.jsonl`
 
+## Environment Notes
+
+- The default persistence paths assume a standard Zo-style workspace layout under `N5/data/booking_metadata/`.
+- If you install this skill into a different layout, review the script defaults before relying on persisted output.
+
 ## References
 - `file 'Skills/booking-metadata-calendar/references/booking-metadata-schema.md'`
 - `file 'Skills/booking-metadata-calendar/references/runbook.md'`

@@ -23,32 +23,38 @@ Set in [Settings → Advanced](/?t=settings&s=advanced):
 
 | Variable | Required | Value |
 |----------|----------|-------|
-| `VAPI_API_KEY` | ✅ | Vapi Private API Key |
-| `VAPI_OWNER_PHONE` | ✅ | V's phone number (auto-authenticated) |
-| `VAPI_OWNER_NAME` | Recommended | `V` |
-| `VAPI_ASSISTANT_NAME` | Recommended | Name the voice assistant uses |
-| `VAPI_OWNER_CONTEXT` | Recommended | e.g. `Founder of <YOUR_PRODUCT>` |
-| `VAPI_CALENDAR_ID` | For booking | Google Calendar email |
-| `VAPI_TIMEZONE` | Default: `America/New_York` | Timezone for scheduling |
-| `VAPI_VOICE_ID` | For custom voice | ElevenLabs Voice ID |
-| `VAPI_VOICE_MODEL` | Default: `eleven_flash_v2_5` | ElevenLabs model |
-| `VAPI_LLM_MODEL` | Default: `claude-sonnet-4-20250514` | LLM for voice responses |
-| `VAPI_SECURITY_PIN` | Optional | DTMF PIN for non-owner callers |
-| `VAPI_WEBHOOK_PORT` | Default: `4242` | Webhook server port |
+| `VAPI_API_KEY` | ✅ | Vapi private API key |
+| `VAPI_OWNER_PHONE` | Recommended | Owner phone number for trusted-caller flows |
+| `VAPI_OWNER_NAME` | Recommended | Name of the person the assistant represents |
+| `VAPI_ASSISTANT_NAME` | Recommended | Assistant display name used in calls |
+| `VAPI_OWNER_CONTEXT` | Recommended | Short context string, e.g. `Founder of Acme` |
+| `VAPI_CALENDAR_ID` | For booking | Google Calendar ID to check and book against |
+| `VAPI_WORK_CALENDAR_ID` | Optional | Secondary calendar for availability checks |
+| `VAPI_TIMEZONE` | Default: `America/New_York` | Scheduling timezone |
+| `VAPI_VOICE_ID` | Optional | ElevenLabs voice ID or equivalent provider voice |
+| `VAPI_VOICE_MODEL` | Optional | Voice model name |
+| `VAPI_LLM_MODEL` | Optional | LLM for voice responses |
+| `VAPI_SECURITY_PIN` | Optional | DTMF PIN for protected caller flows |
+| `VAPI_WEBHOOK_SECRET` | Strongly recommended | Shared secret for webhook validation |
+| `VAPI_WEBHOOK_PORT` | Default: `4242` | Local webhook port |
+| `VAPI_DB_PATH` | Optional | DuckDB path for call records |
+| `GOOGLE_TOKEN_PATH` | For booking | Path to a Google OAuth token JSON file |
 
-### Phone Number
+### Required Services and Accounts
 
-Vapi number: `+1 (878) 879-2087`
-Phone Number ID: `7facf530-6cb1-4c6c-859b-d3fa700cfe4b`
+- A Vapi account, phone number, and webhook configuration
+- Bun and DuckDB available in the runtime
+- Google Calendar OAuth credentials if you want booking support
+- Zo API access if you want post-call recap delivery via Zo primitives
 
-### Service
+### Deployment Shape
 
-Registered as Zo user service `vapi-webhook` on port 4242.
+Bring your own phone number, webhook URL, and service registration. The bundled scripts are examples; review them before production use and replace any example identities, prompts, or defaults with your own.
 
 ## Usage
 
 ### Inbound Calls
-People call the Vapi number → webhook dynamically generates assistant config → AI handles the call → recap emailed to V.
+People call the configured phone line → the webhook dynamically generates assistant config → the AI handles the call → a recap can be delivered through Zo or another channel you configure.
 
 ### Outbound Calls
 ```bash
@@ -73,6 +79,11 @@ duckdb Datasets/vapi-calls/data.duckdb -c "SELECT * FROM calls ORDER BY started_
 
 - **webhook.ts** — Bun HTTP server handling Vapi webhooks (assistant-request, tool-calls, end-of-call-report)
 - **vapi.ts** — CLI for managing assistants, phone numbers, and making outbound calls
-- Call data stored in DuckDB at `Datasets/vapi-calls/data.duckdb`
-- Calendar integration via Google Calendar API (direct OAuth)
-- Post-call recaps sent via Zo API → email
+- Call data stored in DuckDB (default path configurable via `VAPI_DB_PATH`)
+- Calendar integration via Google Calendar API (direct OAuth token file)
+- Post-call recaps can be sent via Zo API → email/SMS, or adapted to your own notification path
+
+## Portability Notes
+
+- The repo still includes opinionated example prompts, asset copy, and runtime defaults that should be reviewed before public reuse.
+- Treat this skill as a portable starting point, not a drop-in production deployment without customization.

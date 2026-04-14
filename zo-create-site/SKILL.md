@@ -1,6 +1,7 @@
 ---
-name: create-site
-description: Create a site hosted on your Zo server. Private by default, publish with a click.
+name: zo-create-site
+description: Create a site hosted on your Zo server. Private by default, publish when ready.
+compatibility: Created for Zo Computer
 metadata:
   author: Zo
   category: Official
@@ -45,7 +46,7 @@ Once they've chosen what to build:
 
 3. After creating the site, tell them:
 
-> You can view your site here: `file <sitename>`
+> You can view your site here: `file 'Sites/<sitename>'`
 >
 > Click this link to open a preview of your site in the file viewer and follow along as I make edits for you. You can also open a private view of this site, or publish it as well.
 
@@ -72,4 +73,3 @@ Also share that you can publish the site so that it is publicly accessible.
 - **Avoid open-ended questions**.
 - **Don't rush**. Take time to understand what the user actually wants to build. Ask clarifying questions about their vision, preferences, and goals before jumping into creation.
 - **Ask for preferences**. Learn how they want their site to look and feel. Do they prefer minimal and clean? Colorful? Do they have specific content or features in mind? These details matter.
-

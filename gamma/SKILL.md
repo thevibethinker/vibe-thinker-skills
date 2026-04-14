@@ -11,6 +11,14 @@ metadata:
 
 Generate professional presentations, documents, webpages, and social posts using Gamma's AI.
 
+## Prerequisites
+
+- A Gamma account with API access and available credits
+- `GAMMA_API_KEY` set in your environment or Zo secrets
+- Bun available to run the CLI
+
+If you are using Zo, add `GAMMA_API_KEY` in [Settings > Advanced](/?t=settings&s=advanced).
+
 ## Quick Start
 
 ```bash

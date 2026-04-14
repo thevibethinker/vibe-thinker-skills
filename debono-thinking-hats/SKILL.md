@@ -7,7 +7,7 @@ description: >
   prompt-based installer. No dependencies required.
 compatibility: "Created for Zo Computer"
 metadata:
-  author: "zo-skills"
+  author: "thevibethinker"
   framework: "De Bono Six Thinking Hats (1985)"
   version: "2.0"
 ---

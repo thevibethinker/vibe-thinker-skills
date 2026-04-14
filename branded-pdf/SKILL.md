@@ -12,6 +12,15 @@ metadata:
 
 Generate professional PDFs with dual-logo headers and clean typography.
 
+## Prerequisites
+
+- Python 3
+- `reportlab` installed in the environment
+
+```bash
+pip install reportlab
+```
+
 ## Quick Start
 
 ```bash
