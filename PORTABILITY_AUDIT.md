@@ -9,8 +9,7 @@ provenance: con_RgWWKAwbg46pECpk
 
 ## Summary
 
-- Audited all 18 skill directories currently present in `/tmp/vibe-thinker-skills-work`.
-- The brief listed 17 retained skills, but the checkout also contains `calendar-intelligence`; this audit includes it so the artifact matches the actual tree.
+- Audited the retained standalone skill set in `/tmp/vibe-thinker-skills-work`.
 - Applied safe, non-breaking doc/frontmatter fixes to 13 skills plus the repo `README.md`.
 - Main issues found: stale metadata, slug/frontmatter mismatches, private placeholders in public docs, hardcoded conversation paths, outdated tool references, and a few skills whose runtime shape is still tightly coupled to a specific Zo workspace.
 
@@ -39,28 +38,17 @@ provenance: con_RgWWKAwbg46pECpk
 | `systematic-debugging` | portable | No doc edit needed. | No major portability blocker found in the skill doc. |
 | `text-commute-info` | doc-fixed | Added missing `compatibility`, corrected browser flow (`open_webpage` + `view_webpage`), replaced outdated `create_scheduled_task` guidance with `create_agent`, and made SMS sending explicitly consent-based. | Still depends on browser access to Google Maps and explicit authorization for texting. |
 | `text-to-diagram` | doc-fixed | Removed V-specific framing and `<YOUR_GITHUB>` placeholder aesthetic language. | No major portability blocker after doc cleanup. |
-| `vapi` | doc-fixed + major-flag | Removed private number/service details from the public skill doc, expanded required env vars, and reframed deployment as bring-your-own infrastructure. | High-coupling remains in runtime/assets: bundled scripts and assets still contain hardcoded example identities, placeholder tokens, local OAuth path assumptions, and opinionated voice-assistant copy. This needs a dedicated portability redesign, not more doc polish. |
 | `zo-create-site` | doc-fixed | Corrected the skill `name` to match the folder slug, added missing `compatibility`, and fixed the file-reference example. | Zo-specific by design, but the scope is explicit and acceptable. |
 
 ## Flagged Follow-Up Work
 
-### 1. `vapi` needs a real portability pass
-
-This is the only retained skill that still clearly fails the stricter bar at runtime, even after doc cleanup. Specific issues still present outside `SKILL.md`:
-
-- `scripts/vapi.ts` contains hardcoded assistant copy and person/company references that are not generic.
-- `scripts/webhook.ts` and `scripts/webhook.v1.ts` assume specific local OAuth token paths and opinionated defaults.
-- `assets/` still contains placeholder-driven and identity-specific briefing material.
-
-Recommendation: split this into a portable core plus example presets, or add a config/bootstrap layer that forces the installer to supply identity, notification, calendar, and secret values.
-
-### 2. `prompt-to-skill` would benefit from stronger default scaffolding
+### 1. `prompt-to-skill` now has stronger defaults, but can go further
 
 The skill itself is understandable, but its generated outputs still start with TODO-heavy templates. That is acceptable for a maintainer-facing starter, but it misses the stricter portable-skill quality bar for “newcomer can scaffold and immediately understand what remains.”
 
 Recommendation: make the scaffold emit higher-signal placeholder text and better default metadata instead of raw TODO markers.
 
-### 3. `booking-metadata-calendar` and `remotion` are still layout-coupled
+### 2. `booking-metadata-calendar` and `remotion` are still layout-coupled
 
 Both skills are installable, but they assume a particular Zo workspace structure:
 
@@ -69,7 +57,7 @@ Both skills are installable, but they assume a particular Zo workspace structure
 
 That is fine if the repo stays Zo-first, but if the bar becomes “portable across arbitrary workspace layouts,” these need configurable paths.
 
-### 4. `calendar-intelligence` is portable only inside a fairly complete Zo environment
+### 3. `calendar-intelligence` is portable only inside a fairly complete Zo environment
 
 The skill is well-structured, but it assumes a rich host environment:
 
@@ -80,7 +68,7 @@ The skill is well-structured, but it assumes a rich host environment:
 
 Recommendation: either ship the missing companion dependency with the repo, or explicitly document this as a Zo-environment skill rather than a generally portable install.
 
-### 5. `rapid-context-extractor` has optional-but-real platform coupling
+### 4. `rapid-context-extractor` has optional-but-real platform coupling
 
 The core packet-prep flow is portable. The richer experience still assumes optional N5 memory and ingestion helpers. That is acceptable if documented as an enhancement layer, not a baseline guarantee.
 
@@ -88,4 +76,4 @@ Recommendation: consider explicitly labeling the semantic-memory and ingestion s
 
 ## Bottom Line
 
-The retained set is in materially better shape after this pass. Most skills now meet a reasonable “portable with explicit prerequisites” bar. The main remaining architectural portability risk is `vapi`, with secondary improvement opportunities in `calendar-intelligence`, `prompt-to-skill`, `booking-metadata-calendar`, `remotion`, and the enhanced modes of `rapid-context-extractor`.
+The retained set is in materially better shape after this pass. Most skills now meet a reasonable “portable with explicit prerequisites” bar. The main remaining improvement opportunities are `calendar-intelligence`, `prompt-to-skill`, `booking-metadata-calendar`, `remotion`, and the enhanced modes of `rapid-context-extractor`.

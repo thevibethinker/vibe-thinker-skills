@@ -1,6 +1,6 @@
 {
   "name": "vibe-thinker-skills",
-  "description": "Standalone, shareable Zo Computer skills from Vibe Thinker.",
+  "description": "Portable, standalone Zo Computer skills you can install, reuse, and share.",
   "tarball_url": "https://github.com/thevibethinker/vibe-thinker-skills/archive/refs/heads/main.tar.gz",
   "archive_root": "vibe-thinker-skills-main",
   "skills": [
@@ -63,10 +63,6 @@
     {
       "slug": "text-to-diagram",
       "description": "Convert text into Excalidraw-ready visual structures."
-    },
-    {
-      "slug": "vapi",
-      "description": "Integrate Vapi voice agents with booking and webhook flows."
     },
     {
       "slug": "zo-create-site",

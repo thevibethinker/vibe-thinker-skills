@@ -1,14 +1,17 @@
 ---
 name: {name}
 description: |
-  TODO: Describe what this skill does and when to use it.
+  Describe what this skill does, what problem it solves, and when someone should use it.
+compatibility: Created for Zo Computer
+metadata:
+  author: {author}
 ---
 
 # {title}
 
-## Overview
+## What this skill is for
 
-TODO: What this skill does.
+Use this skill when the workflow is repeatable enough to package and clearer as a reusable capability than as a one-off prompt.
 
 ## Quick Start
 
@@ -16,6 +19,17 @@ TODO: What this skill does.
 python3 Skills/{name}/scripts/main.py --help
 ```
 
-## Usage
+## What to customize first
 
-TODO: Detailed usage instructions.
+1. Rewrite the description so it clearly answers: what does this do, and when should someone use it?
+2. Replace the example CLI with the real entrypoint, or remove `scripts/` if this skill does not need code.
+3. Add one real example command or workflow.
+4. State any required accounts, secrets, integrations, or runtime assumptions.
+
+## Minimal acceptance bar
+
+Before treating this as reusable:
+- quick start must be real
+- examples must contain no private names or tokens
+- docs should explain the routing decision, not just the implementation
+- long technical details should move into `references/`
