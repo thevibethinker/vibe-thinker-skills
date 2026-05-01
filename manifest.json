@@ -17,8 +17,20 @@
       "description": "Prime Claude Code usage windows so resets land during useful work hours."
     },
     {
+      "slug": "close",
+      "description": "Universal close skill. Just say \"close\" and it auto-routes to the right close skill (thread-close, drop-close, or build-close) based on SESSION_STATE context."
+    },
+    {
       "slug": "debono-thinking-hats",
       "description": "Portable Six Thinking Hats persona system for structured parallel thinking."
+    },
+    {
+      "slug": "drop-close",
+      "description": "Close Pulse worker (Drop) threads. Writes structured deposit JSON for orchestrator review. Does NOT commit - that's the orchestrator's job. For normal threads use thread-close. For post-build synthesis use build-close."
+    },
+    {
+      "slug": "fillout-survey-monitor",
+      "description": "Automated monitoring of Fillout survey changes with intelligent refresh triggering."
     },
     {
       "slug": "frontend",
@@ -33,12 +45,32 @@
       "description": "Imported frontend design skill focused on high-quality interface work."
     },
     {
+      "slug": "ga4-analytics",
+      "description": "Pull Google Analytics 4 traffic stats for a website with configurable reporting windows and breakdowns."
+    },
+    {
       "slug": "gamma",
       "description": "Generate presentations, webpages, and social content using Gamma's API."
     },
     {
+      "slug": "landing-page-generator",
+      "description": "Self-contained landing-page generator with bundled design foundations, anti-slop references, reusable templates, and target file-structure guidance."
+    },
+    {
+      "slug": "meeting-ingestion",
+      "description": "Unified skill for ingesting meeting transcripts from Google Drive and orchestrating the processing pipeline."
+    },
+    {
       "slug": "meme-factory",
       "description": "Generate memes with memegen.link templates and text controls."
+    },
+    {
+      "slug": "mentor-handler",
+      "description": "Handle escalation requests from partner instances and provide mentor guidance based on precedent and context analysis."
+    },
+    {
+      "slug": "persona-optimization",
+      "description": "Persona agency bootloader for Zo Computer with hard-switch rules and methodology injection."
     },
     {
       "slug": "prompt-to-skill",
@@ -63,6 +95,10 @@
     {
       "slug": "text-to-diagram",
       "description": "Convert text into Excalidraw-ready visual structures."
+    },
+    {
+      "slug": "workspace-doc-sync-starter",
+      "description": "Standalone starter kit for synchronized AI workspace docs across multiple harnesses. Includes shared canonical docs, thin adapters, identity-layer files, systemprefs decomposition guidance, and a scaffold script."
     },
     {
       "slug": "zo-create-site",

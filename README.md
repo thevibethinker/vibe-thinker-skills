@@ -18,7 +18,8 @@ Or clone the full collection:
 git clone https://github.com/thevibethinker/vibe-thinker-skills.git
 ```
 
-## Included Skills (16)
+<<<<<<< HEAD
+## Included Skills (17)
 
 | Skill | Description |
 |-------|-------------|
@@ -37,6 +38,7 @@ git clone https://github.com/thevibethinker/vibe-thinker-skills.git
 | [systematic-debugging](./systematic-debugging/) | Apply a disciplined debugging process before proposing fixes. |
 | [text-commute-info](./text-commute-info/) | Fetch commute details and text them to the user. |
 | [text-to-diagram](./text-to-diagram/) | Convert text into Excalidraw-ready visual structures. |
+| [workspace-doc-sync-starter](./workspace-doc-sync-starter/) | Scaffold a synchronized AI workspace-doc architecture with shared canonical docs, thin harness adapters, identity files, and systemprefs mapping guidance. |
 | [zo-create-site](./zo-create-site/) | Scaffold a site hosted on Zo. |
 
 ## What this repo excludes
