@@ -18,7 +18,7 @@ Or clone the full collection:
 git clone https://github.com/thevibethinker/vibe-thinker-skills.git
 ```
 
-## Included Skills (18)
+## Included Skills (19)
 
 | Skill | Description |
 |-------|-------------|
@@ -40,6 +40,7 @@ git clone https://github.com/thevibethinker/vibe-thinker-skills.git
 | [text-to-diagram](./text-to-diagram/) | Convert text into Excalidraw-ready visual structures. |
 | [vapi](./vapi/) | Integrate Vapi voice agents with booking and webhook flows. |
 | [zo-create-site](./zo-create-site/) | Scaffold a site hosted on Zo. |
+| [workspace-doc-sync-starter](./workspace-doc-sync-starter/) | Scaffold a synchronized AI workspace-doc architecture with shared canonical docs, thin harness adapters, identity files, and systemprefs mapping guidance. |
 
 ## What this repo excludes
 

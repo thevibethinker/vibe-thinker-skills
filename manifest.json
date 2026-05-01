@@ -37,6 +37,10 @@
       "description": "Universal close skill. Just say \"close\" and it auto-routes to the right close skill (thread-close, drop-close, or build-close) based on SESSION_STATE context."
     },
     {
+      "slug": "debono-thinking-hats",
+      "description": "Standalone De Bono Six Thinking Hats persona-switching system for Zo Computer. Includes installer prompt, six coordinated hat personas, routing contract, canonical sequences, validation script, and aligned avatar assets."
+    },
+    {
       "slug": "drop-close",
       "description": "Close Pulse worker (Drop) threads. Writes structured deposit JSON for orchestrator review. Does NOT commit - that's the orchestrator's job. For normal threads use thread-close. For post-build synth..."
     },
@@ -47,10 +51,6 @@
     {
       "slug": "frontend",
       "description": "Generate high-quality landing pages with anti-slop guardrails and multi-platform support. Creates modern, accessible designs for Zo.space, standalone HTML, and Next.js with professional aesthetics ..."
-    },
-    {
-      "slug": "landing-page-generator",
-      "description": "Self-contained landing-page generator with bundled design foundations, anti-slop references, reusable templates, and target file-structure guidance. Portable across repos with no dependency on N5 or other skills."
     },
     {
       "slug": "frontend-design",
@@ -69,6 +69,10 @@
       "description": "Generate presentations, documents, social posts, and websites using Gamma's AI API. Supports full generation from prompts or creation from existing templates."
     },
     {
+      "slug": "landing-page-generator",
+      "description": "Self-contained landing-page generator with bundled design foundations, anti-slop references, reusable templates, and target file-structure guidance. Portable across repos with no dependency on N5 or other skills."
+    },
+    {
       "slug": "meeting-ingestion",
       "description": "Unified skill for ingesting meeting transcripts from Google Drive and orchestrating the processing pipeline (recap, blocks). Replaces legacy MG-1 through MG-6 agent sequence."
     },
@@ -79,10 +83,6 @@
     {
       "slug": "mentor-handler",
       "description": "Handle escalation requests from <YOUR_INSTANCE> instances and provide thoughtful mentor guidance based on precedent and context analysis"
-    },
-    {
-      "slug": "debono-thinking-hats",
-      "description": "Standalone De Bono Six Thinking Hats persona-switching system for Zo Computer. Includes installer prompt, six coordinated hat personas, routing contract, canonical sequences, validation script, and aligned avatar assets."
     },
     {
       "slug": "persona-optimization",
@@ -143,6 +143,10 @@
     {
       "slug": "warmer-jobs",
       "description": ">"
+    },
+    {
+      "slug": "workspace-doc-sync-starter",
+      "description": "Standalone starter kit for synchronized AI workspace docs across multiple harnesses. Includes shared canonical docs, thin adapters, identity-layer files, systemprefs decomposition guidance, and a scaffold script."
     },
     {
       "slug": "zo-create-site",
