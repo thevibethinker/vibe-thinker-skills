@@ -85,6 +85,10 @@
       "description": "Create code-driven videos with React and Remotion."
     },
     {
+      "slug": "startup-memo-generator",
+      "description": "Generate gated, analytics-enabled founder memo pages for investors, customers, and vendors on zo.space."
+    },
+    {
       "slug": "systematic-debugging",
       "description": "Apply a disciplined debugging process before proposing fixes."
     },

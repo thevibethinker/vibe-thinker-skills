@@ -1,0 +1,8 @@
+{
+  "org_name": "Your Company",
+  "gmail_sender": "founder@example.com",
+  "data_root": "N5/data/startup-memo-generator",
+  "default_replay_retention_days": 90,
+  "analytics_disclosure": "Please be aware that this page's analytics are being collected and used by Your Company.",
+  "default_locale": "en-US"
+}

@@ -19,7 +19,7 @@ git clone https://github.com/thevibethinker/vibe-thinker-skills.git
 ```
 
 <<<<<<< HEAD
-## Included Skills (17)
+## Included Skills (26)
 
 | Skill | Description |
 |-------|-------------|
@@ -35,6 +35,7 @@ git clone https://github.com/thevibethinker/vibe-thinker-skills.git
 | [prompt-to-skill](./prompt-to-skill/) | Turn complex prompts into reusable skill structures. |
 | [rapid-context-extractor](./rapid-context-extractor/) | Prepare structured packets for deeper source analysis and teaching. |
 | [remotion](./remotion/) | Create code-driven videos with React and Remotion. |
+| [startup-memo-generator](./startup-memo-generator/) | Generate gated, analytics-enabled founder memo pages for investors, customers, and vendors on zo.space. |
 | [systematic-debugging](./systematic-debugging/) | Apply a disciplined debugging process before proposing fixes. |
 | [text-commute-info](./text-commute-info/) | Fetch commute details and text them to the user. |
 | [text-to-diagram](./text-to-diagram/) | Convert text into Excalidraw-ready visual structures. |
