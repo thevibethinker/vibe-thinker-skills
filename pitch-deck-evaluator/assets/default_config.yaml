@@ -1,0 +1,12 @@
+stage: pre_seed
+enabled_frames: [F1, F2, F3, F4]
+enabled_pov_palette: []
+substantive_weight_overrides: {}
+stylistic_weight_overrides: {}
+register_override: auto
+output_verbosity: standard
+include_action_list: true
+include_advisory_overall: true
+model: claude-sonnet-4-6
+scoring_backend: heuristic
+emit_json: false

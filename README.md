@@ -18,20 +18,28 @@ Or clone the full collection:
 git clone https://github.com/thevibethinker/vibe-thinker-skills.git
 ```
 
-<<<<<<< HEAD
-## Included Skills (26)
+## Included Skills (27)
 
 | Skill | Description |
 |-------|-------------|
 | [booking-metadata-calendar](./booking-metadata-calendar/) | Parse booking requests into structured metadata and calendar-ready payloads. |
 | [branded-pdf](./branded-pdf/) | Generate clean, branded PDFs from markdown. |
 | [claude-code-window-primer](./claude-code-window-primer/) | Prime Claude Code usage windows so resets land during useful work hours. |
+| [close](./close/) | Universal close skill. Just say "close" and it auto-routes to the right close skill (thread-close, drop-close, or build-close) based on SESSION_STATE context. |
 | [debono-thinking-hats](./debono-thinking-hats/) | Portable Six Thinking Hats persona system for structured parallel thinking. |
+| [drop-close](./drop-close/) | Close Pulse worker (Drop) threads. Writes structured deposit JSON for orchestrator review. Does NOT commit - that's the orchestrator's job. For normal threads use thread-close. For post-build synthesis use build-close. |
+| [fillout-survey-monitor](./fillout-survey-monitor/) | Automated monitoring of Fillout survey changes with intelligent refresh triggering. |
 | [frontend](./frontend/) | Generate high-quality landing pages with anti-slop guardrails. |
 | [frontend-design](./frontend-design/) | Create polished, intentional frontend interfaces with strong visual quality. |
 | [frontend-design-anthropic](./frontend-design-anthropic/) | Imported frontend design skill focused on high-quality interface work. |
+| [ga4-analytics](./ga4-analytics/) | Pull Google Analytics 4 traffic stats for a website with configurable reporting windows and breakdowns. |
 | [gamma](./gamma/) | Generate presentations, webpages, and social content using Gamma's API. |
+| [landing-page-generator](./landing-page-generator/) | Self-contained landing-page generator with bundled design foundations, anti-slop references, reusable templates, and target file-structure guidance. |
+| [meeting-ingestion](./meeting-ingestion/) | Unified skill for ingesting meeting transcripts from Google Drive and orchestrating the processing pipeline. |
 | [meme-factory](./meme-factory/) | Generate memes with memegen.link templates and text controls. |
+| [mentor-handler](./mentor-handler/) | Handle escalation requests from partner instances and provide mentor guidance based on precedent and context analysis. |
+| [persona-optimization](./persona-optimization/) | Persona agency bootloader for Zo Computer with hard-switch rules and methodology injection. |
+| [pitch-deck-evaluator](./pitch-deck-evaluator/) | Evaluate pre-seed and seed pitch decks through multiple investor frames with a reusable rubric, deterministic local scoring, and opt-in named-VC POV guardrails. |
 | [prompt-to-skill](./prompt-to-skill/) | Turn complex prompts into reusable skill structures. |
 | [rapid-context-extractor](./rapid-context-extractor/) | Prepare structured packets for deeper source analysis and teaching. |
 | [remotion](./remotion/) | Create code-driven videos with React and Remotion. |
@@ -39,7 +47,7 @@ git clone https://github.com/thevibethinker/vibe-thinker-skills.git
 | [systematic-debugging](./systematic-debugging/) | Apply a disciplined debugging process before proposing fixes. |
 | [text-commute-info](./text-commute-info/) | Fetch commute details and text them to the user. |
 | [text-to-diagram](./text-to-diagram/) | Convert text into Excalidraw-ready visual structures. |
-| [workspace-doc-sync-starter](./workspace-doc-sync-starter/) | Scaffold a synchronized AI workspace-doc architecture with shared canonical docs, thin harness adapters, identity files, and systemprefs mapping guidance. |
+| [workspace-doc-sync-starter](./workspace-doc-sync-starter/) | Standalone starter kit for synchronized AI workspace docs across multiple harnesses. Includes shared canonical docs, thin adapters, identity-layer files, systemprefs decomposition guidance, and a scaffold script. |
 | [zo-create-site](./zo-create-site/) | Scaffold a site hosted on Zo. |
 
 ## What this repo excludes

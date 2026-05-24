@@ -1,0 +1,1097 @@
+{
+  "dimension_count": 13,
+  "dimensions": [
+    {
+      "definition": "credible right to understand, build, sell, recruit, and learn for this problem.",
+      "frame_sensitivity": {
+        "F1": {
+          "modifier": 1.1,
+          "note": "1.1x \u2014 underwrites person first; needs specific spike"
+        },
+        "F2": {
+          "modifier": 1.2,
+          "note": "1.2x \u2014 asks why founder earned belief"
+        },
+        "F3": {
+          "modifier": 1.2,
+          "note": "1.2x \u2014 needs why-this-team early"
+        },
+        "F4": {
+          "modifier": 1.2,
+          "note": "1.2x \u2014 probes domain fit and execution ownership"
+        },
+        "Frame": {
+          "modifier": 1.0,
+          "note": "Modifier and note"
+        }
+      },
+      "id": "founder_market_fit_team_capacity",
+      "name": "Founder-market fit + team capacity",
+      "prompt_questions": [
+        "What is the strongest claim the deck makes for this dimension?",
+        "Which slide/excerpt/metric/customer fact/product artifact supports it?",
+        "What must a skeptical reader infer because the deck does not state it?",
+        "Is missing evidence granted at this stage or a missing pre-seed substitute proof?",
+        "What is the highest-impact repair for this dimension?"
+      ],
+      "score_anchors": {
+        "0": "Missing or actively harmful; no usable evidence or credibility damage.",
+        "1": "Severe weakness; a reader must infer almost everything and may pass.",
+        "2": "Weak/incomplete; some evidence exists but is vague, unsupported, buried, or unsequenced.",
+        "3": "Adequate; stage-aware and scorable, with gaps a meeting can clarify.",
+        "4": "Strong; specific, evidence-backed, and memo-ready with normal pre-seed uncertainty.",
+        "5": "Exceptional; creates positive conviction and is likely to be quoted in a partner memo."
+      },
+      "stage_constraint": "Apply D2.4 before scoring. Grant missing mature metrics; penalize missing pre-seed-native proof; flag false precision separately.",
+      "strong_signals": [
+        "founder spike",
+        "lived/domain access",
+        "builder/seller ownership",
+        "honest team gaps"
+      ],
+      "weak_signals": [
+        "generic logos",
+        "no why-this-founder",
+        "missing technical owner",
+        "evasive claims"
+      ],
+      "weight": 13.0
+    },
+    {
+      "definition": "the central risky-but-believable belief the deck asks an investor to underwrite.",
+      "frame_sensitivity": {
+        "F1": {
+          "modifier": 0.9,
+          "note": "0.9x \u2014 may share thesis but needs retellable sentence"
+        },
+        "F2": {
+          "modifier": 1.2,
+          "note": "1.2x \u2014 core question is what founder sees"
+        },
+        "F3": {
+          "modifier": 1.1,
+          "note": "1.1x \u2014 earns cold attention"
+        },
+        "F4": {
+          "modifier": 1.5,
+          "note": "1.5x \u2014 attacks borrowed memes and hype"
+        },
+        "Frame": {
+          "modifier": 1.0,
+          "note": "Modifier and note"
+        }
+      },
+      "id": "non_obvious_insight_thesis_clarity",
+      "name": "Non-obvious insight + thesis clarity",
+      "prompt_questions": [
+        "What is the strongest claim the deck makes for this dimension?",
+        "Which slide/excerpt/metric/customer fact/product artifact supports it?",
+        "What must a skeptical reader infer because the deck does not state it?",
+        "Is missing evidence granted at this stage or a missing pre-seed substitute proof?",
+        "What is the highest-impact repair for this dimension?"
+      ],
+      "score_anchors": {
+        "0": "Missing or actively harmful; no usable evidence or credibility damage.",
+        "1": "Severe weakness; a reader must infer almost everything and may pass.",
+        "2": "Weak/incomplete; some evidence exists but is vague, unsupported, buried, or unsequenced.",
+        "3": "Adequate; stage-aware and scorable, with gaps a meeting can clarify.",
+        "4": "Strong; specific, evidence-backed, and memo-ready with normal pre-seed uncertainty.",
+        "5": "Exceptional; creates positive conviction and is likely to be quoted in a partner memo."
+      },
+      "stage_constraint": "Apply D2.4 before scoring. Grant missing mature metrics; penalize missing pre-seed-native proof; flag false precision separately.",
+      "strong_signals": [
+        "repeatable thesis",
+        "grounded contrarian view",
+        "wedge/timing link"
+      ],
+      "weak_signals": [
+        "buzzword thesis",
+        "empty checklist deck",
+        "facts without story"
+      ],
+      "weight": 10.0
+    },
+    {
+      "definition": "painful current problem for a narrow first customer/user and why that wedge starts.",
+      "frame_sensitivity": {
+        "F1": {
+          "modifier": 0.8,
+          "note": "0.8x \u2014 may infer pain from lived experience"
+        },
+        "F2": {
+          "modifier": 1.1,
+          "note": "1.1x \u2014 checks current painful adoption"
+        },
+        "F3": {
+          "modifier": 1.2,
+          "note": "1.2x \u2014 needs customer specificity fast"
+        },
+        "F4": {
+          "modifier": 1.3,
+          "note": "1.3x \u2014 tests willingness-to-pay and substitutes"
+        },
+        "Frame": {
+          "modifier": 1.0,
+          "note": "Modifier and note"
+        }
+      },
+      "id": "problem_urgency_icp_wedge",
+      "name": "Problem urgency + ICP/wedge",
+      "prompt_questions": [
+        "What is the strongest claim the deck makes for this dimension?",
+        "Which slide/excerpt/metric/customer fact/product artifact supports it?",
+        "What must a skeptical reader infer because the deck does not state it?",
+        "Is missing evidence granted at this stage or a missing pre-seed substitute proof?",
+        "What is the highest-impact repair for this dimension?"
+      ],
+      "score_anchors": {
+        "0": "Missing or actively harmful; no usable evidence or credibility damage.",
+        "1": "Severe weakness; a reader must infer almost everything and may pass.",
+        "2": "Weak/incomplete; some evidence exists but is vague, unsupported, buried, or unsequenced.",
+        "3": "Adequate; stage-aware and scorable, with gaps a meeting can clarify.",
+        "4": "Strong; specific, evidence-backed, and memo-ready with normal pre-seed uncertainty.",
+        "5": "Exceptional; creates positive conviction and is likely to be quoted in a partner memo."
+      },
+      "stage_constraint": "",
+      "strong_signals": [
+        "specific ICP",
+        "urgent/frequent pain",
+        "sequenced expansion",
+        "discovery evidence"
+      ],
+      "weak_signals": [
+        "everyone customer",
+        "unsequenced segments",
+        "technology before pain"
+      ],
+      "weight": 9.0
+    },
+    {
+      "definition": "credible wedge-to-venture-scale reasoning without TAM theater.",
+      "frame_sensitivity": {
+        "F1": {
+          "modifier": 0.7,
+          "note": "0.7x \u2014 tolerates rough math if wedge/founder strong"
+        },
+        "F2": {
+          "modifier": 1.1,
+          "note": "1.1x \u2014 wants bottom-up assumptions"
+        },
+        "F3": {
+          "modifier": 1.2,
+          "note": "1.2x \u2014 needs specific market/wedge"
+        },
+        "F4": {
+          "modifier": 1.3,
+          "note": "1.3x \u2014 validates price, count, budget, capture"
+        },
+        "Frame": {
+          "modifier": 1.0,
+          "note": "Modifier and note"
+        }
+      },
+      "id": "market_logic_venture_scale_path",
+      "name": "Market logic + venture-scale path",
+      "prompt_questions": [
+        "What is the strongest claim the deck makes for this dimension?",
+        "Which slide/excerpt/metric/customer fact/product artifact supports it?",
+        "What must a skeptical reader infer because the deck does not state it?",
+        "Is missing evidence granted at this stage or a missing pre-seed substitute proof?",
+        "What is the highest-impact repair for this dimension?"
+      ],
+      "score_anchors": {
+        "0": "Missing or actively harmful; no usable evidence or credibility damage.",
+        "1": "Severe weakness; a reader must infer almost everything and may pass.",
+        "2": "Weak/incomplete; some evidence exists but is vague, unsupported, buried, or unsequenced.",
+        "3": "Adequate; stage-aware and scorable, with gaps a meeting can clarify.",
+        "4": "Strong; specific, evidence-backed, and memo-ready with normal pre-seed uncertainty.",
+        "5": "Exceptional; creates positive conviction and is likely to be quoted in a partner memo."
+      },
+      "stage_constraint": "",
+      "strong_signals": [
+        "bottom-up assumptions",
+        "buyer budget",
+        "expansion path",
+        "venture-scale logic"
+      ],
+      "weak_signals": [
+        "top-down TAM",
+        "no segmentation",
+        "report screenshots as proof"
+      ],
+      "weight": 8.0
+    },
+    {
+      "definition": "real inflection that makes the opportunity newly possible or urgent.",
+      "frame_sensitivity": {
+        "F1": {
+          "modifier": 0.8,
+          "note": "0.8x \u2014 may grant category timing intuition"
+        },
+        "F2": {
+          "modifier": 1.1,
+          "note": "1.1x \u2014 needs concrete inflection"
+        },
+        "F3": {
+          "modifier": 1.1,
+          "note": "1.1x \u2014 creates cold urgency"
+        },
+        "F4": {
+          "modifier": 1.4,
+          "note": "1.4x \u2014 challenges fundraising slogans"
+        },
+        "Frame": {
+          "modifier": 1.0,
+          "note": "Modifier and note"
+        }
+      },
+      "id": "why_now_timing_pressure",
+      "name": "Why now + timing pressure",
+      "prompt_questions": [
+        "What is the strongest claim the deck makes for this dimension?",
+        "Which slide/excerpt/metric/customer fact/product artifact supports it?",
+        "What must a skeptical reader infer because the deck does not state it?",
+        "Is missing evidence granted at this stage or a missing pre-seed substitute proof?",
+        "What is the highest-impact repair for this dimension?"
+      ],
+      "score_anchors": {
+        "0": "Missing or actively harmful; no usable evidence or credibility damage.",
+        "1": "Severe weakness; a reader must infer almost everything and may pass.",
+        "2": "Weak/incomplete; some evidence exists but is vague, unsupported, buried, or unsequenced.",
+        "3": "Adequate; stage-aware and scorable, with gaps a meeting can clarify.",
+        "4": "Strong; specific, evidence-backed, and memo-ready with normal pre-seed uncertainty.",
+        "5": "Exceptional; creates positive conviction and is likely to be quoted in a partner memo."
+      },
+      "stage_constraint": "",
+      "strong_signals": [
+        "tech/regulatory/behavior/cost/distribution shift tied to wedge"
+      ],
+      "weak_signals": [
+        "trend label only",
+        "no forcing function",
+        "timing mismatch"
+      ],
+      "weight": 8.0
+    },
+    {
+      "definition": "stage-appropriate proof that customers care and founders learn fast.",
+      "frame_sensitivity": {
+        "F1": {
+          "modifier": 0.9,
+          "note": "0.9x \u2014 can fund before mature proof but needs motion"
+        },
+        "F2": {
+          "modifier": 1.2,
+          "note": "1.2x \u2014 separates revenue absence from evidence absence"
+        },
+        "F3": {
+          "modifier": 1.2,
+          "note": "1.2x \u2014 needs proof beyond cold scan"
+        },
+        "F4": {
+          "modifier": 1.4,
+          "note": "1.4x \u2014 hunts vanity/fake traction"
+        },
+        "Frame": {
+          "modifier": 1.0,
+          "note": "Modifier and note"
+        }
+      },
+      "id": "evidence_demand_learning_velocity",
+      "name": "Evidence of demand + learning velocity",
+      "prompt_questions": [
+        "What is the strongest claim the deck makes for this dimension?",
+        "Which slide/excerpt/metric/customer fact/product artifact supports it?",
+        "What must a skeptical reader infer because the deck does not state it?",
+        "Is missing evidence granted at this stage or a missing pre-seed substitute proof?",
+        "What is the highest-impact repair for this dimension?"
+      ],
+      "score_anchors": {
+        "0": "Missing or actively harmful; no usable evidence or credibility damage.",
+        "1": "Severe weakness; a reader must infer almost everything and may pass.",
+        "2": "Weak/incomplete; some evidence exists but is vague, unsupported, buried, or unsequenced.",
+        "3": "Adequate; stage-aware and scorable, with gaps a meeting can clarify.",
+        "4": "Strong; specific, evidence-backed, and memo-ready with normal pre-seed uncertainty.",
+        "5": "Exceptional; creates positive conviction and is likely to be quoted in a partner memo."
+      },
+      "stage_constraint": "Apply D2.4 before scoring. Grant missing mature metrics; penalize missing pre-seed-native proof; flag false precision separately.",
+      "strong_signals": [
+        "interviews",
+        "design partners",
+        "LOIs",
+        "usage",
+        "prototype",
+        "iteration loop"
+      ],
+      "weak_signals": [
+        "evidence vacuum",
+        "vanity metrics",
+        "fake hockey stick",
+        "skipped traction because early"
+      ],
+      "weight": 10.0
+    },
+    {
+      "definition": "what exists/will exist, how it solves pain, and what product artifact proves it.",
+      "frame_sensitivity": {
+        "F1": {
+          "modifier": 0.8,
+          "note": "0.8x \u2014 accepts concept if builder credible"
+        },
+        "F2": {
+          "modifier": 1.0,
+          "note": "1.0x \u2014 wants product proof linking pain/execution"
+        },
+        "F3": {
+          "modifier": 1.2,
+          "note": "1.2x \u2014 needs visual/clear explanation"
+        },
+        "F4": {
+          "modifier": 1.3,
+          "note": "1.3x \u2014 checks real/differentiated/not vapor"
+        },
+        "Frame": {
+          "modifier": 1.0,
+          "note": "Modifier and note"
+        }
+      },
+      "id": "solution_product_clarity_proof",
+      "name": "Solution/product clarity + proof",
+      "prompt_questions": [
+        "What is the strongest claim the deck makes for this dimension?",
+        "Which slide/excerpt/metric/customer fact/product artifact supports it?",
+        "What must a skeptical reader infer because the deck does not state it?",
+        "Is missing evidence granted at this stage or a missing pre-seed substitute proof?",
+        "What is the highest-impact repair for this dimension?"
+      ],
+      "score_anchors": {
+        "0": "Missing or actively harmful; no usable evidence or credibility damage.",
+        "1": "Severe weakness; a reader must infer almost everything and may pass.",
+        "2": "Weak/incomplete; some evidence exists but is vague, unsupported, buried, or unsequenced.",
+        "3": "Adequate; stage-aware and scorable, with gaps a meeting can clarify.",
+        "4": "Strong; specific, evidence-backed, and memo-ready with normal pre-seed uncertainty.",
+        "5": "Exceptional; creates positive conviction and is likely to be quoted in a partner memo."
+      },
+      "stage_constraint": "",
+      "strong_signals": [
+        "demo/mock/prototype/screenshot",
+        "fast product/customer/value clarity"
+      ],
+      "weak_signals": [
+        "no product visual",
+        "feature tour",
+        "technical weeds before value"
+      ],
+      "weight": 7.0
+    },
+    {
+      "definition": "advantage that can compound through data, network, workflow, distribution, technical, category, brand, or regulation.",
+      "frame_sensitivity": {
+        "F1": {
+          "modifier": 0.8,
+          "note": "0.8x \u2014 grants early path if founder/inflection strong"
+        },
+        "F2": {
+          "modifier": 1.1,
+          "note": "1.1x \u2014 wants moat hypothesis and substitutes"
+        },
+        "F3": {
+          "modifier": 1.0,
+          "note": "1.0x \u2014 wants homework honesty"
+        },
+        "F4": {
+          "modifier": 1.5,
+          "note": "1.5x \u2014 pressure-tests copyability/incumbents"
+        },
+        "Frame": {
+          "modifier": 1.0,
+          "note": "Modifier and note"
+        }
+      },
+      "id": "defensibility_compounding_advantage",
+      "name": "Defensibility + compounding advantage",
+      "prompt_questions": [
+        "What is the strongest claim the deck makes for this dimension?",
+        "Which slide/excerpt/metric/customer fact/product artifact supports it?",
+        "What must a skeptical reader infer because the deck does not state it?",
+        "Is missing evidence granted at this stage or a missing pre-seed substitute proof?",
+        "What is the highest-impact repair for this dimension?"
+      ],
+      "score_anchors": {
+        "0": "Missing or actively harmful; no usable evidence or credibility damage.",
+        "1": "Severe weakness; a reader must infer almost everything and may pass.",
+        "2": "Weak/incomplete; some evidence exists but is vague, unsupported, buried, or unsequenced.",
+        "3": "Adequate; stage-aware and scorable, with gaps a meeting can clarify.",
+        "4": "Strong; specific, evidence-backed, and memo-ready with normal pre-seed uncertainty.",
+        "5": "Exceptional; creates positive conviction and is likely to be quoted in a partner memo."
+      },
+      "stage_constraint": "",
+      "strong_signals": [
+        "specific compounding path tied to wedge and milestone"
+      ],
+      "weak_signals": [
+        "generic moat",
+        "first-mover/platform claims",
+        "easy-copy idea"
+      ],
+      "weight": 7.0
+    },
+    {
+      "definition": "real alternatives and why customers switch/adopt.",
+      "frame_sensitivity": {
+        "F1": {
+          "modifier": 0.8,
+          "note": "0.8x \u2014 may follow up but no-competition hurts"
+        },
+        "F2": {
+          "modifier": 1.1,
+          "note": "1.1x \u2014 tests market understanding"
+        },
+        "F3": {
+          "modifier": 1.0,
+          "note": "1.0x \u2014 needs honest alternatives"
+        },
+        "F4": {
+          "modifier": 1.5,
+          "note": "1.5x \u2014 treats no-competition as judgment failure"
+        },
+        "Frame": {
+          "modifier": 1.0,
+          "note": "Modifier and note"
+        }
+      },
+      "id": "competitive_landscape_differentiation",
+      "name": "Competitive landscape + differentiation",
+      "prompt_questions": [
+        "What is the strongest claim the deck makes for this dimension?",
+        "Which slide/excerpt/metric/customer fact/product artifact supports it?",
+        "What must a skeptical reader infer because the deck does not state it?",
+        "Is missing evidence granted at this stage or a missing pre-seed substitute proof?",
+        "What is the highest-impact repair for this dimension?"
+      ],
+      "score_anchors": {
+        "0": "Missing or actively harmful; no usable evidence or credibility damage.",
+        "1": "Severe weakness; a reader must infer almost everything and may pass.",
+        "2": "Weak/incomplete; some evidence exists but is vague, unsupported, buried, or unsequenced.",
+        "3": "Adequate; stage-aware and scorable, with gaps a meeting can clarify.",
+        "4": "Strong; specific, evidence-backed, and memo-ready with normal pre-seed uncertainty.",
+        "5": "Exceptional; creates positive conviction and is likely to be quoted in a partner memo."
+      },
+      "stage_constraint": "",
+      "strong_signals": [
+        "direct/indirect/status quo alternatives",
+        "switching trigger",
+        "humble nuance"
+      ],
+      "weak_signals": [
+        "no competition",
+        "strawman incumbents",
+        "checkbox theater"
+      ],
+      "weight": 6.0
+    },
+    {
+      "definition": "specific first route to customers/users matched to buyer, product, price, and team.",
+      "frame_sensitivity": {
+        "F1": {
+          "modifier": 0.8,
+          "note": "0.8x \u2014 may grant access/community pull"
+        },
+        "F2": {
+          "modifier": 1.1,
+          "note": "1.1x \u2014 wants ICP/buyer/channel sequence"
+        },
+        "F3": {
+          "modifier": 1.2,
+          "note": "1.2x \u2014 rejects broad customer language"
+        },
+        "F4": {
+          "modifier": 1.4,
+          "note": "1.4x \u2014 tests distribution logic"
+        },
+        "Frame": {
+          "modifier": 1.0,
+          "note": "Modifier and note"
+        }
+      },
+      "id": "gtm_plausibility_first_distribution",
+      "name": "GTM plausibility + first distribution motion",
+      "prompt_questions": [
+        "What is the strongest claim the deck makes for this dimension?",
+        "Which slide/excerpt/metric/customer fact/product artifact supports it?",
+        "What must a skeptical reader infer because the deck does not state it?",
+        "Is missing evidence granted at this stage or a missing pre-seed substitute proof?",
+        "What is the highest-impact repair for this dimension?"
+      ],
+      "score_anchors": {
+        "0": "Missing or actively harmful; no usable evidence or credibility damage.",
+        "1": "Severe weakness; a reader must infer almost everything and may pass.",
+        "2": "Weak/incomplete; some evidence exists but is vague, unsupported, buried, or unsequenced.",
+        "3": "Adequate; stage-aware and scorable, with gaps a meeting can clarify.",
+        "4": "Strong; specific, evidence-backed, and memo-ready with normal pre-seed uncertainty.",
+        "5": "Exceptional; creates positive conviction and is likely to be quoted in a partner memo."
+      },
+      "stage_constraint": "Apply D2.4 before scoring. Grant missing mature metrics; penalize missing pre-seed-native proof; flag false precision separately.",
+      "strong_signals": [
+        "founder-led/design-partner/community/partner path",
+        "sequenced buyer/channel"
+      ],
+      "weak_signals": [
+        "channel spray",
+        "generic paid ads",
+        "distribution assumed"
+      ],
+      "weight": 7.0
+    },
+    {
+      "definition": "how value becomes revenue and why the model can work at stage.",
+      "frame_sensitivity": {
+        "F1": {
+          "modifier": 0.6,
+          "note": "0.6x \u2014 underweights mature economics"
+        },
+        "F2": {
+          "modifier": 0.8,
+          "note": "0.8x \u2014 wants credible value capture"
+        },
+        "F3": {
+          "modifier": 0.8,
+          "note": "0.8x \u2014 needs enough model clarity"
+        },
+        "F4": {
+          "modifier": 1.2,
+          "note": "1.2x \u2014 challenges projections/CAC/LTV/pricing"
+        },
+        "Frame": {
+          "modifier": 1.0,
+          "note": "Modifier and note"
+        }
+      },
+      "id": "business_model_economic_logic",
+      "name": "Business model + economic logic",
+      "prompt_questions": [
+        "What is the strongest claim the deck makes for this dimension?",
+        "Which slide/excerpt/metric/customer fact/product artifact supports it?",
+        "What must a skeptical reader infer because the deck does not state it?",
+        "Is missing evidence granted at this stage or a missing pre-seed substitute proof?",
+        "What is the highest-impact repair for this dimension?"
+      ],
+      "score_anchors": {
+        "0": "Missing or actively harmful; no usable evidence or credibility damage.",
+        "1": "Severe weakness; a reader must infer almost everything and may pass.",
+        "2": "Weak/incomplete; some evidence exists but is vague, unsupported, buried, or unsequenced.",
+        "3": "Adequate; stage-aware and scorable, with gaps a meeting can clarify.",
+        "4": "Strong; specific, evidence-backed, and memo-ready with normal pre-seed uncertainty.",
+        "5": "Exceptional; creates positive conviction and is likely to be quoted in a partner memo."
+      },
+      "stage_constraint": "Apply D2.4 before scoring. Grant missing mature metrics; penalize missing pre-seed-native proof; flag false precision separately.",
+      "strong_signals": [
+        "who pays",
+        "why pay",
+        "pricing hypothesis",
+        "value-capture milestone"
+      ],
+      "weak_signals": [
+        "fantasy projections",
+        "premature CAC/LTV",
+        "product-model mismatch"
+      ],
+      "weight": 5.0
+    },
+    {
+      "definition": "round size/use/milestones mapped to risk reduction and next financing proof.",
+      "frame_sensitivity": {
+        "F1": {
+          "modifier": 0.8,
+          "note": "0.8x \u2014 can ask directly but needs closeable round"
+        },
+        "F2": {
+          "modifier": 1.05,
+          "note": "1.05x \u2014 maps to fund fit and proof"
+        },
+        "F3": {
+          "modifier": 1.05,
+          "note": "1.05x \u2014 needs visible action requested"
+        },
+        "F4": {
+          "modifier": 1.3,
+          "note": "1.3x \u2014 rejects headcount-only/fake urgency"
+        },
+        "Frame": {
+          "modifier": 1.0,
+          "note": "Modifier and note"
+        }
+      },
+      "id": "ask_milestones_next_round",
+      "name": "Ask + milestones to next round",
+      "prompt_questions": [
+        "What is the strongest claim the deck makes for this dimension?",
+        "Which slide/excerpt/metric/customer fact/product artifact supports it?",
+        "What must a skeptical reader infer because the deck does not state it?",
+        "Is missing evidence granted at this stage or a missing pre-seed substitute proof?",
+        "What is the highest-impact repair for this dimension?"
+      ],
+      "score_anchors": {
+        "0": "Missing or actively harmful; no usable evidence or credibility damage.",
+        "1": "Severe weakness; a reader must infer almost everything and may pass.",
+        "2": "Weak/incomplete; some evidence exists but is vague, unsupported, buried, or unsequenced.",
+        "3": "Adequate; stage-aware and scorable, with gaps a meeting can clarify.",
+        "4": "Strong; specific, evidence-backed, and memo-ready with normal pre-seed uncertainty.",
+        "5": "Exceptional; creates positive conviction and is likely to be quoted in a partner memo."
+      },
+      "stage_constraint": "Apply D2.4 before scoring. Grant missing mature metrics; penalize missing pre-seed-native proof; flag false precision separately.",
+      "strong_signals": [
+        "amount, runway, build/customer/revenue/key-hire milestones"
+      ],
+      "weak_signals": [
+        "no ask",
+        "headcount/runway only",
+        "fake urgency",
+        "valuation detached"
+      ],
+      "weight": 6.0
+    },
+    {
+      "definition": "material risks and how this round/tests reduce them.",
+      "frame_sensitivity": {
+        "F1": {
+          "modifier": 0.7,
+          "note": "0.7x \u2014 expects awareness not risk-first deck"
+        },
+        "F2": {
+          "modifier": 1.0,
+          "note": "1.0x \u2014 rewards de-risking sequence"
+        },
+        "F3": {
+          "modifier": 0.9,
+          "note": "0.9x \u2014 enough risk awareness to trust"
+        },
+        "F4": {
+          "modifier": 1.5,
+          "note": "1.5x \u2014 built around risk interrogation"
+        },
+        "Frame": {
+          "modifier": 1.0,
+          "note": "Modifier and note"
+        }
+      },
+      "id": "risk_honesty_derisking_plan",
+      "name": "Risk honesty + de-risking plan",
+      "prompt_questions": [
+        "What is the strongest claim the deck makes for this dimension?",
+        "Which slide/excerpt/metric/customer fact/product artifact supports it?",
+        "What must a skeptical reader infer because the deck does not state it?",
+        "Is missing evidence granted at this stage or a missing pre-seed substitute proof?",
+        "What is the highest-impact repair for this dimension?"
+      ],
+      "score_anchors": {
+        "0": "Missing or actively harmful; no usable evidence or credibility damage.",
+        "1": "Severe weakness; a reader must infer almost everything and may pass.",
+        "2": "Weak/incomplete; some evidence exists but is vague, unsupported, buried, or unsequenced.",
+        "3": "Adequate; stage-aware and scorable, with gaps a meeting can clarify.",
+        "4": "Strong; specific, evidence-backed, and memo-ready with normal pre-seed uncertainty.",
+        "5": "Exceptional; creates positive conviction and is likely to be quoted in a partner memo."
+      },
+      "stage_constraint": "Apply D2.4 before scoring. Grant missing mature metrics; penalize missing pre-seed-native proof; flag false precision separately.",
+      "strong_signals": [
+        "risks named/bounded",
+        "facts vs hypotheses",
+        "experiments tied to risks"
+      ],
+      "weak_signals": [
+        "obvious risks hidden",
+        "NDA/SWOT-first",
+        "milestones dodge real risks"
+      ],
+      "weight": 4.0
+    }
+  ],
+  "frame_matrix": {
+    "ask_milestones_next_round": {
+      "F1": {
+        "modifier": 0.8,
+        "note": "0.8x \u2014 can ask directly but needs closeable round"
+      },
+      "F2": {
+        "modifier": 1.05,
+        "note": "1.05x \u2014 maps to fund fit and proof"
+      },
+      "F3": {
+        "modifier": 1.05,
+        "note": "1.05x \u2014 needs visible action requested"
+      },
+      "F4": {
+        "modifier": 1.3,
+        "note": "1.3x \u2014 rejects headcount-only/fake urgency"
+      },
+      "Frame": {
+        "modifier": 1.0,
+        "note": "Modifier and note"
+      }
+    },
+    "business_model_economic_logic": {
+      "F1": {
+        "modifier": 0.6,
+        "note": "0.6x \u2014 underweights mature economics"
+      },
+      "F2": {
+        "modifier": 0.8,
+        "note": "0.8x \u2014 wants credible value capture"
+      },
+      "F3": {
+        "modifier": 0.8,
+        "note": "0.8x \u2014 needs enough model clarity"
+      },
+      "F4": {
+        "modifier": 1.2,
+        "note": "1.2x \u2014 challenges projections/CAC/LTV/pricing"
+      },
+      "Frame": {
+        "modifier": 1.0,
+        "note": "Modifier and note"
+      }
+    },
+    "competitive_landscape_differentiation": {
+      "F1": {
+        "modifier": 0.8,
+        "note": "0.8x \u2014 may follow up but no-competition hurts"
+      },
+      "F2": {
+        "modifier": 1.1,
+        "note": "1.1x \u2014 tests market understanding"
+      },
+      "F3": {
+        "modifier": 1.0,
+        "note": "1.0x \u2014 needs honest alternatives"
+      },
+      "F4": {
+        "modifier": 1.5,
+        "note": "1.5x \u2014 treats no-competition as judgment failure"
+      },
+      "Frame": {
+        "modifier": 1.0,
+        "note": "Modifier and note"
+      }
+    },
+    "defensibility_compounding_advantage": {
+      "F1": {
+        "modifier": 0.8,
+        "note": "0.8x \u2014 grants early path if founder/inflection strong"
+      },
+      "F2": {
+        "modifier": 1.1,
+        "note": "1.1x \u2014 wants moat hypothesis and substitutes"
+      },
+      "F3": {
+        "modifier": 1.0,
+        "note": "1.0x \u2014 wants homework honesty"
+      },
+      "F4": {
+        "modifier": 1.5,
+        "note": "1.5x \u2014 pressure-tests copyability/incumbents"
+      },
+      "Frame": {
+        "modifier": 1.0,
+        "note": "Modifier and note"
+      }
+    },
+    "evidence_demand_learning_velocity": {
+      "F1": {
+        "modifier": 0.9,
+        "note": "0.9x \u2014 can fund before mature proof but needs motion"
+      },
+      "F2": {
+        "modifier": 1.2,
+        "note": "1.2x \u2014 separates revenue absence from evidence absence"
+      },
+      "F3": {
+        "modifier": 1.2,
+        "note": "1.2x \u2014 needs proof beyond cold scan"
+      },
+      "F4": {
+        "modifier": 1.4,
+        "note": "1.4x \u2014 hunts vanity/fake traction"
+      },
+      "Frame": {
+        "modifier": 1.0,
+        "note": "Modifier and note"
+      }
+    },
+    "founder_market_fit_team_capacity": {
+      "F1": {
+        "modifier": 1.1,
+        "note": "1.1x \u2014 underwrites person first; needs specific spike"
+      },
+      "F2": {
+        "modifier": 1.2,
+        "note": "1.2x \u2014 asks why founder earned belief"
+      },
+      "F3": {
+        "modifier": 1.2,
+        "note": "1.2x \u2014 needs why-this-team early"
+      },
+      "F4": {
+        "modifier": 1.2,
+        "note": "1.2x \u2014 probes domain fit and execution ownership"
+      },
+      "Frame": {
+        "modifier": 1.0,
+        "note": "Modifier and note"
+      }
+    },
+    "gtm_plausibility_first_distribution": {
+      "F1": {
+        "modifier": 0.8,
+        "note": "0.8x \u2014 may grant access/community pull"
+      },
+      "F2": {
+        "modifier": 1.1,
+        "note": "1.1x \u2014 wants ICP/buyer/channel sequence"
+      },
+      "F3": {
+        "modifier": 1.2,
+        "note": "1.2x \u2014 rejects broad customer language"
+      },
+      "F4": {
+        "modifier": 1.4,
+        "note": "1.4x \u2014 tests distribution logic"
+      },
+      "Frame": {
+        "modifier": 1.0,
+        "note": "Modifier and note"
+      }
+    },
+    "market_logic_venture_scale_path": {
+      "F1": {
+        "modifier": 0.7,
+        "note": "0.7x \u2014 tolerates rough math if wedge/founder strong"
+      },
+      "F2": {
+        "modifier": 1.1,
+        "note": "1.1x \u2014 wants bottom-up assumptions"
+      },
+      "F3": {
+        "modifier": 1.2,
+        "note": "1.2x \u2014 needs specific market/wedge"
+      },
+      "F4": {
+        "modifier": 1.3,
+        "note": "1.3x \u2014 validates price, count, budget, capture"
+      },
+      "Frame": {
+        "modifier": 1.0,
+        "note": "Modifier and note"
+      }
+    },
+    "non_obvious_insight_thesis_clarity": {
+      "F1": {
+        "modifier": 0.9,
+        "note": "0.9x \u2014 may share thesis but needs retellable sentence"
+      },
+      "F2": {
+        "modifier": 1.2,
+        "note": "1.2x \u2014 core question is what founder sees"
+      },
+      "F3": {
+        "modifier": 1.1,
+        "note": "1.1x \u2014 earns cold attention"
+      },
+      "F4": {
+        "modifier": 1.5,
+        "note": "1.5x \u2014 attacks borrowed memes and hype"
+      },
+      "Frame": {
+        "modifier": 1.0,
+        "note": "Modifier and note"
+      }
+    },
+    "problem_urgency_icp_wedge": {
+      "F1": {
+        "modifier": 0.8,
+        "note": "0.8x \u2014 may infer pain from lived experience"
+      },
+      "F2": {
+        "modifier": 1.1,
+        "note": "1.1x \u2014 checks current painful adoption"
+      },
+      "F3": {
+        "modifier": 1.2,
+        "note": "1.2x \u2014 needs customer specificity fast"
+      },
+      "F4": {
+        "modifier": 1.3,
+        "note": "1.3x \u2014 tests willingness-to-pay and substitutes"
+      },
+      "Frame": {
+        "modifier": 1.0,
+        "note": "Modifier and note"
+      }
+    },
+    "risk_honesty_derisking_plan": {
+      "F1": {
+        "modifier": 0.7,
+        "note": "0.7x \u2014 expects awareness not risk-first deck"
+      },
+      "F2": {
+        "modifier": 1.0,
+        "note": "1.0x \u2014 rewards de-risking sequence"
+      },
+      "F3": {
+        "modifier": 0.9,
+        "note": "0.9x \u2014 enough risk awareness to trust"
+      },
+      "F4": {
+        "modifier": 1.5,
+        "note": "1.5x \u2014 built around risk interrogation"
+      },
+      "Frame": {
+        "modifier": 1.0,
+        "note": "Modifier and note"
+      }
+    },
+    "solution_product_clarity_proof": {
+      "F1": {
+        "modifier": 0.8,
+        "note": "0.8x \u2014 accepts concept if builder credible"
+      },
+      "F2": {
+        "modifier": 1.0,
+        "note": "1.0x \u2014 wants product proof linking pain/execution"
+      },
+      "F3": {
+        "modifier": 1.2,
+        "note": "1.2x \u2014 needs visual/clear explanation"
+      },
+      "F4": {
+        "modifier": 1.3,
+        "note": "1.3x \u2014 checks real/differentiated/not vapor"
+      },
+      "Frame": {
+        "modifier": 1.0,
+        "note": "Modifier and note"
+      }
+    },
+    "why_now_timing_pressure": {
+      "F1": {
+        "modifier": 0.8,
+        "note": "0.8x \u2014 may grant category timing intuition"
+      },
+      "F2": {
+        "modifier": 1.1,
+        "note": "1.1x \u2014 needs concrete inflection"
+      },
+      "F3": {
+        "modifier": 1.1,
+        "note": "1.1x \u2014 creates cold urgency"
+      },
+      "F4": {
+        "modifier": 1.4,
+        "note": "1.4x \u2014 challenges fundraising slogans"
+      },
+      "Frame": {
+        "modifier": 1.0,
+        "note": "Modifier and note"
+      }
+    }
+  },
+  "frames": [
+    {
+      "id": "F1",
+      "name": "Warm Believer"
+    },
+    {
+      "id": "F2",
+      "name": "Curious Skeptic"
+    },
+    {
+      "id": "F3",
+      "name": "Cold Partner Read"
+    },
+    {
+      "id": "F4",
+      "name": "Hostile Diligence"
+    }
+  ],
+  "generated_at": "2026-05-24T07:25:45.127245+00:00",
+  "named_pov_palette": [
+    {
+      "id": "hustle_fund_yin_bahn",
+      "label": "Hustle Fund Yin Bahn"
+    },
+    {
+      "id": "pear_nozad_hershenson",
+      "label": "Pear Nozad Hershenson"
+    },
+    {
+      "id": "nfx_currier_levy_weiss",
+      "label": "Nfx Currier Levy Weiss"
+    },
+    {
+      "id": "floodgate_maples_miura_ko",
+      "label": "Floodgate Maples Miura Ko"
+    },
+    {
+      "id": "bloomberg_beta_bahat",
+      "label": "Bloomberg Beta Bahat"
+    },
+    {
+      "id": "precursor_hudson",
+      "label": "Precursor Hudson"
+    },
+    {
+      "id": "boost_draper",
+      "label": "Boost Draper"
+    },
+    {
+      "id": "designer_fund_blumenrose_allen",
+      "label": "Designer Fund Blumenrose Allen"
+    },
+    {
+      "id": "2048_iskold",
+      "label": "2048 Iskold"
+    },
+    {
+      "id": "k9_manu_kumar",
+      "label": "K9 Manu Kumar"
+    },
+    {
+      "id": "naval_ravikant",
+      "label": "Naval Ravikant"
+    },
+    {
+      "id": "jason_calacanis",
+      "label": "Jason Calacanis"
+    },
+    {
+      "id": "sahil_lavingia",
+      "label": "Sahil Lavingia"
+    },
+    {
+      "id": "elad_gil",
+      "label": "Elad Gil"
+    },
+    {
+      "id": "fabrice_grinda_fj_labs",
+      "label": "Fabrice Grinda Fj Labs"
+    }
+  ],
+  "schema_version": "1.0",
+  "source_path": "rubric/rubric_v1.md",
+  "stage_rules": {
+    "score_caps": {
+      "evidence_demand_learning_velocity": 2.0,
+      "founder_market_fit_team_capacity": 2.0,
+      "market_logic_venture_scale_path": 2.5,
+      "non_obvious_insight_thesis_clarity": 2.0
+    },
+    "text": "Classify every weakness before scoring: `granted_at_pre_seed`, `stage_appropriate_evidence`, `missing_pre_seed_proof`, `false_precision`, `inverse_trap`, or `credibility_risk`.\n\nDimension constraints: no revenue alone has max penalty 0 at pre-seed; no validation substitute caps demand evidence at 2. Missing PMF is granted; missing PMF-search evidence is not. Missing exec layer is granted; missing builder control for technical products is not. No why-this-founder caps founder dimension at 2 unless supplied elsewhere. Thin traction plus missing insight caps thesis at 2. Rough market estimates are granted; top-down TAM theater caps market at 2.5. Lack of repeatable GTM is granted; lack of first buyer/channel/test is not. Missing CAC/LTV is granted; missing who-pays/why-pay is weak. Mature moat absence is granted; no compounding path or no-competition claim is weak. Pre-MVP is granted if product clarity/proof exists. Vague/no ask is never stage-granted. No formal risk slide is fine; no risk/milestone logic is not.",
+    "weakness_labels": [
+      "granted_at_pre_seed",
+      "stage_appropriate_evidence",
+      "missing_pre_seed_proof",
+      "false_precision",
+      "inverse_trap",
+      "credibility_risk"
+    ]
+  }
+}
