@@ -1,0 +1,3938 @@
+{
+  "advisory_overall": 3.28,
+  "config": {
+    "config_source": "config/default_config.yaml",
+    "emit_json": false,
+    "enabled_frames": [
+      "F1",
+      "F2",
+      "F3",
+      "F4"
+    ],
+    "enabled_pov_palette": [],
+    "include_action_list": true,
+    "include_advisory_overall": true,
+    "model": "claude-sonnet-4-6",
+    "output_verbosity": "standard",
+    "register_override": "auto",
+    "scoring_backend": "heuristic",
+    "stage": "pre_seed",
+    "stylistic_weight_overrides": {},
+    "substantive_weight_overrides": {}
+  },
+  "cross_frame_synthesis": {
+    "frame_scores": {
+      "F1": 3.01,
+      "F2": 2.83,
+      "F3": 2.86,
+      "F4": 2.66
+    },
+    "spread": 0.35,
+    "summary": "The deck has consistent weaknesses across frames."
+  },
+  "deck_metadata": {
+    "deck_name": "sample_seed_deck.pdf",
+    "deck_path": "tests/fixtures/sample_seed_deck.pdf",
+    "slide_count": 11
+  },
+  "detected_voice_mode": "sharp_declarative",
+  "dimensions": [
+    {
+      "confidence": "medium",
+      "dimension_id": "punch_density",
+      "evidence": [
+        {
+          "evidence_type": "opening/headline signal",
+          "excerpt": "1. Founder-market fit",
+          "slide_ref": "S1"
+        },
+        {
+          "evidence_type": "opening/headline signal",
+          "excerpt": "2. Problem urgency",
+          "slide_ref": "S2"
+        }
+      ],
+      "label": "Punch / Density",
+      "prompt_questions": [
+        "Can a smart investor state what the company does after slide 1 or slide 2?",
+        "Do the first five slides contain the minimum attention-earning claims?",
+        "Does each slide carry one main point?"
+      ],
+      "reasoning": "0 core slides exceed 40 words, 0 exceed 70; label-headline rate 0%; opening clarity signals 2/4.",
+      "register_applied": true,
+      "score": 5.0,
+      "top_fix": "Rewrite the opening/core dense slides into claim headlines plus one proof point; move excess detail to appendix.",
+      "weight_default": 16.0,
+      "weight_effective": 16.0,
+      "weighted_points": 16.0
+    },
+    {
+      "confidence": "medium",
+      "dimension_id": "specificity_quantification",
+      "evidence": [
+        {
+          "evidence_type": "specificity signal",
+          "excerpt": "1. Founder-market fit",
+          "slide_ref": "S1"
+        },
+        {
+          "evidence_type": "specificity signal",
+          "excerpt": "2. Problem urgency",
+          "slide_ref": "S2"
+        },
+        {
+          "evidence_type": "specificity signal",
+          "excerpt": "3. Insight",
+          "slide_ref": "S3"
+        }
+      ],
+      "label": "Specificity / Quantification",
+      "prompt_questions": [
+        "Which claims use adjectives where numbers or examples are available?",
+        "Does the product description name a user action the reader can picture?",
+        "Are the most important traction or demand claims quantified?"
+      ],
+      "reasoning": "Found 17 numeric anchors, 6 concrete noun hits, 0 high-claim adjectives, 0 broad-customer flags.",
+      "register_applied": true,
+      "score": 5.0,
+      "top_fix": "Replace adjectives and broad customer labels with numbers, concrete buyer/workflow nouns, or explicitly marked unknowns.",
+      "weight_default": 16.0,
+      "weight_effective": 16.0,
+      "weighted_points": 16.0
+    },
+    {
+      "confidence": "medium",
+      "dimension_id": "voice_register_fit",
+      "evidence": [
+        {
+          "evidence_type": "voice/register sample",
+          "excerpt": "1. Founder-market fit",
+          "slide_ref": "S1"
+        },
+        {
+          "evidence_type": "voice/register sample",
+          "excerpt": "2. Problem urgency",
+          "slide_ref": "S2"
+        },
+        {
+          "evidence_type": "voice/register sample",
+          "excerpt": "3. Insight",
+          "slide_ref": "S3"
+        }
+      ],
+      "label": "Voice + Register Fit",
+      "prompt_questions": [
+        "Which voice mode best describes the first five slides?",
+        "Does confidence match the amount of proof shown?",
+        "Are hedges honest uncertainty markers or signs of weak conviction?"
+      ],
+      "reasoning": "Voice detector returned sharp-declarative (high); hedges 0, swagger 0, long sentences 0, mode families 1.",
+      "register_applied": true,
+      "score": 5.0,
+      "top_fix": "Align claim strength with proof: reduce unsupported swagger and use hedges only for true assumptions.",
+      "weight_default": 14.0,
+      "weight_effective": 14.0,
+      "weighted_points": 14.0
+    },
+    {
+      "confidence": "medium",
+      "dimension_id": "claim_hygiene",
+      "evidence": [
+        {
+          "evidence_type": "claim hygiene signal",
+          "excerpt": "1. Founder-market fit",
+          "slide_ref": "S1"
+        },
+        {
+          "evidence_type": "claim hygiene signal",
+          "excerpt": "2. Problem urgency",
+          "slide_ref": "S2"
+        },
+        {
+          "evidence_type": "claim hygiene signal",
+          "excerpt": "3. Insight",
+          "slide_ref": "S3"
+        }
+      ],
+      "label": "Claim Hygiene",
+      "prompt_questions": [
+        "For each major claim, is it fact, belief, plan, or hypothesis?",
+        "Does the slide show proof near the claim?",
+        "Are unsupported claims made more forceful by copy polish?"
+      ],
+      "reasoning": "Unsupported superlative slides 0, unbacked belief markers 0, source/proof marker hits 5, risk/competition mentioned=True.",
+      "register_applied": true,
+      "score": 4.5,
+      "top_fix": "Label each major claim as fact, belief, plan, or hypothesis and put proof/source/assumption markers on the same slide.",
+      "weight_default": 16.0,
+      "weight_effective": 16.0,
+      "weighted_points": 14.4
+    },
+    {
+      "confidence": "medium",
+      "dimension_id": "hierarchy_scannability",
+      "evidence": [
+        {
+          "evidence_type": "hierarchy/scannability signal",
+          "excerpt": "1. Founder-market fit",
+          "slide_ref": "S1"
+        },
+        {
+          "evidence_type": "hierarchy/scannability signal",
+          "excerpt": "2. Problem urgency",
+          "slide_ref": "S2"
+        },
+        {
+          "evidence_type": "hierarchy/scannability signal",
+          "excerpt": "3. Insight",
+          "slide_ref": "S3"
+        }
+      ],
+      "label": "Hierarchy + Scannability",
+      "prompt_questions": [
+        "If the reader only reads headlines, can they understand the argument?",
+        "Does each slide have one obvious top claim?",
+        "Are proof points placed before attention is lost?"
+      ],
+      "reasoning": "Label headlines 0, body-dominant slides 0, overloaded bullet slides 0, headline-story parts 3/4.",
+      "register_applied": true,
+      "score": 4.5,
+      "top_fix": "Turn section labels into claim headlines and make proof visually/textually subordinate to one top claim per slide.",
+      "weight_default": 14.0,
+      "weight_effective": 14.0,
+      "weighted_points": 12.6
+    },
+    {
+      "confidence": "medium",
+      "dimension_id": "anti_buzzword_discipline",
+      "evidence": [
+        {
+          "evidence_type": "buzzword/abstraction signal",
+          "excerpt": "1. Founder-market fit",
+          "slide_ref": "S1"
+        },
+        {
+          "evidence_type": "buzzword/abstraction signal",
+          "excerpt": "2. Problem urgency",
+          "slide_ref": "S2"
+        },
+        {
+          "evidence_type": "buzzword/abstraction signal",
+          "excerpt": "3. Insight",
+          "slide_ref": "S3"
+        }
+      ],
+      "label": "Anti-Buzzword Discipline",
+      "prompt_questions": [
+        "Which sentence most clearly says what the product does?",
+        "Which phrases could be used by any startup in the category?",
+        "Would a smart outsider understand the product without insider jargon?"
+      ],
+      "reasoning": "Buzzword hits 0, abstract noun hits 2, concrete noun hits 6, acronym-heavy slides 0, adjective-stack slides 0.",
+      "register_applied": true,
+      "score": 5.0,
+      "top_fix": "Replace category fog with the plain user-visible behavior: who does what, in which workflow, with what outcome.",
+      "weight_default": 12.0,
+      "weight_effective": 12.0,
+      "weighted_points": 12.0
+    },
+    {
+      "confidence": "medium",
+      "dimension_id": "narrative_cohesion",
+      "evidence": [
+        {
+          "evidence_type": "narrative cohesion signal",
+          "excerpt": "1. Founder-market fit",
+          "slide_ref": "S1"
+        },
+        {
+          "evidence_type": "narrative cohesion signal",
+          "excerpt": "2. Problem urgency",
+          "slide_ref": "S2"
+        },
+        {
+          "evidence_type": "narrative cohesion signal",
+          "excerpt": "3. Insight",
+          "slide_ref": "S3"
+        }
+      ],
+      "label": "Narrative Cohesion",
+      "prompt_questions": [
+        "What is the deck\u2019s one-sentence through-line?",
+        "Do later slides use the same customer, wedge, and product model introduced early?",
+        "Does each slide advance the previous slide\u2019s logic?"
+      ],
+      "reasoning": "Top customer/entity share 33%, feature-list interruptions 0, causal connectors 0, ask/milestone present=True, voice churn=False.",
+      "register_applied": true,
+      "score": 3.5,
+      "top_fix": "Make one through-line explicit: changed condition \u2192 customer pain \u2192 product wedge \u2192 proof \u2192 next milestone/ask.",
+      "weight_default": 12.0,
+      "weight_effective": 12.0,
+      "weighted_points": 8.4
+    }
+  ],
+  "evaluation_date": "2026-05-24",
+  "frame_scorecards": [
+    {
+      "dimension_scores": [
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "founder_market_fit_team_capacity",
+          "dimension_name": "Founder-market fit + team capacity",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+              "matched_terms": "founder, team",
+              "slide_ref": "slide_01"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+              "matched_terms": "founder",
+              "slide_ref": "slide_05"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+              "matched_terms": "founder",
+              "slide_ref": "slide_09"
+            }
+          ],
+          "frame_id": "F1",
+          "frame_modifier": 1.1,
+          "raw_score": 4.0,
+          "reasoning": "Founder-market fit + team capacity scores 4.0/5 in F1. Evidence appears on slide_01, slide_05, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 13.0,
+          "weight_effective": 14.3,
+          "weighted_points": 57.2
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "non_obvious_insight_thesis_clarity",
+          "dimension_name": "Non-obvious insight + thesis clarity",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+              "matched_terms": "insight",
+              "slide_ref": "slide_03"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+              "matched_terms": "why",
+              "slide_ref": "slide_07"
+            }
+          ],
+          "frame_id": "F1",
+          "frame_modifier": 0.9,
+          "raw_score": 3.5,
+          "reasoning": "Non-obvious insight + thesis clarity scores 3.5/5 in F1. Evidence appears on slide_03, slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 10.0,
+          "weight_effective": 9.0,
+          "weighted_points": 31.5
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "problem_urgency_icp_wedge",
+          "dimension_name": "Problem urgency + ICP/wedge",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "2. Problem urgency Independent experts struggle to sell small consults; buyers use fragmented spreadsheets and warm intros.",
+              "matched_terms": "problem",
+              "slide_ref": "slide_02"
+            }
+          ],
+          "frame_id": "F1",
+          "frame_modifier": 0.8,
+          "raw_score": 2.5,
+          "reasoning": "Problem urgency + ICP/wedge scores 2.5/5 in F1. Evidence appears on slide_02. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 9.0,
+          "weight_effective": 7.2,
+          "weighted_points": 18.0
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "market_logic_venture_scale_path",
+          "dimension_name": "Market logic + venture-scale path",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+              "matched_terms": "market",
+              "slide_ref": "slide_01"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+              "matched_terms": "market",
+              "slide_ref": "slide_03"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+              "matched_terms": "sam",
+              "slide_ref": "slide_04"
+            }
+          ],
+          "frame_id": "F1",
+          "frame_modifier": 0.7,
+          "raw_score": 4.0,
+          "reasoning": "Market logic + venture-scale path scores 4.0/5 in F1. Evidence appears on slide_01, slide_03, slide_04. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 8.0,
+          "weight_effective": 5.6,
+          "weighted_points": 22.4
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "why_now_timing_pressure",
+          "dimension_name": "Why now + timing pressure",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+              "matched_terms": "now",
+              "slide_ref": "slide_07"
+            }
+          ],
+          "frame_id": "F1",
+          "frame_modifier": 0.8,
+          "raw_score": 2.5,
+          "reasoning": "Why now + timing pressure scores 2.5/5 in F1. Evidence appears on slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 8.0,
+          "weight_effective": 6.4,
+          "weighted_points": 16.0
+        },
+        {
+          "confidence": "low",
+          "config_modifier": 1.0,
+          "dimension_id": "evidence_demand_learning_velocity",
+          "dimension_name": "Evidence of demand + learning velocity",
+          "evidence": [],
+          "frame_id": "F1",
+          "frame_modifier": 0.9,
+          "raw_score": 1.0,
+          "reasoning": "Evidence of demand + learning velocity scores 1.0/5 in F1. The deck does not provide obvious extracted evidence for this dimension. Stage handling: missing_pre_seed_proof:no_non_revenue_validation.",
+          "stage_findings": [
+            {
+              "code": "no_non_revenue_validation",
+              "type": "missing_pre_seed_proof"
+            }
+          ],
+          "top_fix": "Add non-revenue validation: customer discovery, design partners, pilot pipeline, testimonials, or prototype usage.",
+          "weight_default": 10.0,
+          "weight_effective": 9.0,
+          "weighted_points": 9.0
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "solution_product_clarity_proof",
+          "dimension_name": "Solution/product clarity + proof",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+              "matched_terms": "solution, book, profiles",
+              "slide_ref": "slide_04"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+              "matched_terms": "book",
+              "slide_ref": "slide_10"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+              "matched_terms": "book",
+              "slide_ref": "slide_11"
+            }
+          ],
+          "frame_id": "F1",
+          "frame_modifier": 0.8,
+          "raw_score": 4.0,
+          "reasoning": "Solution/product clarity + proof scores 4.0/5 in F1. Evidence appears on slide_04, slide_10, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 7.0,
+          "weight_effective": 5.6,
+          "weighted_points": 22.4
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "defensibility_compounding_advantage",
+          "dimension_name": "Defensibility + compounding advantage",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+              "matched_terms": "first",
+              "slide_ref": "slide_01"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+              "matched_terms": "first",
+              "slide_ref": "slide_09"
+            }
+          ],
+          "frame_id": "F1",
+          "frame_modifier": 0.8,
+          "raw_score": 3.5,
+          "reasoning": "Defensibility + compounding advantage scores 3.5/5 in F1. Evidence appears on slide_01, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 7.0,
+          "weight_effective": 5.6,
+          "weighted_points": 19.6
+        },
+        {
+          "confidence": "low",
+          "config_modifier": 1.0,
+          "dimension_id": "competitive_landscape_differentiation",
+          "dimension_name": "Competitive landscape + differentiation",
+          "evidence": [],
+          "frame_id": "F1",
+          "frame_modifier": 0.8,
+          "raw_score": 1.0,
+          "reasoning": "Competitive landscape + differentiation scores 1.0/5 in F1. The deck does not provide obvious extracted evidence for this dimension. Stage handling: no stage flags.",
+          "stage_findings": [],
+          "top_fix": "Add explicit slide evidence for competitive landscape differentiation.",
+          "weight_default": 6.0,
+          "weight_effective": 4.8,
+          "weighted_points": 4.8
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "gtm_plausibility_first_distribution",
+          "dimension_name": "GTM plausibility + first distribution motion",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+              "matched_terms": "adoption",
+              "slide_ref": "slide_07"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+              "matched_terms": "distribution",
+              "slide_ref": "slide_09"
+            }
+          ],
+          "frame_id": "F1",
+          "frame_modifier": 0.8,
+          "raw_score": 3.5,
+          "reasoning": "GTM plausibility + first distribution motion scores 3.5/5 in F1. Evidence appears on slide_07, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 7.0,
+          "weight_effective": 5.6,
+          "weighted_points": 19.6
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "business_model_economic_logic",
+          "dimension_name": "Business model + economic logic",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+              "matched_terms": "business model, take",
+              "slide_ref": "slide_10"
+            }
+          ],
+          "frame_id": "F1",
+          "frame_modifier": 0.6,
+          "raw_score": 2.5,
+          "reasoning": "Business model + economic logic scores 2.5/5 in F1. Evidence appears on slide_10. Stage handling: granted_at_pre_seed:unit_economics_absent.",
+          "stage_findings": [
+            {
+              "code": "unit_economics_absent",
+              "type": "granted_at_pre_seed"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 5.0,
+          "weight_effective": 3.0,
+          "weighted_points": 7.5
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "ask_milestones_next_round",
+          "dimension_name": "Ask + milestones to next round",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+              "matched_terms": "seed",
+              "slide_ref": "slide_05"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+              "matched_terms": "ask, milestone",
+              "slide_ref": "slide_11"
+            }
+          ],
+          "frame_id": "F1",
+          "frame_modifier": 0.8,
+          "raw_score": 3.5,
+          "reasoning": "Ask + milestones to next round scores 3.5/5 in F1. Evidence appears on slide_05, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 6.0,
+          "weight_effective": 4.8,
+          "weighted_points": 16.8
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "risk_honesty_derisking_plan",
+          "dimension_name": "Risk honesty + de-risking plan",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+              "matched_terms": "prove, milestone",
+              "slide_ref": "slide_11"
+            }
+          ],
+          "frame_id": "F1",
+          "frame_modifier": 0.7,
+          "raw_score": 2.5,
+          "reasoning": "Risk honesty + de-risking plan scores 2.5/5 in F1. Evidence appears on slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 4.0,
+          "weight_effective": 2.8,
+          "weighted_points": 7.0
+        }
+      ],
+      "frame_definition": "Warm Believer: relationship/thesis-aligned reader wanting a reason to say yes.",
+      "frame_id": "F1",
+      "frame_name": "Warm Believer",
+      "substantive_score": 3.01
+    },
+    {
+      "dimension_scores": [
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "founder_market_fit_team_capacity",
+          "dimension_name": "Founder-market fit + team capacity",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+              "matched_terms": "founder, team",
+              "slide_ref": "slide_01"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+              "matched_terms": "founder",
+              "slide_ref": "slide_05"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+              "matched_terms": "founder",
+              "slide_ref": "slide_09"
+            }
+          ],
+          "frame_id": "F2",
+          "frame_modifier": 1.2,
+          "raw_score": 4.0,
+          "reasoning": "Founder-market fit + team capacity scores 4.0/5 in F2. Evidence appears on slide_01, slide_05, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 13.0,
+          "weight_effective": 15.6,
+          "weighted_points": 62.4
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "non_obvious_insight_thesis_clarity",
+          "dimension_name": "Non-obvious insight + thesis clarity",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+              "matched_terms": "insight",
+              "slide_ref": "slide_03"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+              "matched_terms": "why",
+              "slide_ref": "slide_07"
+            }
+          ],
+          "frame_id": "F2",
+          "frame_modifier": 1.2,
+          "raw_score": 3.0,
+          "reasoning": "Non-obvious insight + thesis clarity scores 3.0/5 in F2. Evidence appears on slide_03, slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 10.0,
+          "weight_effective": 12.0,
+          "weighted_points": 36.0
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "problem_urgency_icp_wedge",
+          "dimension_name": "Problem urgency + ICP/wedge",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "2. Problem urgency Independent experts struggle to sell small consults; buyers use fragmented spreadsheets and warm intros.",
+              "matched_terms": "problem",
+              "slide_ref": "slide_02"
+            }
+          ],
+          "frame_id": "F2",
+          "frame_modifier": 1.1,
+          "raw_score": 2.5,
+          "reasoning": "Problem urgency + ICP/wedge scores 2.5/5 in F2. Evidence appears on slide_02. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 9.0,
+          "weight_effective": 9.9,
+          "weighted_points": 24.75
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "market_logic_venture_scale_path",
+          "dimension_name": "Market logic + venture-scale path",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+              "matched_terms": "market",
+              "slide_ref": "slide_01"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+              "matched_terms": "market",
+              "slide_ref": "slide_03"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+              "matched_terms": "sam",
+              "slide_ref": "slide_04"
+            }
+          ],
+          "frame_id": "F2",
+          "frame_modifier": 1.1,
+          "raw_score": 4.0,
+          "reasoning": "Market logic + venture-scale path scores 4.0/5 in F2. Evidence appears on slide_01, slide_03, slide_04. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 8.0,
+          "weight_effective": 8.8,
+          "weighted_points": 35.2
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "why_now_timing_pressure",
+          "dimension_name": "Why now + timing pressure",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+              "matched_terms": "now",
+              "slide_ref": "slide_07"
+            }
+          ],
+          "frame_id": "F2",
+          "frame_modifier": 1.1,
+          "raw_score": 2.5,
+          "reasoning": "Why now + timing pressure scores 2.5/5 in F2. Evidence appears on slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 8.0,
+          "weight_effective": 8.8,
+          "weighted_points": 22.0
+        },
+        {
+          "confidence": "low",
+          "config_modifier": 1.0,
+          "dimension_id": "evidence_demand_learning_velocity",
+          "dimension_name": "Evidence of demand + learning velocity",
+          "evidence": [],
+          "frame_id": "F2",
+          "frame_modifier": 1.2,
+          "raw_score": 1.0,
+          "reasoning": "Evidence of demand + learning velocity scores 1.0/5 in F2. The deck does not provide obvious extracted evidence for this dimension. Stage handling: missing_pre_seed_proof:no_non_revenue_validation.",
+          "stage_findings": [
+            {
+              "code": "no_non_revenue_validation",
+              "type": "missing_pre_seed_proof"
+            }
+          ],
+          "top_fix": "Add non-revenue validation: customer discovery, design partners, pilot pipeline, testimonials, or prototype usage.",
+          "weight_default": 10.0,
+          "weight_effective": 12.0,
+          "weighted_points": 12.0
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "solution_product_clarity_proof",
+          "dimension_name": "Solution/product clarity + proof",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+              "matched_terms": "solution, book, profiles",
+              "slide_ref": "slide_04"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+              "matched_terms": "book",
+              "slide_ref": "slide_10"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+              "matched_terms": "book",
+              "slide_ref": "slide_11"
+            }
+          ],
+          "frame_id": "F2",
+          "frame_modifier": 1.0,
+          "raw_score": 4.0,
+          "reasoning": "Solution/product clarity + proof scores 4.0/5 in F2. Evidence appears on slide_04, slide_10, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 7.0,
+          "weight_effective": 7.0,
+          "weighted_points": 28.0
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "defensibility_compounding_advantage",
+          "dimension_name": "Defensibility + compounding advantage",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+              "matched_terms": "first",
+              "slide_ref": "slide_01"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+              "matched_terms": "first",
+              "slide_ref": "slide_09"
+            }
+          ],
+          "frame_id": "F2",
+          "frame_modifier": 1.1,
+          "raw_score": 3.0,
+          "reasoning": "Defensibility + compounding advantage scores 3.0/5 in F2. Evidence appears on slide_01, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 7.0,
+          "weight_effective": 7.7,
+          "weighted_points": 23.1
+        },
+        {
+          "confidence": "low",
+          "config_modifier": 1.0,
+          "dimension_id": "competitive_landscape_differentiation",
+          "dimension_name": "Competitive landscape + differentiation",
+          "evidence": [],
+          "frame_id": "F2",
+          "frame_modifier": 1.1,
+          "raw_score": 1.0,
+          "reasoning": "Competitive landscape + differentiation scores 1.0/5 in F2. The deck does not provide obvious extracted evidence for this dimension. Stage handling: no stage flags.",
+          "stage_findings": [],
+          "top_fix": "Add explicit slide evidence for competitive landscape differentiation.",
+          "weight_default": 6.0,
+          "weight_effective": 6.6,
+          "weighted_points": 6.6
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "gtm_plausibility_first_distribution",
+          "dimension_name": "GTM plausibility + first distribution motion",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+              "matched_terms": "adoption",
+              "slide_ref": "slide_07"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+              "matched_terms": "distribution",
+              "slide_ref": "slide_09"
+            }
+          ],
+          "frame_id": "F2",
+          "frame_modifier": 1.1,
+          "raw_score": 3.0,
+          "reasoning": "GTM plausibility + first distribution motion scores 3.0/5 in F2. Evidence appears on slide_07, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 7.0,
+          "weight_effective": 7.7,
+          "weighted_points": 23.1
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "business_model_economic_logic",
+          "dimension_name": "Business model + economic logic",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+              "matched_terms": "business model, take",
+              "slide_ref": "slide_10"
+            }
+          ],
+          "frame_id": "F2",
+          "frame_modifier": 0.8,
+          "raw_score": 2.5,
+          "reasoning": "Business model + economic logic scores 2.5/5 in F2. Evidence appears on slide_10. Stage handling: granted_at_pre_seed:unit_economics_absent.",
+          "stage_findings": [
+            {
+              "code": "unit_economics_absent",
+              "type": "granted_at_pre_seed"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 5.0,
+          "weight_effective": 4.0,
+          "weighted_points": 10.0
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "ask_milestones_next_round",
+          "dimension_name": "Ask + milestones to next round",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+              "matched_terms": "seed",
+              "slide_ref": "slide_05"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+              "matched_terms": "ask, milestone",
+              "slide_ref": "slide_11"
+            }
+          ],
+          "frame_id": "F2",
+          "frame_modifier": 1.05,
+          "raw_score": 3.0,
+          "reasoning": "Ask + milestones to next round scores 3.0/5 in F2. Evidence appears on slide_05, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 6.0,
+          "weight_effective": 6.3,
+          "weighted_points": 18.9
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "risk_honesty_derisking_plan",
+          "dimension_name": "Risk honesty + de-risking plan",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+              "matched_terms": "prove, milestone",
+              "slide_ref": "slide_11"
+            }
+          ],
+          "frame_id": "F2",
+          "frame_modifier": 1.0,
+          "raw_score": 2.5,
+          "reasoning": "Risk honesty + de-risking plan scores 2.5/5 in F2. Evidence appears on slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 4.0,
+          "weight_effective": 4.0,
+          "weighted_points": 10.0
+        }
+      ],
+      "frame_definition": "Curious Skeptic: open institutional read that wants proof, sequence, and founder logic.",
+      "frame_id": "F2",
+      "frame_name": "Curious Skeptic",
+      "substantive_score": 2.83
+    },
+    {
+      "dimension_scores": [
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "founder_market_fit_team_capacity",
+          "dimension_name": "Founder-market fit + team capacity",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+              "matched_terms": "founder, team",
+              "slide_ref": "slide_01"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+              "matched_terms": "founder",
+              "slide_ref": "slide_05"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+              "matched_terms": "founder",
+              "slide_ref": "slide_09"
+            }
+          ],
+          "frame_id": "F3",
+          "frame_modifier": 1.2,
+          "raw_score": 4.0,
+          "reasoning": "Founder-market fit + team capacity scores 4.0/5 in F3. Evidence appears on slide_01, slide_05, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 13.0,
+          "weight_effective": 15.6,
+          "weighted_points": 62.4
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "non_obvious_insight_thesis_clarity",
+          "dimension_name": "Non-obvious insight + thesis clarity",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+              "matched_terms": "insight",
+              "slide_ref": "slide_03"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+              "matched_terms": "why",
+              "slide_ref": "slide_07"
+            }
+          ],
+          "frame_id": "F3",
+          "frame_modifier": 1.1,
+          "raw_score": 3.0,
+          "reasoning": "Non-obvious insight + thesis clarity scores 3.0/5 in F3. Evidence appears on slide_03, slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 10.0,
+          "weight_effective": 11.0,
+          "weighted_points": 33.0
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "problem_urgency_icp_wedge",
+          "dimension_name": "Problem urgency + ICP/wedge",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "2. Problem urgency Independent experts struggle to sell small consults; buyers use fragmented spreadsheets and warm intros.",
+              "matched_terms": "problem",
+              "slide_ref": "slide_02"
+            }
+          ],
+          "frame_id": "F3",
+          "frame_modifier": 1.2,
+          "raw_score": 2.5,
+          "reasoning": "Problem urgency + ICP/wedge scores 2.5/5 in F3. Evidence appears on slide_02. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 9.0,
+          "weight_effective": 10.8,
+          "weighted_points": 27.0
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "market_logic_venture_scale_path",
+          "dimension_name": "Market logic + venture-scale path",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+              "matched_terms": "market",
+              "slide_ref": "slide_01"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+              "matched_terms": "market",
+              "slide_ref": "slide_03"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+              "matched_terms": "sam",
+              "slide_ref": "slide_04"
+            }
+          ],
+          "frame_id": "F3",
+          "frame_modifier": 1.2,
+          "raw_score": 4.0,
+          "reasoning": "Market logic + venture-scale path scores 4.0/5 in F3. Evidence appears on slide_01, slide_03, slide_04. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 8.0,
+          "weight_effective": 9.6,
+          "weighted_points": 38.4
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "why_now_timing_pressure",
+          "dimension_name": "Why now + timing pressure",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+              "matched_terms": "now",
+              "slide_ref": "slide_07"
+            }
+          ],
+          "frame_id": "F3",
+          "frame_modifier": 1.1,
+          "raw_score": 2.5,
+          "reasoning": "Why now + timing pressure scores 2.5/5 in F3. Evidence appears on slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 8.0,
+          "weight_effective": 8.8,
+          "weighted_points": 22.0
+        },
+        {
+          "confidence": "low",
+          "config_modifier": 1.0,
+          "dimension_id": "evidence_demand_learning_velocity",
+          "dimension_name": "Evidence of demand + learning velocity",
+          "evidence": [],
+          "frame_id": "F3",
+          "frame_modifier": 1.2,
+          "raw_score": 1.0,
+          "reasoning": "Evidence of demand + learning velocity scores 1.0/5 in F3. The deck does not provide obvious extracted evidence for this dimension. Stage handling: missing_pre_seed_proof:no_non_revenue_validation.",
+          "stage_findings": [
+            {
+              "code": "no_non_revenue_validation",
+              "type": "missing_pre_seed_proof"
+            }
+          ],
+          "top_fix": "Add non-revenue validation: customer discovery, design partners, pilot pipeline, testimonials, or prototype usage.",
+          "weight_default": 10.0,
+          "weight_effective": 12.0,
+          "weighted_points": 12.0
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "solution_product_clarity_proof",
+          "dimension_name": "Solution/product clarity + proof",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+              "matched_terms": "solution, book, profiles",
+              "slide_ref": "slide_04"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+              "matched_terms": "book",
+              "slide_ref": "slide_10"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+              "matched_terms": "book",
+              "slide_ref": "slide_11"
+            }
+          ],
+          "frame_id": "F3",
+          "frame_modifier": 1.2,
+          "raw_score": 4.0,
+          "reasoning": "Solution/product clarity + proof scores 4.0/5 in F3. Evidence appears on slide_04, slide_10, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 7.0,
+          "weight_effective": 8.4,
+          "weighted_points": 33.6
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "defensibility_compounding_advantage",
+          "dimension_name": "Defensibility + compounding advantage",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+              "matched_terms": "first",
+              "slide_ref": "slide_01"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+              "matched_terms": "first",
+              "slide_ref": "slide_09"
+            }
+          ],
+          "frame_id": "F3",
+          "frame_modifier": 1.0,
+          "raw_score": 3.0,
+          "reasoning": "Defensibility + compounding advantage scores 3.0/5 in F3. Evidence appears on slide_01, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 7.0,
+          "weight_effective": 7.0,
+          "weighted_points": 21.0
+        },
+        {
+          "confidence": "low",
+          "config_modifier": 1.0,
+          "dimension_id": "competitive_landscape_differentiation",
+          "dimension_name": "Competitive landscape + differentiation",
+          "evidence": [],
+          "frame_id": "F3",
+          "frame_modifier": 1.0,
+          "raw_score": 1.0,
+          "reasoning": "Competitive landscape + differentiation scores 1.0/5 in F3. The deck does not provide obvious extracted evidence for this dimension. Stage handling: no stage flags.",
+          "stage_findings": [],
+          "top_fix": "Add explicit slide evidence for competitive landscape differentiation.",
+          "weight_default": 6.0,
+          "weight_effective": 6.0,
+          "weighted_points": 6.0
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "gtm_plausibility_first_distribution",
+          "dimension_name": "GTM plausibility + first distribution motion",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+              "matched_terms": "adoption",
+              "slide_ref": "slide_07"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+              "matched_terms": "distribution",
+              "slide_ref": "slide_09"
+            }
+          ],
+          "frame_id": "F3",
+          "frame_modifier": 1.2,
+          "raw_score": 3.0,
+          "reasoning": "GTM plausibility + first distribution motion scores 3.0/5 in F3. Evidence appears on slide_07, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 7.0,
+          "weight_effective": 8.4,
+          "weighted_points": 25.2
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "business_model_economic_logic",
+          "dimension_name": "Business model + economic logic",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+              "matched_terms": "business model, take",
+              "slide_ref": "slide_10"
+            }
+          ],
+          "frame_id": "F3",
+          "frame_modifier": 0.8,
+          "raw_score": 2.5,
+          "reasoning": "Business model + economic logic scores 2.5/5 in F3. Evidence appears on slide_10. Stage handling: granted_at_pre_seed:unit_economics_absent.",
+          "stage_findings": [
+            {
+              "code": "unit_economics_absent",
+              "type": "granted_at_pre_seed"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 5.0,
+          "weight_effective": 4.0,
+          "weighted_points": 10.0
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "ask_milestones_next_round",
+          "dimension_name": "Ask + milestones to next round",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+              "matched_terms": "seed",
+              "slide_ref": "slide_05"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+              "matched_terms": "ask, milestone",
+              "slide_ref": "slide_11"
+            }
+          ],
+          "frame_id": "F3",
+          "frame_modifier": 1.05,
+          "raw_score": 3.0,
+          "reasoning": "Ask + milestones to next round scores 3.0/5 in F3. Evidence appears on slide_05, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 6.0,
+          "weight_effective": 6.3,
+          "weighted_points": 18.9
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "risk_honesty_derisking_plan",
+          "dimension_name": "Risk honesty + de-risking plan",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+              "matched_terms": "prove, milestone",
+              "slide_ref": "slide_11"
+            }
+          ],
+          "frame_id": "F3",
+          "frame_modifier": 0.9,
+          "raw_score": 2.5,
+          "reasoning": "Risk honesty + de-risking plan scores 2.5/5 in F3. Evidence appears on slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 4.0,
+          "weight_effective": 3.6,
+          "weighted_points": 9.0
+        }
+      ],
+      "frame_definition": "Cold Partner Read: no-context scan; the deck must earn attention quickly.",
+      "frame_id": "F3",
+      "frame_name": "Cold Partner Read",
+      "substantive_score": 2.86
+    },
+    {
+      "dimension_scores": [
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "founder_market_fit_team_capacity",
+          "dimension_name": "Founder-market fit + team capacity",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+              "matched_terms": "founder, team",
+              "slide_ref": "slide_01"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+              "matched_terms": "founder",
+              "slide_ref": "slide_05"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+              "matched_terms": "founder",
+              "slide_ref": "slide_09"
+            }
+          ],
+          "frame_id": "F4",
+          "frame_modifier": 1.2,
+          "raw_score": 3.5,
+          "reasoning": "Founder-market fit + team capacity scores 3.5/5 in F4. Evidence appears on slide_01, slide_05, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 13.0,
+          "weight_effective": 15.6,
+          "weighted_points": 54.6
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "non_obvious_insight_thesis_clarity",
+          "dimension_name": "Non-obvious insight + thesis clarity",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+              "matched_terms": "insight",
+              "slide_ref": "slide_03"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+              "matched_terms": "why",
+              "slide_ref": "slide_07"
+            }
+          ],
+          "frame_id": "F4",
+          "frame_modifier": 1.5,
+          "raw_score": 3.0,
+          "reasoning": "Non-obvious insight + thesis clarity scores 3.0/5 in F4. Evidence appears on slide_03, slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 10.0,
+          "weight_effective": 15.0,
+          "weighted_points": 45.0
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "problem_urgency_icp_wedge",
+          "dimension_name": "Problem urgency + ICP/wedge",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "2. Problem urgency Independent experts struggle to sell small consults; buyers use fragmented spreadsheets and warm intros.",
+              "matched_terms": "problem",
+              "slide_ref": "slide_02"
+            }
+          ],
+          "frame_id": "F4",
+          "frame_modifier": 1.3,
+          "raw_score": 2.5,
+          "reasoning": "Problem urgency + ICP/wedge scores 2.5/5 in F4. Evidence appears on slide_02. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 9.0,
+          "weight_effective": 11.7,
+          "weighted_points": 29.25
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "market_logic_venture_scale_path",
+          "dimension_name": "Market logic + venture-scale path",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+              "matched_terms": "market",
+              "slide_ref": "slide_01"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+              "matched_terms": "market",
+              "slide_ref": "slide_03"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+              "matched_terms": "sam",
+              "slide_ref": "slide_04"
+            }
+          ],
+          "frame_id": "F4",
+          "frame_modifier": 1.3,
+          "raw_score": 3.5,
+          "reasoning": "Market logic + venture-scale path scores 3.5/5 in F4. Evidence appears on slide_01, slide_03, slide_04. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 8.0,
+          "weight_effective": 10.4,
+          "weighted_points": 36.4
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "why_now_timing_pressure",
+          "dimension_name": "Why now + timing pressure",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+              "matched_terms": "now",
+              "slide_ref": "slide_07"
+            }
+          ],
+          "frame_id": "F4",
+          "frame_modifier": 1.4,
+          "raw_score": 2.5,
+          "reasoning": "Why now + timing pressure scores 2.5/5 in F4. Evidence appears on slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 8.0,
+          "weight_effective": 11.2,
+          "weighted_points": 28.0
+        },
+        {
+          "confidence": "low",
+          "config_modifier": 1.0,
+          "dimension_id": "evidence_demand_learning_velocity",
+          "dimension_name": "Evidence of demand + learning velocity",
+          "evidence": [],
+          "frame_id": "F4",
+          "frame_modifier": 1.4,
+          "raw_score": 1.0,
+          "reasoning": "Evidence of demand + learning velocity scores 1.0/5 in F4. The deck does not provide obvious extracted evidence for this dimension. Stage handling: missing_pre_seed_proof:no_non_revenue_validation.",
+          "stage_findings": [
+            {
+              "code": "no_non_revenue_validation",
+              "type": "missing_pre_seed_proof"
+            }
+          ],
+          "top_fix": "Add non-revenue validation: customer discovery, design partners, pilot pipeline, testimonials, or prototype usage.",
+          "weight_default": 10.0,
+          "weight_effective": 14.0,
+          "weighted_points": 14.0
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "solution_product_clarity_proof",
+          "dimension_name": "Solution/product clarity + proof",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+              "matched_terms": "solution, book, profiles",
+              "slide_ref": "slide_04"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+              "matched_terms": "book",
+              "slide_ref": "slide_10"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+              "matched_terms": "book",
+              "slide_ref": "slide_11"
+            }
+          ],
+          "frame_id": "F4",
+          "frame_modifier": 1.3,
+          "raw_score": 3.5,
+          "reasoning": "Solution/product clarity + proof scores 3.5/5 in F4. Evidence appears on slide_04, slide_10, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 7.0,
+          "weight_effective": 9.1,
+          "weighted_points": 31.85
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "defensibility_compounding_advantage",
+          "dimension_name": "Defensibility + compounding advantage",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+              "matched_terms": "first",
+              "slide_ref": "slide_01"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+              "matched_terms": "first",
+              "slide_ref": "slide_09"
+            }
+          ],
+          "frame_id": "F4",
+          "frame_modifier": 1.5,
+          "raw_score": 3.0,
+          "reasoning": "Defensibility + compounding advantage scores 3.0/5 in F4. Evidence appears on slide_01, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 7.0,
+          "weight_effective": 10.5,
+          "weighted_points": 31.5
+        },
+        {
+          "confidence": "low",
+          "config_modifier": 1.0,
+          "dimension_id": "competitive_landscape_differentiation",
+          "dimension_name": "Competitive landscape + differentiation",
+          "evidence": [],
+          "frame_id": "F4",
+          "frame_modifier": 1.5,
+          "raw_score": 1.0,
+          "reasoning": "Competitive landscape + differentiation scores 1.0/5 in F4. The deck does not provide obvious extracted evidence for this dimension. Stage handling: no stage flags.",
+          "stage_findings": [],
+          "top_fix": "Add explicit slide evidence for competitive landscape differentiation.",
+          "weight_default": 6.0,
+          "weight_effective": 9.0,
+          "weighted_points": 9.0
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "gtm_plausibility_first_distribution",
+          "dimension_name": "GTM plausibility + first distribution motion",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+              "matched_terms": "adoption",
+              "slide_ref": "slide_07"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+              "matched_terms": "distribution",
+              "slide_ref": "slide_09"
+            }
+          ],
+          "frame_id": "F4",
+          "frame_modifier": 1.4,
+          "raw_score": 3.0,
+          "reasoning": "GTM plausibility + first distribution motion scores 3.0/5 in F4. Evidence appears on slide_07, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 7.0,
+          "weight_effective": 9.8,
+          "weighted_points": 29.4
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "business_model_economic_logic",
+          "dimension_name": "Business model + economic logic",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+              "matched_terms": "business model, take",
+              "slide_ref": "slide_10"
+            }
+          ],
+          "frame_id": "F4",
+          "frame_modifier": 1.2,
+          "raw_score": 2.5,
+          "reasoning": "Business model + economic logic scores 2.5/5 in F4. Evidence appears on slide_10. Stage handling: granted_at_pre_seed:unit_economics_absent.",
+          "stage_findings": [
+            {
+              "code": "unit_economics_absent",
+              "type": "granted_at_pre_seed"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 5.0,
+          "weight_effective": 6.0,
+          "weighted_points": 15.0
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "ask_milestones_next_round",
+          "dimension_name": "Ask + milestones to next round",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+              "matched_terms": "seed",
+              "slide_ref": "slide_05"
+            },
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+              "matched_terms": "ask, milestone",
+              "slide_ref": "slide_11"
+            }
+          ],
+          "frame_id": "F4",
+          "frame_modifier": 1.3,
+          "raw_score": 3.0,
+          "reasoning": "Ask + milestones to next round scores 3.0/5 in F4. Evidence appears on slide_05, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 6.0,
+          "weight_effective": 7.8,
+          "weighted_points": 23.4
+        },
+        {
+          "confidence": "medium",
+          "config_modifier": 1.0,
+          "dimension_id": "risk_honesty_derisking_plan",
+          "dimension_name": "Risk honesty + de-risking plan",
+          "evidence": [
+            {
+              "evidence_type": "keyword_match",
+              "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+              "matched_terms": "prove, milestone",
+              "slide_ref": "slide_11"
+            }
+          ],
+          "frame_id": "F4",
+          "frame_modifier": 1.5,
+          "raw_score": 2.5,
+          "reasoning": "Risk honesty + de-risking plan scores 2.5/5 in F4. Evidence appears on slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+          "stage_findings": [
+            {
+              "code": "scorable_pre_seed_evidence",
+              "type": "stage_appropriate_evidence"
+            }
+          ],
+          "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+          "weight_default": 4.0,
+          "weight_effective": 6.0,
+          "weighted_points": 15.0
+        }
+      ],
+      "frame_definition": "Hostile Diligence: adversarial pressure test for unsupported claims and contradictions.",
+      "frame_id": "F4",
+      "frame_name": "Hostile Diligence",
+      "substantive_score": 2.66
+    }
+  ],
+  "gap_flag": null,
+  "hard_gates": [
+    {
+      "code": "very_low_dimension_score",
+      "dimension_id": "evidence_demand_learning_velocity",
+      "frame_id": "F1"
+    },
+    {
+      "code": "very_low_dimension_score",
+      "dimension_id": "competitive_landscape_differentiation",
+      "frame_id": "F1"
+    },
+    {
+      "code": "very_low_dimension_score",
+      "dimension_id": "evidence_demand_learning_velocity",
+      "frame_id": "F2"
+    },
+    {
+      "code": "very_low_dimension_score",
+      "dimension_id": "competitive_landscape_differentiation",
+      "frame_id": "F2"
+    },
+    {
+      "code": "very_low_dimension_score",
+      "dimension_id": "evidence_demand_learning_velocity",
+      "frame_id": "F3"
+    },
+    {
+      "code": "very_low_dimension_score",
+      "dimension_id": "competitive_landscape_differentiation",
+      "frame_id": "F3"
+    },
+    {
+      "code": "very_low_dimension_score",
+      "dimension_id": "evidence_demand_learning_velocity",
+      "frame_id": "F4"
+    },
+    {
+      "code": "very_low_dimension_score",
+      "dimension_id": "competitive_landscape_differentiation",
+      "frame_id": "F4"
+    }
+  ],
+  "named_pov_reads": [],
+  "notes": [],
+  "prioritized_action_list": [
+    "Add non-revenue validation: customer discovery, design partners, pilot pipeline, testimonials, or prototype usage.",
+    "Add explicit slide evidence for competitive landscape differentiation.",
+    "Make the evidence more concrete, earlier, and easier to quote in a partner memo."
+  ],
+  "schema_version": "1.0",
+  "slides": [
+    {
+      "extraction_confidence": "high",
+      "notes": null,
+      "slide_num": 1,
+      "slide_ref": "slide_01",
+      "source_path": "pitch-deck-evaluator/tests/fixtures/sample_seed_deck.pdf",
+      "text": "1. Founder-market fit\nTeam has operated community marketplaces and personally recruited first 50\nsupply-side partners."
+    },
+    {
+      "extraction_confidence": "high",
+      "notes": null,
+      "slide_num": 2,
+      "slide_ref": "slide_02",
+      "source_path": "pitch-deck-evaluator/tests/fixtures/sample_seed_deck.pdf",
+      "text": "2. Problem urgency\nIndependent experts struggle to sell small consults; buyers use fragmented\nspreadsheets and warm intros."
+    },
+    {
+      "extraction_confidence": "high",
+      "notes": null,
+      "slide_num": 3,
+      "slide_ref": "slide_03",
+      "source_path": "pitch-deck-evaluator/tests/fixtures/sample_seed_deck.pdf",
+      "text": "3. Insight\nTrust forms when buyers can see a concrete proof trail, not when a marketplace claims\nbreadth."
+    },
+    {
+      "extraction_confidence": "high",
+      "notes": null,
+      "slide_num": 4,
+      "slide_ref": "slide_04",
+      "source_path": "pitch-deck-evaluator/tests/fixtures/sample_seed_deck.pdf",
+      "text": "4. Solution\nA focused expert-discovery workflow with verified profiles, sample work, and lightweight\nbooking."
+    },
+    {
+      "extraction_confidence": "high",
+      "notes": null,
+      "slide_num": 5,
+      "slide_ref": "slide_05",
+      "source_path": "pitch-deck-evaluator/tests/fixtures/sample_seed_deck.pdf",
+      "text": "5. Wedge\nStart with AI tooling consultants serving seed-stage founders and boutique agencies."
+    },
+    {
+      "extraction_confidence": "high",
+      "notes": null,
+      "slide_num": 6,
+      "slide_ref": "slide_06",
+      "source_path": "pitch-deck-evaluator/tests/fixtures/sample_seed_deck.pdf",
+      "text": "6. Market logic\nInitial wedge is narrow, but the repeatable workflow expands across expert verticals\nover time."
+    },
+    {
+      "extraction_confidence": "high",
+      "notes": null,
+      "slide_num": 7,
+      "slide_ref": "slide_07",
+      "source_path": "pitch-deck-evaluator/tests/fixtures/sample_seed_deck.pdf",
+      "text": "7. Why now\nAI adoption has made expert selection more urgent and more confusing for buyers."
+    },
+    {
+      "extraction_confidence": "high",
+      "notes": null,
+      "slide_num": 8,
+      "slide_ref": "slide_08",
+      "source_path": "pitch-deck-evaluator/tests/fixtures/sample_seed_deck.pdf",
+      "text": "8. Demand evidence\n35 discovery calls, 12 buyer interviews, 8 experts ready for beta, 3 paid pilots under\ndiscussion."
+    },
+    {
+      "extraction_confidence": "high",
+      "notes": null,
+      "slide_num": 9,
+      "slide_ref": "slide_09",
+      "source_path": "pitch-deck-evaluator/tests/fixtures/sample_seed_deck.pdf",
+      "text": "9. Distribution\nFounder-led outbound, partner newsletters, and expert referral loops drive first liquidity."
+    },
+    {
+      "extraction_confidence": "high",
+      "notes": null,
+      "slide_num": 10,
+      "slide_ref": "slide_10",
+      "source_path": "pitch-deck-evaluator/tests/fixtures/sample_seed_deck.pdf",
+      "text": "10. Business model\nTake rate on booked calls plus subscription tools for expert teams after repeated usage."
+    },
+    {
+      "extraction_confidence": "high",
+      "notes": null,
+      "slide_num": 11,
+      "slide_ref": "slide_11",
+      "source_path": "pitch-deck-evaluator/tests/fixtures/sample_seed_deck.pdf",
+      "text": "11. Ask\nRaising $750k to prove repeat booking, expert activation, and one vertical expansion\nmilestone."
+    }
+  ],
+  "stage": "pre_seed",
+  "strengths": [
+    "Punch / Density: 0 core slides exceed 40 words, 0 exceed 70; label-headline rate 0%; opening clarity signals 2/4.",
+    "Specificity / Quantification: Found 17 numeric anchors, 6 concrete noun hits, 0 high-claim adjectives, 0 broad-customer flags.",
+    "Voice + Register Fit: Voice detector returned sharp-declarative (high); hedges 0, swagger 0, long sentences 0, mode families 1."
+  ],
+  "style_score": 93.4,
+  "stylistic_composite": 4.67,
+  "stylistic_dimensions": [
+    {
+      "confidence": "medium",
+      "dimension_id": "punch_density",
+      "evidence": [
+        {
+          "evidence_type": "opening/headline signal",
+          "excerpt": "1. Founder-market fit",
+          "slide_ref": "S1"
+        },
+        {
+          "evidence_type": "opening/headline signal",
+          "excerpt": "2. Problem urgency",
+          "slide_ref": "S2"
+        }
+      ],
+      "label": "Punch / Density",
+      "prompt_questions": [
+        "Can a smart investor state what the company does after slide 1 or slide 2?",
+        "Do the first five slides contain the minimum attention-earning claims?",
+        "Does each slide carry one main point?"
+      ],
+      "reasoning": "0 core slides exceed 40 words, 0 exceed 70; label-headline rate 0%; opening clarity signals 2/4.",
+      "register_applied": true,
+      "score": 5.0,
+      "top_fix": "Rewrite the opening/core dense slides into claim headlines plus one proof point; move excess detail to appendix.",
+      "weight_default": 16.0,
+      "weight_effective": 16.0,
+      "weighted_points": 16.0
+    },
+    {
+      "confidence": "medium",
+      "dimension_id": "specificity_quantification",
+      "evidence": [
+        {
+          "evidence_type": "specificity signal",
+          "excerpt": "1. Founder-market fit",
+          "slide_ref": "S1"
+        },
+        {
+          "evidence_type": "specificity signal",
+          "excerpt": "2. Problem urgency",
+          "slide_ref": "S2"
+        },
+        {
+          "evidence_type": "specificity signal",
+          "excerpt": "3. Insight",
+          "slide_ref": "S3"
+        }
+      ],
+      "label": "Specificity / Quantification",
+      "prompt_questions": [
+        "Which claims use adjectives where numbers or examples are available?",
+        "Does the product description name a user action the reader can picture?",
+        "Are the most important traction or demand claims quantified?"
+      ],
+      "reasoning": "Found 17 numeric anchors, 6 concrete noun hits, 0 high-claim adjectives, 0 broad-customer flags.",
+      "register_applied": true,
+      "score": 5.0,
+      "top_fix": "Replace adjectives and broad customer labels with numbers, concrete buyer/workflow nouns, or explicitly marked unknowns.",
+      "weight_default": 16.0,
+      "weight_effective": 16.0,
+      "weighted_points": 16.0
+    },
+    {
+      "confidence": "medium",
+      "dimension_id": "voice_register_fit",
+      "evidence": [
+        {
+          "evidence_type": "voice/register sample",
+          "excerpt": "1. Founder-market fit",
+          "slide_ref": "S1"
+        },
+        {
+          "evidence_type": "voice/register sample",
+          "excerpt": "2. Problem urgency",
+          "slide_ref": "S2"
+        },
+        {
+          "evidence_type": "voice/register sample",
+          "excerpt": "3. Insight",
+          "slide_ref": "S3"
+        }
+      ],
+      "label": "Voice + Register Fit",
+      "prompt_questions": [
+        "Which voice mode best describes the first five slides?",
+        "Does confidence match the amount of proof shown?",
+        "Are hedges honest uncertainty markers or signs of weak conviction?"
+      ],
+      "reasoning": "Voice detector returned sharp-declarative (high); hedges 0, swagger 0, long sentences 0, mode families 1.",
+      "register_applied": true,
+      "score": 5.0,
+      "top_fix": "Align claim strength with proof: reduce unsupported swagger and use hedges only for true assumptions.",
+      "weight_default": 14.0,
+      "weight_effective": 14.0,
+      "weighted_points": 14.0
+    },
+    {
+      "confidence": "medium",
+      "dimension_id": "claim_hygiene",
+      "evidence": [
+        {
+          "evidence_type": "claim hygiene signal",
+          "excerpt": "1. Founder-market fit",
+          "slide_ref": "S1"
+        },
+        {
+          "evidence_type": "claim hygiene signal",
+          "excerpt": "2. Problem urgency",
+          "slide_ref": "S2"
+        },
+        {
+          "evidence_type": "claim hygiene signal",
+          "excerpt": "3. Insight",
+          "slide_ref": "S3"
+        }
+      ],
+      "label": "Claim Hygiene",
+      "prompt_questions": [
+        "For each major claim, is it fact, belief, plan, or hypothesis?",
+        "Does the slide show proof near the claim?",
+        "Are unsupported claims made more forceful by copy polish?"
+      ],
+      "reasoning": "Unsupported superlative slides 0, unbacked belief markers 0, source/proof marker hits 5, risk/competition mentioned=True.",
+      "register_applied": true,
+      "score": 4.5,
+      "top_fix": "Label each major claim as fact, belief, plan, or hypothesis and put proof/source/assumption markers on the same slide.",
+      "weight_default": 16.0,
+      "weight_effective": 16.0,
+      "weighted_points": 14.4
+    },
+    {
+      "confidence": "medium",
+      "dimension_id": "hierarchy_scannability",
+      "evidence": [
+        {
+          "evidence_type": "hierarchy/scannability signal",
+          "excerpt": "1. Founder-market fit",
+          "slide_ref": "S1"
+        },
+        {
+          "evidence_type": "hierarchy/scannability signal",
+          "excerpt": "2. Problem urgency",
+          "slide_ref": "S2"
+        },
+        {
+          "evidence_type": "hierarchy/scannability signal",
+          "excerpt": "3. Insight",
+          "slide_ref": "S3"
+        }
+      ],
+      "label": "Hierarchy + Scannability",
+      "prompt_questions": [
+        "If the reader only reads headlines, can they understand the argument?",
+        "Does each slide have one obvious top claim?",
+        "Are proof points placed before attention is lost?"
+      ],
+      "reasoning": "Label headlines 0, body-dominant slides 0, overloaded bullet slides 0, headline-story parts 3/4.",
+      "register_applied": true,
+      "score": 4.5,
+      "top_fix": "Turn section labels into claim headlines and make proof visually/textually subordinate to one top claim per slide.",
+      "weight_default": 14.0,
+      "weight_effective": 14.0,
+      "weighted_points": 12.6
+    },
+    {
+      "confidence": "medium",
+      "dimension_id": "anti_buzzword_discipline",
+      "evidence": [
+        {
+          "evidence_type": "buzzword/abstraction signal",
+          "excerpt": "1. Founder-market fit",
+          "slide_ref": "S1"
+        },
+        {
+          "evidence_type": "buzzword/abstraction signal",
+          "excerpt": "2. Problem urgency",
+          "slide_ref": "S2"
+        },
+        {
+          "evidence_type": "buzzword/abstraction signal",
+          "excerpt": "3. Insight",
+          "slide_ref": "S3"
+        }
+      ],
+      "label": "Anti-Buzzword Discipline",
+      "prompt_questions": [
+        "Which sentence most clearly says what the product does?",
+        "Which phrases could be used by any startup in the category?",
+        "Would a smart outsider understand the product without insider jargon?"
+      ],
+      "reasoning": "Buzzword hits 0, abstract noun hits 2, concrete noun hits 6, acronym-heavy slides 0, adjective-stack slides 0.",
+      "register_applied": true,
+      "score": 5.0,
+      "top_fix": "Replace category fog with the plain user-visible behavior: who does what, in which workflow, with what outcome.",
+      "weight_default": 12.0,
+      "weight_effective": 12.0,
+      "weighted_points": 12.0
+    },
+    {
+      "confidence": "medium",
+      "dimension_id": "narrative_cohesion",
+      "evidence": [
+        {
+          "evidence_type": "narrative cohesion signal",
+          "excerpt": "1. Founder-market fit",
+          "slide_ref": "S1"
+        },
+        {
+          "evidence_type": "narrative cohesion signal",
+          "excerpt": "2. Problem urgency",
+          "slide_ref": "S2"
+        },
+        {
+          "evidence_type": "narrative cohesion signal",
+          "excerpt": "3. Insight",
+          "slide_ref": "S3"
+        }
+      ],
+      "label": "Narrative Cohesion",
+      "prompt_questions": [
+        "What is the deck\u2019s one-sentence through-line?",
+        "Do later slides use the same customer, wedge, and product model introduced early?",
+        "Does each slide advance the previous slide\u2019s logic?"
+      ],
+      "reasoning": "Top customer/entity share 33%, feature-list interruptions 0, causal connectors 0, ask/milestone present=True, voice churn=False.",
+      "register_applied": true,
+      "score": 3.5,
+      "top_fix": "Make one through-line explicit: changed condition \u2192 customer pain \u2192 product wedge \u2192 proof \u2192 next milestone/ask.",
+      "weight_default": 12.0,
+      "weight_effective": 12.0,
+      "weighted_points": 8.4
+    }
+  ],
+  "substantive_composite": 2.82,
+  "substantive_dimensions": [
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "founder_market_fit_team_capacity",
+      "dimension_name": "Founder-market fit + team capacity",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+          "matched_terms": "founder, team",
+          "slide_ref": "slide_01"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+          "matched_terms": "founder",
+          "slide_ref": "slide_05"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+          "matched_terms": "founder",
+          "slide_ref": "slide_09"
+        }
+      ],
+      "frame_id": "F1",
+      "frame_modifier": 1.1,
+      "raw_score": 4.0,
+      "reasoning": "Founder-market fit + team capacity scores 4.0/5 in F1. Evidence appears on slide_01, slide_05, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 13.0,
+      "weight_effective": 14.3,
+      "weighted_points": 57.2
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "non_obvious_insight_thesis_clarity",
+      "dimension_name": "Non-obvious insight + thesis clarity",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+          "matched_terms": "insight",
+          "slide_ref": "slide_03"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+          "matched_terms": "why",
+          "slide_ref": "slide_07"
+        }
+      ],
+      "frame_id": "F1",
+      "frame_modifier": 0.9,
+      "raw_score": 3.5,
+      "reasoning": "Non-obvious insight + thesis clarity scores 3.5/5 in F1. Evidence appears on slide_03, slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 10.0,
+      "weight_effective": 9.0,
+      "weighted_points": 31.5
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "problem_urgency_icp_wedge",
+      "dimension_name": "Problem urgency + ICP/wedge",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "2. Problem urgency Independent experts struggle to sell small consults; buyers use fragmented spreadsheets and warm intros.",
+          "matched_terms": "problem",
+          "slide_ref": "slide_02"
+        }
+      ],
+      "frame_id": "F1",
+      "frame_modifier": 0.8,
+      "raw_score": 2.5,
+      "reasoning": "Problem urgency + ICP/wedge scores 2.5/5 in F1. Evidence appears on slide_02. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 9.0,
+      "weight_effective": 7.2,
+      "weighted_points": 18.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "market_logic_venture_scale_path",
+      "dimension_name": "Market logic + venture-scale path",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+          "matched_terms": "market",
+          "slide_ref": "slide_01"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+          "matched_terms": "market",
+          "slide_ref": "slide_03"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+          "matched_terms": "sam",
+          "slide_ref": "slide_04"
+        }
+      ],
+      "frame_id": "F1",
+      "frame_modifier": 0.7,
+      "raw_score": 4.0,
+      "reasoning": "Market logic + venture-scale path scores 4.0/5 in F1. Evidence appears on slide_01, slide_03, slide_04. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 8.0,
+      "weight_effective": 5.6,
+      "weighted_points": 22.4
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "why_now_timing_pressure",
+      "dimension_name": "Why now + timing pressure",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+          "matched_terms": "now",
+          "slide_ref": "slide_07"
+        }
+      ],
+      "frame_id": "F1",
+      "frame_modifier": 0.8,
+      "raw_score": 2.5,
+      "reasoning": "Why now + timing pressure scores 2.5/5 in F1. Evidence appears on slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 8.0,
+      "weight_effective": 6.4,
+      "weighted_points": 16.0
+    },
+    {
+      "confidence": "low",
+      "config_modifier": 1.0,
+      "dimension_id": "evidence_demand_learning_velocity",
+      "dimension_name": "Evidence of demand + learning velocity",
+      "evidence": [],
+      "frame_id": "F1",
+      "frame_modifier": 0.9,
+      "raw_score": 1.0,
+      "reasoning": "Evidence of demand + learning velocity scores 1.0/5 in F1. The deck does not provide obvious extracted evidence for this dimension. Stage handling: missing_pre_seed_proof:no_non_revenue_validation.",
+      "stage_findings": [
+        {
+          "code": "no_non_revenue_validation",
+          "type": "missing_pre_seed_proof"
+        }
+      ],
+      "top_fix": "Add non-revenue validation: customer discovery, design partners, pilot pipeline, testimonials, or prototype usage.",
+      "weight_default": 10.0,
+      "weight_effective": 9.0,
+      "weighted_points": 9.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "solution_product_clarity_proof",
+      "dimension_name": "Solution/product clarity + proof",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+          "matched_terms": "solution, book, profiles",
+          "slide_ref": "slide_04"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+          "matched_terms": "book",
+          "slide_ref": "slide_10"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+          "matched_terms": "book",
+          "slide_ref": "slide_11"
+        }
+      ],
+      "frame_id": "F1",
+      "frame_modifier": 0.8,
+      "raw_score": 4.0,
+      "reasoning": "Solution/product clarity + proof scores 4.0/5 in F1. Evidence appears on slide_04, slide_10, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 7.0,
+      "weight_effective": 5.6,
+      "weighted_points": 22.4
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "defensibility_compounding_advantage",
+      "dimension_name": "Defensibility + compounding advantage",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+          "matched_terms": "first",
+          "slide_ref": "slide_01"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+          "matched_terms": "first",
+          "slide_ref": "slide_09"
+        }
+      ],
+      "frame_id": "F1",
+      "frame_modifier": 0.8,
+      "raw_score": 3.5,
+      "reasoning": "Defensibility + compounding advantage scores 3.5/5 in F1. Evidence appears on slide_01, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 7.0,
+      "weight_effective": 5.6,
+      "weighted_points": 19.6
+    },
+    {
+      "confidence": "low",
+      "config_modifier": 1.0,
+      "dimension_id": "competitive_landscape_differentiation",
+      "dimension_name": "Competitive landscape + differentiation",
+      "evidence": [],
+      "frame_id": "F1",
+      "frame_modifier": 0.8,
+      "raw_score": 1.0,
+      "reasoning": "Competitive landscape + differentiation scores 1.0/5 in F1. The deck does not provide obvious extracted evidence for this dimension. Stage handling: no stage flags.",
+      "stage_findings": [],
+      "top_fix": "Add explicit slide evidence for competitive landscape differentiation.",
+      "weight_default": 6.0,
+      "weight_effective": 4.8,
+      "weighted_points": 4.8
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "gtm_plausibility_first_distribution",
+      "dimension_name": "GTM plausibility + first distribution motion",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+          "matched_terms": "adoption",
+          "slide_ref": "slide_07"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+          "matched_terms": "distribution",
+          "slide_ref": "slide_09"
+        }
+      ],
+      "frame_id": "F1",
+      "frame_modifier": 0.8,
+      "raw_score": 3.5,
+      "reasoning": "GTM plausibility + first distribution motion scores 3.5/5 in F1. Evidence appears on slide_07, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 7.0,
+      "weight_effective": 5.6,
+      "weighted_points": 19.6
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "business_model_economic_logic",
+      "dimension_name": "Business model + economic logic",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+          "matched_terms": "business model, take",
+          "slide_ref": "slide_10"
+        }
+      ],
+      "frame_id": "F1",
+      "frame_modifier": 0.6,
+      "raw_score": 2.5,
+      "reasoning": "Business model + economic logic scores 2.5/5 in F1. Evidence appears on slide_10. Stage handling: granted_at_pre_seed:unit_economics_absent.",
+      "stage_findings": [
+        {
+          "code": "unit_economics_absent",
+          "type": "granted_at_pre_seed"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 5.0,
+      "weight_effective": 3.0,
+      "weighted_points": 7.5
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "ask_milestones_next_round",
+      "dimension_name": "Ask + milestones to next round",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+          "matched_terms": "seed",
+          "slide_ref": "slide_05"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+          "matched_terms": "ask, milestone",
+          "slide_ref": "slide_11"
+        }
+      ],
+      "frame_id": "F1",
+      "frame_modifier": 0.8,
+      "raw_score": 3.5,
+      "reasoning": "Ask + milestones to next round scores 3.5/5 in F1. Evidence appears on slide_05, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 6.0,
+      "weight_effective": 4.8,
+      "weighted_points": 16.8
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "risk_honesty_derisking_plan",
+      "dimension_name": "Risk honesty + de-risking plan",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+          "matched_terms": "prove, milestone",
+          "slide_ref": "slide_11"
+        }
+      ],
+      "frame_id": "F1",
+      "frame_modifier": 0.7,
+      "raw_score": 2.5,
+      "reasoning": "Risk honesty + de-risking plan scores 2.5/5 in F1. Evidence appears on slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 4.0,
+      "weight_effective": 2.8,
+      "weighted_points": 7.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "founder_market_fit_team_capacity",
+      "dimension_name": "Founder-market fit + team capacity",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+          "matched_terms": "founder, team",
+          "slide_ref": "slide_01"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+          "matched_terms": "founder",
+          "slide_ref": "slide_05"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+          "matched_terms": "founder",
+          "slide_ref": "slide_09"
+        }
+      ],
+      "frame_id": "F2",
+      "frame_modifier": 1.2,
+      "raw_score": 4.0,
+      "reasoning": "Founder-market fit + team capacity scores 4.0/5 in F2. Evidence appears on slide_01, slide_05, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 13.0,
+      "weight_effective": 15.6,
+      "weighted_points": 62.4
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "non_obvious_insight_thesis_clarity",
+      "dimension_name": "Non-obvious insight + thesis clarity",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+          "matched_terms": "insight",
+          "slide_ref": "slide_03"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+          "matched_terms": "why",
+          "slide_ref": "slide_07"
+        }
+      ],
+      "frame_id": "F2",
+      "frame_modifier": 1.2,
+      "raw_score": 3.0,
+      "reasoning": "Non-obvious insight + thesis clarity scores 3.0/5 in F2. Evidence appears on slide_03, slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 10.0,
+      "weight_effective": 12.0,
+      "weighted_points": 36.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "problem_urgency_icp_wedge",
+      "dimension_name": "Problem urgency + ICP/wedge",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "2. Problem urgency Independent experts struggle to sell small consults; buyers use fragmented spreadsheets and warm intros.",
+          "matched_terms": "problem",
+          "slide_ref": "slide_02"
+        }
+      ],
+      "frame_id": "F2",
+      "frame_modifier": 1.1,
+      "raw_score": 2.5,
+      "reasoning": "Problem urgency + ICP/wedge scores 2.5/5 in F2. Evidence appears on slide_02. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 9.0,
+      "weight_effective": 9.9,
+      "weighted_points": 24.75
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "market_logic_venture_scale_path",
+      "dimension_name": "Market logic + venture-scale path",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+          "matched_terms": "market",
+          "slide_ref": "slide_01"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+          "matched_terms": "market",
+          "slide_ref": "slide_03"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+          "matched_terms": "sam",
+          "slide_ref": "slide_04"
+        }
+      ],
+      "frame_id": "F2",
+      "frame_modifier": 1.1,
+      "raw_score": 4.0,
+      "reasoning": "Market logic + venture-scale path scores 4.0/5 in F2. Evidence appears on slide_01, slide_03, slide_04. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 8.0,
+      "weight_effective": 8.8,
+      "weighted_points": 35.2
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "why_now_timing_pressure",
+      "dimension_name": "Why now + timing pressure",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+          "matched_terms": "now",
+          "slide_ref": "slide_07"
+        }
+      ],
+      "frame_id": "F2",
+      "frame_modifier": 1.1,
+      "raw_score": 2.5,
+      "reasoning": "Why now + timing pressure scores 2.5/5 in F2. Evidence appears on slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 8.0,
+      "weight_effective": 8.8,
+      "weighted_points": 22.0
+    },
+    {
+      "confidence": "low",
+      "config_modifier": 1.0,
+      "dimension_id": "evidence_demand_learning_velocity",
+      "dimension_name": "Evidence of demand + learning velocity",
+      "evidence": [],
+      "frame_id": "F2",
+      "frame_modifier": 1.2,
+      "raw_score": 1.0,
+      "reasoning": "Evidence of demand + learning velocity scores 1.0/5 in F2. The deck does not provide obvious extracted evidence for this dimension. Stage handling: missing_pre_seed_proof:no_non_revenue_validation.",
+      "stage_findings": [
+        {
+          "code": "no_non_revenue_validation",
+          "type": "missing_pre_seed_proof"
+        }
+      ],
+      "top_fix": "Add non-revenue validation: customer discovery, design partners, pilot pipeline, testimonials, or prototype usage.",
+      "weight_default": 10.0,
+      "weight_effective": 12.0,
+      "weighted_points": 12.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "solution_product_clarity_proof",
+      "dimension_name": "Solution/product clarity + proof",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+          "matched_terms": "solution, book, profiles",
+          "slide_ref": "slide_04"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+          "matched_terms": "book",
+          "slide_ref": "slide_10"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+          "matched_terms": "book",
+          "slide_ref": "slide_11"
+        }
+      ],
+      "frame_id": "F2",
+      "frame_modifier": 1.0,
+      "raw_score": 4.0,
+      "reasoning": "Solution/product clarity + proof scores 4.0/5 in F2. Evidence appears on slide_04, slide_10, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 7.0,
+      "weight_effective": 7.0,
+      "weighted_points": 28.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "defensibility_compounding_advantage",
+      "dimension_name": "Defensibility + compounding advantage",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+          "matched_terms": "first",
+          "slide_ref": "slide_01"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+          "matched_terms": "first",
+          "slide_ref": "slide_09"
+        }
+      ],
+      "frame_id": "F2",
+      "frame_modifier": 1.1,
+      "raw_score": 3.0,
+      "reasoning": "Defensibility + compounding advantage scores 3.0/5 in F2. Evidence appears on slide_01, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 7.0,
+      "weight_effective": 7.7,
+      "weighted_points": 23.1
+    },
+    {
+      "confidence": "low",
+      "config_modifier": 1.0,
+      "dimension_id": "competitive_landscape_differentiation",
+      "dimension_name": "Competitive landscape + differentiation",
+      "evidence": [],
+      "frame_id": "F2",
+      "frame_modifier": 1.1,
+      "raw_score": 1.0,
+      "reasoning": "Competitive landscape + differentiation scores 1.0/5 in F2. The deck does not provide obvious extracted evidence for this dimension. Stage handling: no stage flags.",
+      "stage_findings": [],
+      "top_fix": "Add explicit slide evidence for competitive landscape differentiation.",
+      "weight_default": 6.0,
+      "weight_effective": 6.6,
+      "weighted_points": 6.6
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "gtm_plausibility_first_distribution",
+      "dimension_name": "GTM plausibility + first distribution motion",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+          "matched_terms": "adoption",
+          "slide_ref": "slide_07"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+          "matched_terms": "distribution",
+          "slide_ref": "slide_09"
+        }
+      ],
+      "frame_id": "F2",
+      "frame_modifier": 1.1,
+      "raw_score": 3.0,
+      "reasoning": "GTM plausibility + first distribution motion scores 3.0/5 in F2. Evidence appears on slide_07, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 7.0,
+      "weight_effective": 7.7,
+      "weighted_points": 23.1
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "business_model_economic_logic",
+      "dimension_name": "Business model + economic logic",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+          "matched_terms": "business model, take",
+          "slide_ref": "slide_10"
+        }
+      ],
+      "frame_id": "F2",
+      "frame_modifier": 0.8,
+      "raw_score": 2.5,
+      "reasoning": "Business model + economic logic scores 2.5/5 in F2. Evidence appears on slide_10. Stage handling: granted_at_pre_seed:unit_economics_absent.",
+      "stage_findings": [
+        {
+          "code": "unit_economics_absent",
+          "type": "granted_at_pre_seed"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 5.0,
+      "weight_effective": 4.0,
+      "weighted_points": 10.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "ask_milestones_next_round",
+      "dimension_name": "Ask + milestones to next round",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+          "matched_terms": "seed",
+          "slide_ref": "slide_05"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+          "matched_terms": "ask, milestone",
+          "slide_ref": "slide_11"
+        }
+      ],
+      "frame_id": "F2",
+      "frame_modifier": 1.05,
+      "raw_score": 3.0,
+      "reasoning": "Ask + milestones to next round scores 3.0/5 in F2. Evidence appears on slide_05, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 6.0,
+      "weight_effective": 6.3,
+      "weighted_points": 18.9
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "risk_honesty_derisking_plan",
+      "dimension_name": "Risk honesty + de-risking plan",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+          "matched_terms": "prove, milestone",
+          "slide_ref": "slide_11"
+        }
+      ],
+      "frame_id": "F2",
+      "frame_modifier": 1.0,
+      "raw_score": 2.5,
+      "reasoning": "Risk honesty + de-risking plan scores 2.5/5 in F2. Evidence appears on slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 4.0,
+      "weight_effective": 4.0,
+      "weighted_points": 10.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "founder_market_fit_team_capacity",
+      "dimension_name": "Founder-market fit + team capacity",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+          "matched_terms": "founder, team",
+          "slide_ref": "slide_01"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+          "matched_terms": "founder",
+          "slide_ref": "slide_05"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+          "matched_terms": "founder",
+          "slide_ref": "slide_09"
+        }
+      ],
+      "frame_id": "F3",
+      "frame_modifier": 1.2,
+      "raw_score": 4.0,
+      "reasoning": "Founder-market fit + team capacity scores 4.0/5 in F3. Evidence appears on slide_01, slide_05, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 13.0,
+      "weight_effective": 15.6,
+      "weighted_points": 62.4
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "non_obvious_insight_thesis_clarity",
+      "dimension_name": "Non-obvious insight + thesis clarity",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+          "matched_terms": "insight",
+          "slide_ref": "slide_03"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+          "matched_terms": "why",
+          "slide_ref": "slide_07"
+        }
+      ],
+      "frame_id": "F3",
+      "frame_modifier": 1.1,
+      "raw_score": 3.0,
+      "reasoning": "Non-obvious insight + thesis clarity scores 3.0/5 in F3. Evidence appears on slide_03, slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 10.0,
+      "weight_effective": 11.0,
+      "weighted_points": 33.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "problem_urgency_icp_wedge",
+      "dimension_name": "Problem urgency + ICP/wedge",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "2. Problem urgency Independent experts struggle to sell small consults; buyers use fragmented spreadsheets and warm intros.",
+          "matched_terms": "problem",
+          "slide_ref": "slide_02"
+        }
+      ],
+      "frame_id": "F3",
+      "frame_modifier": 1.2,
+      "raw_score": 2.5,
+      "reasoning": "Problem urgency + ICP/wedge scores 2.5/5 in F3. Evidence appears on slide_02. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 9.0,
+      "weight_effective": 10.8,
+      "weighted_points": 27.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "market_logic_venture_scale_path",
+      "dimension_name": "Market logic + venture-scale path",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+          "matched_terms": "market",
+          "slide_ref": "slide_01"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+          "matched_terms": "market",
+          "slide_ref": "slide_03"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+          "matched_terms": "sam",
+          "slide_ref": "slide_04"
+        }
+      ],
+      "frame_id": "F3",
+      "frame_modifier": 1.2,
+      "raw_score": 4.0,
+      "reasoning": "Market logic + venture-scale path scores 4.0/5 in F3. Evidence appears on slide_01, slide_03, slide_04. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 8.0,
+      "weight_effective": 9.6,
+      "weighted_points": 38.4
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "why_now_timing_pressure",
+      "dimension_name": "Why now + timing pressure",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+          "matched_terms": "now",
+          "slide_ref": "slide_07"
+        }
+      ],
+      "frame_id": "F3",
+      "frame_modifier": 1.1,
+      "raw_score": 2.5,
+      "reasoning": "Why now + timing pressure scores 2.5/5 in F3. Evidence appears on slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 8.0,
+      "weight_effective": 8.8,
+      "weighted_points": 22.0
+    },
+    {
+      "confidence": "low",
+      "config_modifier": 1.0,
+      "dimension_id": "evidence_demand_learning_velocity",
+      "dimension_name": "Evidence of demand + learning velocity",
+      "evidence": [],
+      "frame_id": "F3",
+      "frame_modifier": 1.2,
+      "raw_score": 1.0,
+      "reasoning": "Evidence of demand + learning velocity scores 1.0/5 in F3. The deck does not provide obvious extracted evidence for this dimension. Stage handling: missing_pre_seed_proof:no_non_revenue_validation.",
+      "stage_findings": [
+        {
+          "code": "no_non_revenue_validation",
+          "type": "missing_pre_seed_proof"
+        }
+      ],
+      "top_fix": "Add non-revenue validation: customer discovery, design partners, pilot pipeline, testimonials, or prototype usage.",
+      "weight_default": 10.0,
+      "weight_effective": 12.0,
+      "weighted_points": 12.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "solution_product_clarity_proof",
+      "dimension_name": "Solution/product clarity + proof",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+          "matched_terms": "solution, book, profiles",
+          "slide_ref": "slide_04"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+          "matched_terms": "book",
+          "slide_ref": "slide_10"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+          "matched_terms": "book",
+          "slide_ref": "slide_11"
+        }
+      ],
+      "frame_id": "F3",
+      "frame_modifier": 1.2,
+      "raw_score": 4.0,
+      "reasoning": "Solution/product clarity + proof scores 4.0/5 in F3. Evidence appears on slide_04, slide_10, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 7.0,
+      "weight_effective": 8.4,
+      "weighted_points": 33.6
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "defensibility_compounding_advantage",
+      "dimension_name": "Defensibility + compounding advantage",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+          "matched_terms": "first",
+          "slide_ref": "slide_01"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+          "matched_terms": "first",
+          "slide_ref": "slide_09"
+        }
+      ],
+      "frame_id": "F3",
+      "frame_modifier": 1.0,
+      "raw_score": 3.0,
+      "reasoning": "Defensibility + compounding advantage scores 3.0/5 in F3. Evidence appears on slide_01, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 7.0,
+      "weight_effective": 7.0,
+      "weighted_points": 21.0
+    },
+    {
+      "confidence": "low",
+      "config_modifier": 1.0,
+      "dimension_id": "competitive_landscape_differentiation",
+      "dimension_name": "Competitive landscape + differentiation",
+      "evidence": [],
+      "frame_id": "F3",
+      "frame_modifier": 1.0,
+      "raw_score": 1.0,
+      "reasoning": "Competitive landscape + differentiation scores 1.0/5 in F3. The deck does not provide obvious extracted evidence for this dimension. Stage handling: no stage flags.",
+      "stage_findings": [],
+      "top_fix": "Add explicit slide evidence for competitive landscape differentiation.",
+      "weight_default": 6.0,
+      "weight_effective": 6.0,
+      "weighted_points": 6.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "gtm_plausibility_first_distribution",
+      "dimension_name": "GTM plausibility + first distribution motion",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+          "matched_terms": "adoption",
+          "slide_ref": "slide_07"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+          "matched_terms": "distribution",
+          "slide_ref": "slide_09"
+        }
+      ],
+      "frame_id": "F3",
+      "frame_modifier": 1.2,
+      "raw_score": 3.0,
+      "reasoning": "GTM plausibility + first distribution motion scores 3.0/5 in F3. Evidence appears on slide_07, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 7.0,
+      "weight_effective": 8.4,
+      "weighted_points": 25.2
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "business_model_economic_logic",
+      "dimension_name": "Business model + economic logic",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+          "matched_terms": "business model, take",
+          "slide_ref": "slide_10"
+        }
+      ],
+      "frame_id": "F3",
+      "frame_modifier": 0.8,
+      "raw_score": 2.5,
+      "reasoning": "Business model + economic logic scores 2.5/5 in F3. Evidence appears on slide_10. Stage handling: granted_at_pre_seed:unit_economics_absent.",
+      "stage_findings": [
+        {
+          "code": "unit_economics_absent",
+          "type": "granted_at_pre_seed"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 5.0,
+      "weight_effective": 4.0,
+      "weighted_points": 10.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "ask_milestones_next_round",
+      "dimension_name": "Ask + milestones to next round",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+          "matched_terms": "seed",
+          "slide_ref": "slide_05"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+          "matched_terms": "ask, milestone",
+          "slide_ref": "slide_11"
+        }
+      ],
+      "frame_id": "F3",
+      "frame_modifier": 1.05,
+      "raw_score": 3.0,
+      "reasoning": "Ask + milestones to next round scores 3.0/5 in F3. Evidence appears on slide_05, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 6.0,
+      "weight_effective": 6.3,
+      "weighted_points": 18.9
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "risk_honesty_derisking_plan",
+      "dimension_name": "Risk honesty + de-risking plan",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+          "matched_terms": "prove, milestone",
+          "slide_ref": "slide_11"
+        }
+      ],
+      "frame_id": "F3",
+      "frame_modifier": 0.9,
+      "raw_score": 2.5,
+      "reasoning": "Risk honesty + de-risking plan scores 2.5/5 in F3. Evidence appears on slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 4.0,
+      "weight_effective": 3.6,
+      "weighted_points": 9.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "founder_market_fit_team_capacity",
+      "dimension_name": "Founder-market fit + team capacity",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+          "matched_terms": "founder, team",
+          "slide_ref": "slide_01"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+          "matched_terms": "founder",
+          "slide_ref": "slide_05"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+          "matched_terms": "founder",
+          "slide_ref": "slide_09"
+        }
+      ],
+      "frame_id": "F4",
+      "frame_modifier": 1.2,
+      "raw_score": 3.5,
+      "reasoning": "Founder-market fit + team capacity scores 3.5/5 in F4. Evidence appears on slide_01, slide_05, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 13.0,
+      "weight_effective": 15.6,
+      "weighted_points": 54.6
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "non_obvious_insight_thesis_clarity",
+      "dimension_name": "Non-obvious insight + thesis clarity",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+          "matched_terms": "insight",
+          "slide_ref": "slide_03"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+          "matched_terms": "why",
+          "slide_ref": "slide_07"
+        }
+      ],
+      "frame_id": "F4",
+      "frame_modifier": 1.5,
+      "raw_score": 3.0,
+      "reasoning": "Non-obvious insight + thesis clarity scores 3.0/5 in F4. Evidence appears on slide_03, slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 10.0,
+      "weight_effective": 15.0,
+      "weighted_points": 45.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "problem_urgency_icp_wedge",
+      "dimension_name": "Problem urgency + ICP/wedge",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "2. Problem urgency Independent experts struggle to sell small consults; buyers use fragmented spreadsheets and warm intros.",
+          "matched_terms": "problem",
+          "slide_ref": "slide_02"
+        }
+      ],
+      "frame_id": "F4",
+      "frame_modifier": 1.3,
+      "raw_score": 2.5,
+      "reasoning": "Problem urgency + ICP/wedge scores 2.5/5 in F4. Evidence appears on slide_02. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 9.0,
+      "weight_effective": 11.7,
+      "weighted_points": 29.25
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "market_logic_venture_scale_path",
+      "dimension_name": "Market logic + venture-scale path",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+          "matched_terms": "market",
+          "slide_ref": "slide_01"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "3. Insight Trust forms when buyers can see a concrete proof trail, not when a marketplace claims breadth.",
+          "matched_terms": "market",
+          "slide_ref": "slide_03"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+          "matched_terms": "sam",
+          "slide_ref": "slide_04"
+        }
+      ],
+      "frame_id": "F4",
+      "frame_modifier": 1.3,
+      "raw_score": 3.5,
+      "reasoning": "Market logic + venture-scale path scores 3.5/5 in F4. Evidence appears on slide_01, slide_03, slide_04. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 8.0,
+      "weight_effective": 10.4,
+      "weighted_points": 36.4
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "why_now_timing_pressure",
+      "dimension_name": "Why now + timing pressure",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+          "matched_terms": "now",
+          "slide_ref": "slide_07"
+        }
+      ],
+      "frame_id": "F4",
+      "frame_modifier": 1.4,
+      "raw_score": 2.5,
+      "reasoning": "Why now + timing pressure scores 2.5/5 in F4. Evidence appears on slide_07. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 8.0,
+      "weight_effective": 11.2,
+      "weighted_points": 28.0
+    },
+    {
+      "confidence": "low",
+      "config_modifier": 1.0,
+      "dimension_id": "evidence_demand_learning_velocity",
+      "dimension_name": "Evidence of demand + learning velocity",
+      "evidence": [],
+      "frame_id": "F4",
+      "frame_modifier": 1.4,
+      "raw_score": 1.0,
+      "reasoning": "Evidence of demand + learning velocity scores 1.0/5 in F4. The deck does not provide obvious extracted evidence for this dimension. Stage handling: missing_pre_seed_proof:no_non_revenue_validation.",
+      "stage_findings": [
+        {
+          "code": "no_non_revenue_validation",
+          "type": "missing_pre_seed_proof"
+        }
+      ],
+      "top_fix": "Add non-revenue validation: customer discovery, design partners, pilot pipeline, testimonials, or prototype usage.",
+      "weight_default": 10.0,
+      "weight_effective": 14.0,
+      "weighted_points": 14.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "solution_product_clarity_proof",
+      "dimension_name": "Solution/product clarity + proof",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "4. Solution A focused expert-discovery workflow with verified profiles, sample work, and lightweight booking.",
+          "matched_terms": "solution, book, profiles",
+          "slide_ref": "slide_04"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+          "matched_terms": "book",
+          "slide_ref": "slide_10"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+          "matched_terms": "book",
+          "slide_ref": "slide_11"
+        }
+      ],
+      "frame_id": "F4",
+      "frame_modifier": 1.3,
+      "raw_score": 3.5,
+      "reasoning": "Solution/product clarity + proof scores 3.5/5 in F4. Evidence appears on slide_04, slide_10, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 7.0,
+      "weight_effective": 9.1,
+      "weighted_points": 31.85
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "defensibility_compounding_advantage",
+      "dimension_name": "Defensibility + compounding advantage",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "1. Founder-market fit Team has operated community marketplaces and personally recruited first 50 supply-side partners.",
+          "matched_terms": "first",
+          "slide_ref": "slide_01"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+          "matched_terms": "first",
+          "slide_ref": "slide_09"
+        }
+      ],
+      "frame_id": "F4",
+      "frame_modifier": 1.5,
+      "raw_score": 3.0,
+      "reasoning": "Defensibility + compounding advantage scores 3.0/5 in F4. Evidence appears on slide_01, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 7.0,
+      "weight_effective": 10.5,
+      "weighted_points": 31.5
+    },
+    {
+      "confidence": "low",
+      "config_modifier": 1.0,
+      "dimension_id": "competitive_landscape_differentiation",
+      "dimension_name": "Competitive landscape + differentiation",
+      "evidence": [],
+      "frame_id": "F4",
+      "frame_modifier": 1.5,
+      "raw_score": 1.0,
+      "reasoning": "Competitive landscape + differentiation scores 1.0/5 in F4. The deck does not provide obvious extracted evidence for this dimension. Stage handling: no stage flags.",
+      "stage_findings": [],
+      "top_fix": "Add explicit slide evidence for competitive landscape differentiation.",
+      "weight_default": 6.0,
+      "weight_effective": 9.0,
+      "weighted_points": 9.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "gtm_plausibility_first_distribution",
+      "dimension_name": "GTM plausibility + first distribution motion",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "7. Why now AI adoption has made expert selection more urgent and more confusing for buyers.",
+          "matched_terms": "adoption",
+          "slide_ref": "slide_07"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "9. Distribution Founder-led outbound, partner newsletters, and expert referral loops drive first liquidity.",
+          "matched_terms": "distribution",
+          "slide_ref": "slide_09"
+        }
+      ],
+      "frame_id": "F4",
+      "frame_modifier": 1.4,
+      "raw_score": 3.0,
+      "reasoning": "GTM plausibility + first distribution motion scores 3.0/5 in F4. Evidence appears on slide_07, slide_09. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 7.0,
+      "weight_effective": 9.8,
+      "weighted_points": 29.4
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "business_model_economic_logic",
+      "dimension_name": "Business model + economic logic",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "10. Business model Take rate on booked calls plus subscription tools for expert teams after repeated usage.",
+          "matched_terms": "business model, take",
+          "slide_ref": "slide_10"
+        }
+      ],
+      "frame_id": "F4",
+      "frame_modifier": 1.2,
+      "raw_score": 2.5,
+      "reasoning": "Business model + economic logic scores 2.5/5 in F4. Evidence appears on slide_10. Stage handling: granted_at_pre_seed:unit_economics_absent.",
+      "stage_findings": [
+        {
+          "code": "unit_economics_absent",
+          "type": "granted_at_pre_seed"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 5.0,
+      "weight_effective": 6.0,
+      "weighted_points": 15.0
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "ask_milestones_next_round",
+      "dimension_name": "Ask + milestones to next round",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "5. Wedge Start with AI tooling consultants serving seed-stage founders and boutique agencies.",
+          "matched_terms": "seed",
+          "slide_ref": "slide_05"
+        },
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+          "matched_terms": "ask, milestone",
+          "slide_ref": "slide_11"
+        }
+      ],
+      "frame_id": "F4",
+      "frame_modifier": 1.3,
+      "raw_score": 3.0,
+      "reasoning": "Ask + milestones to next round scores 3.0/5 in F4. Evidence appears on slide_05, slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 6.0,
+      "weight_effective": 7.8,
+      "weighted_points": 23.4
+    },
+    {
+      "confidence": "medium",
+      "config_modifier": 1.0,
+      "dimension_id": "risk_honesty_derisking_plan",
+      "dimension_name": "Risk honesty + de-risking plan",
+      "evidence": [
+        {
+          "evidence_type": "keyword_match",
+          "excerpt": "11. Ask Raising $750k to prove repeat booking, expert activation, and one vertical expansion milestone.",
+          "matched_terms": "prove, milestone",
+          "slide_ref": "slide_11"
+        }
+      ],
+      "frame_id": "F4",
+      "frame_modifier": 1.5,
+      "raw_score": 2.5,
+      "reasoning": "Risk honesty + de-risking plan scores 2.5/5 in F4. Evidence appears on slide_11. Stage handling: stage_appropriate_evidence:scorable_pre_seed_evidence.",
+      "stage_findings": [
+        {
+          "code": "scorable_pre_seed_evidence",
+          "type": "stage_appropriate_evidence"
+        }
+      ],
+      "top_fix": "Make the evidence more concrete, earlier, and easier to quote in a partner memo.",
+      "weight_default": 4.0,
+      "weight_effective": 6.0,
+      "weighted_points": 15.0
+    }
+  ],
+  "voice_confidence": "high",
+  "weaknesses": []
+}

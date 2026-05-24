@@ -73,6 +73,10 @@
       "description": "Persona agency bootloader for Zo Computer with hard-switch rules and methodology injection."
     },
     {
+      "slug": "pitch-deck-evaluator",
+      "description": "Evaluate pre-seed and seed pitch decks through multiple investor frames with a reusable rubric, deterministic local scoring, and opt-in named-VC POV guardrails."
+    },
+    {
       "slug": "prompt-to-skill",
       "description": "Turn complex prompts into reusable skill structures."
     },
