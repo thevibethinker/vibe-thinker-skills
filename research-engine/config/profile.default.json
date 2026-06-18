@@ -1,0 +1,15 @@
+{
+  "owner_name": "Operator",
+  "venture_name": "Primary venture",
+  "venture_aliases": [],
+  "venture_notes": "Neutral public profile for the Research Engine skill. Replace locally after import.",
+  "content_library_root": "Knowledge/content-library",
+  "evergreen_internal_sources": [],
+  "allowed_calendar_accounts": [],
+  "excluded_calendar_accounts": [],
+  "allowed_private_email_accounts": [],
+  "exclusion_terms": ["application", "applications"],
+  "focus_terms": [],
+  "source_policy_suffix": "Use approved local content-library material when present; otherwise proceed with external sources and explicit sources provided by the operator.",
+  "prompt_focus": "Evidence-backed research grounded in sources and the local knowledge library when available."
+}

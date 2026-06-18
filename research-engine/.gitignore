@@ -1,0 +1,7 @@
+# Owner-specific identity profile — never publish. Ships only as profile.default.json.
+config/profile.json
+
+# Runtime / scratch
+__pycache__/
+*.pyc
+.repair/

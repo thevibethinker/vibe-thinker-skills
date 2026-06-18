@@ -1,0 +1,17 @@
+{
+  "owner_name": "TestOwner",
+  "venture_name": "TestVenture",
+  "venture_aliases": ["testventure"],
+  "content_library_root": "Knowledge/content-library",
+  "evergreen_internal_sources": [
+    "https://example.test/evergreen-memo",
+    "https://example.test/evergreen-deck"
+  ],
+  "allowed_calendar_accounts": ["owner@example.test"],
+  "excluded_calendar_accounts": ["excluded@example.test"],
+  "allowed_private_email_accounts": ["owner@example.test"],
+  "exclusion_terms": ["yc", "application", "applications"],
+  "focus_terms": ["testventure", "physical", "robotics", "hospital", "contact", "data"],
+  "source_policy_suffix": "Use only approved Content Library material and evergreen internal source links.",
+  "prompt_focus": "Investor/strategic diligence grounded in approved Content Library and evergreen links only."
+}

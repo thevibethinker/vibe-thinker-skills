@@ -89,6 +89,10 @@
       "description": "Create code-driven videos with React and Remotion."
     },
     {
+      "slug": "research-engine",
+      "description": "Portable, profile-driven research engine: maintain research repos and a wiki-style compendium, run cited research/diligence pipelines (incl. investor diligence), with all owner/venture identity externalized to a local profile for safe reuse on any Zo."
+    },
+    {
       "slug": "startup-memo-generator",
       "description": "Generate gated, analytics-enabled founder memo pages for investors, customers, and vendors on zo.space."
     },
