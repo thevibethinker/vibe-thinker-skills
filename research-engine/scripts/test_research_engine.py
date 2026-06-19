@@ -28,9 +28,9 @@ def run_cmd(*args: str, expect: int = 0) -> dict:
 def setup_function() -> None:
     shutil.rmtree(TMP_ROOT, ignore_errors=True)
     (TMP_ROOT / "source" / "hiring" / "early-career").mkdir(parents=True)
-    (TMP_ROOT / "source" / "simovian" / "robotics").mkdir(parents=True)
+    (TMP_ROOT / "source" / "acme" / "robotics").mkdir(parents=True)
     (TMP_ROOT / "source" / "hiring" / "early-career" / "notes.md").write_text("# Hiring Market\nEarly-career signals and internships.\n")
-    (TMP_ROOT / "source" / "simovian" / "robotics" / "dossier.md").write_text("# Robotics\nFounders and embodied AI map.\n")
+    (TMP_ROOT / "source" / "acme" / "robotics" / "dossier.md").write_text("# Robotics\nFounders and embodied AI map.\n")
 
 
 def teardown_function() -> None:
@@ -355,7 +355,7 @@ def test_investor_diligence_brief_size_can_be_overridden() -> None:
     import research_run  # type: ignore
 
     plan = research_run.plan_for(
-        "Diligence Founders Fund for Simovian",
+        "Diligence Founders Fund for Acme",
         "investor-diligence",
         "quick",
         None,
@@ -474,7 +474,7 @@ def test_investor_diligence_still_runs_external_search_despite_internal_sources(
             {"uri": "Knowledge/content-library/positions/b.md", "title": "b.md", "text": "Internal B.", "type": "approved_content_library", "provided": False},
         ]
         plan = research_run.plan_for(
-            "Diligence Lux Capital for Simovian investor prep",
+            "Diligence Lux Capital for Acme investor prep",
             "investor-diligence",
             "standard",
             "lux-capital-investor-diligence",
