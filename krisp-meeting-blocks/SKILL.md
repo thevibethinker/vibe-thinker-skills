@@ -146,6 +146,9 @@ python3 Skills/krisp-meeting-blocks/scripts/krisp_blocks.py reprocess Personal/M
 
 # Show active/review/archived status
 python3 Skills/krisp-meeting-blocks/scripts/krisp_blocks.py status
+
+# Run install/runtime diagnostics
+python3 Skills/krisp-meeting-blocks/scripts/krisp_blocks.py doctor
 ```
 
 
