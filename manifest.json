@@ -54,7 +54,7 @@
     },
     {
       "slug": "krisp-meeting-blocks",
-      "description": "Portable Krisp transcript ingestion and meeting block pipeline with zo.space webhook template, monthly archive, v3-style add-on blocks, and owner notifications for partial/review meetings."
+      "description": "Portable Krisp and manual transcript ingestion with repairable meeting folders, optional calendar triangulation, monthly archive, block generation, and owner notifications for partial/review meetings."
     },
     {
       "slug": "landing-page-generator",

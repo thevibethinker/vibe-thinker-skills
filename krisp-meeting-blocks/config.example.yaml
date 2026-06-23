@@ -3,6 +3,10 @@ min_duration_seconds: 120
 addons_default: auto
 notify_mode: zo_ask
 notify_command: ""
+calendar:
+  enabled: false
+  window_hours: 8
+  min_confidence: 0.6
 archive:
   structure: monthly
   root: /home/workspace/Personal/Meetings

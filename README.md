@@ -35,6 +35,7 @@ git clone https://github.com/thevibethinker/vibe-thinker-skills.git
 | [ga4-analytics](./ga4-analytics/) | Pull Google Analytics 4 traffic stats for a website with configurable reporting windows and breakdowns. |
 | [gamma](./gamma/) | Generate presentations, webpages, and social content using Gamma's API. |
 | [landing-page-generator](./landing-page-generator/) | Self-contained landing-page generator with bundled design foundations, anti-slop references, reusable templates, and target file-structure guidance. |
+| [krisp-meeting-blocks](./krisp-meeting-blocks/) | Portable Krisp and manual transcript ingestion with optional calendar triangulation, monthly archive, block generation, and owner notifications for partial/review meetings. |
 | [meeting-ingestion](./meeting-ingestion/) | Unified skill for ingesting meeting transcripts from Google Drive and orchestrating the processing pipeline. |
 | [krisp-meeting-blocks](./krisp-meeting-blocks/) | Portable Krisp transcript ingestion and meeting block pipeline with zo.space webhook template, monthly archive, v3-style add-on blocks, and owner notifications for partial/review meetings. |
 | [meme-factory](./meme-factory/) | Generate memes with memegen.link templates and text controls. |

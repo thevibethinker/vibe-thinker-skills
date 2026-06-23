@@ -43,6 +43,7 @@ DEFAULT_MODEL = os.environ.get("MEETING_BLOCK_MODEL_NAME") or os.environ.get("ZO
 ZO_API_URL = "https://api.zo.computer/zo/ask"
 MIN_TRANSCRIPT_CHARS = 300
 MIN_DURATION_SECONDS = 120
+CALENDAR_DEFAULT_WINDOW_HOURS = 8
 ALWAYS_BLOCKS = ("summary", "metadata", "decisions", "action_items")
 AI_DETECTED_BLOCKS = ("intro", "blurb")
 GENERIC_SPEAKER_RE = re.compile(r"^(Speaker\s*\d+)\s*(?::|\|)", re.MULTILINE)
@@ -181,6 +182,7 @@ def init_command(dry_run: bool) -> dict[str, Any]:
             "addons_default": "auto",
             "notify_mode": "zo_ask",
             "notify_command": "",
+            "calendar": {"enabled": False, "window_hours": CALENDAR_DEFAULT_WINDOW_HOURS, "min_confidence": 0.6},
             "archive": {"structure": "monthly", "root": str(MEETINGS_ROOT)},
         }
         write_text(CONFIG_PATH, yaml.safe_dump(config, sort_keys=False), dry_run=dry_run)
@@ -355,7 +357,7 @@ def quality_gate(fields: dict[str, Any], transcript: str, config: dict[str, Any]
     return {"status": status, "reasons": reasons, "warnings": warnings, "duration_seconds": duration, "transcript_analysis": analysis}
 
 
-def manifest_seed(fields: dict[str, Any], transcript: str, payload_path: Path) -> dict[str, Any]:
+def manifest_seed(fields: dict[str, Any], transcript: str, source_path: Path, source_type: str = "krisp") -> dict[str, Any]:
     """Create initial manifest for a portable meeting folder."""
     meeting_date = date_from_fields(fields)
     source_id = fields.get("meeting_id") or hashlib.sha256(transcript.encode()).hexdigest()[:16]
@@ -367,10 +369,10 @@ def manifest_seed(fields: dict[str, Any], transcript: str, payload_path: Path) -
         "date": meeting_date,
         "status": "imported",
         "source": {
-            "type": "krisp",
+            "type": source_type,
             "source_id": source_id,
             "event_id": fields.get("event_id") or "",
-            "payload_path": str(payload_path),
+            "source_path": str(source_path),
             "recording_url": fields.get("recording_url") or "",
             "ingested_at": utc_now(),
         },
@@ -434,44 +436,250 @@ def unique_folder(parent: Path, base_name: str) -> Path:
     return candidate
 
 
-def import_payload(payload_path: Path, *, process: bool, dry_run: bool, addons: str) -> dict[str, Any]:
-    """Import one Krisp payload into Active or review/rejected lanes."""
+def read_manual_transcript(path: Path, *, title: str | None, date: str | None, participants: str | None, duration_seconds: int | None) -> tuple[dict[str, Any], str, list[dict[str, Any]]]:
+    """Read a manual transcript file and return portable fields/transcript/utterances."""
+    if not path.exists() or not path.is_file():
+        raise PipelineError(f"manual transcript file not found: {path}")
+    utterances: list[dict[str, Any]] = []
+    if path.suffix.lower() == ".json":
+        payload = read_json(path)
+        raw_text = str(payload.get("transcript") or payload.get("text") or payload.get("raw_content") or "").strip()
+        content_items = payload.get("utterances") or payload.get("content") or []
+        fields = {
+            "event_type": "manual_import",
+            "event_id": "",
+            "meeting_id": str(payload.get("meeting_id") or ""),
+            "title": title or str(payload.get("title") or path.stem),
+            "raw_content": raw_text,
+            "content_items": content_items if isinstance(content_items, list) else [],
+            "participants": [p.strip() for p in (participants or "").split(",") if p.strip()] or payload.get("participants", []),
+            "start": date or payload.get("date") or payload.get("start") or payload.get("started_at"),
+            "end": payload.get("end") or payload.get("ended_at"),
+            "duration_seconds": duration_seconds if duration_seconds is not None else parse_int(payload.get("duration_seconds") or payload.get("duration")),
+            "recording_url": str(payload.get("recording_url") or ""),
+            "source_payload": payload,
+        }
+        transcript, utterances = build_transcript(fields)
+        return fields, transcript, utterances
+    if path.suffix.lower() == ".jsonl":
+        lines: list[str] = []
+        for idx, raw_line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+            if not raw_line.strip():
+                continue
+            try:
+                row = json.loads(raw_line)
+            except json.JSONDecodeError as exc:
+                raise PipelineError(f"invalid JSONL line {idx} in {path}: {exc}") from exc
+            if not isinstance(row, dict):
+                continue
+            speaker = str(row.get("speaker") or row.get("name") or row.get("participant") or "Speaker").strip()
+            text = str(row.get("text") or row.get("content") or "").strip()
+            if not text:
+                continue
+            start_ms = parse_int(row.get("start_ms") or row.get("start"))
+            end_ms = parse_int(row.get("end_ms") or row.get("end"))
+            utterances.append({"speaker": speaker, "text": text, "start_ms": start_ms, "end_ms": end_ms})
+            lines.append(f"{speaker}: {text}")
+        transcript = "\n".join(lines).strip() + ("\n" if lines else "")
+    else:
+        transcript = path.read_text(encoding="utf-8").strip() + "\n"
+    fields = {
+        "event_type": "manual_import",
+        "event_id": "",
+        "meeting_id": hashlib.sha256((str(path) + transcript).encode()).hexdigest()[:16],
+        "title": title or path.stem,
+        "raw_content": transcript,
+        "content_items": [],
+        "participants": [p.strip() for p in (participants or "").split(",") if p.strip()],
+        "start": date,
+        "end": None,
+        "duration_seconds": duration_seconds,
+        "recording_url": "",
+        "source_payload": {"path": str(path), "source": "manual"},
+    }
+    return fields, transcript, utterances
+
+
+def should_run_calendar(calendar: str, config: dict[str, Any]) -> bool:
+    """Resolve calendar add-on policy from CLI/config."""
+    if calendar == "on":
+        return True
+    if calendar == "off":
+        return False
+    calendar_cfg = config.get("calendar") if isinstance(config.get("calendar"), dict) else {}
+    return bool(calendar_cfg.get("enabled", False))
+
+
+def calendar_prompt(manifest: dict[str, Any], transcript: str, config: dict[str, Any]) -> str:
+    """Build the optional calendar triangulation prompt for the target Zo."""
+    calendar_cfg = config.get("calendar") if isinstance(config.get("calendar"), dict) else {}
+    window_hours = int(calendar_cfg.get("window_hours", CALENDAR_DEFAULT_WINDOW_HOURS) or CALENDAR_DEFAULT_WINDOW_HOURS)
+    return textwrap.dedent(f"""
+    You are running inside the target Zo Computer. Try to triangulate this meeting against the owner's Google Calendar if the Google Calendar integration is connected.
+
+    Rules:
+    - This is optional enrichment. If calendar access is unavailable, return status "unavailable".
+    - Search around the meeting date/title/participants, roughly ±{window_hours} hours when time is known, or that calendar day when only date is known.
+    - Do not create or edit calendar events.
+    - Return ONLY JSON with keys: status, confidence, event_title, event_start, event_end, calendar_id, event_id, participants, rationale.
+    - status must be one of: matched, no_match, unavailable, error.
+    - confidence is a number from 0 to 1.
+
+    Meeting manifest:
+    {json.dumps(manifest, indent=2, ensure_ascii=False)[:6000]}
+
+    Transcript excerpt:
+    {transcript[:12000]}
+    """).strip()
+
+
+def parse_json_object(text: str) -> dict[str, Any]:
+    """Parse a JSON object from model text with simple fence cleanup."""
+    cleaned = text.strip()
+    if cleaned.startswith("```"):
+        cleaned = "\n".join(line for line in cleaned.splitlines() if not line.strip().startswith("```"))
+    start = cleaned.find("{")
+    end = cleaned.rfind("}")
+    if start >= 0 and end > start:
+        cleaned = cleaned[start:end + 1]
+    try:
+        data = json.loads(cleaned)
+    except json.JSONDecodeError as exc:
+        raise PipelineError(f"calendar match returned invalid JSON: {exc}") from exc
+    if not isinstance(data, dict):
+        raise PipelineError("calendar match output was not a JSON object")
+    return data
+
+
+def run_calendar_match(manifest: dict[str, Any], transcript: str, config: dict[str, Any], *, dry_run: bool) -> dict[str, Any]:
+    """Optionally ask the target Zo to match this meeting to Google Calendar."""
+    calendar_cfg = config.get("calendar") if isinstance(config.get("calendar"), dict) else {}
+    min_confidence = float(calendar_cfg.get("min_confidence", 0.6) or 0.6)
+    if dry_run:
+        return {"status": "dry_run", "confidence": 0.0, "rationale": "dry-run; calendar not queried"}
+    try:
+        raw = call_zo(calendar_prompt(manifest, transcript, config), model=os.environ.get("MEETING_BLOCK_MODEL_NAME") or DEFAULT_MODEL or None)
+        match = parse_json_object(raw)
+    except PipelineError as exc:
+        return {"status": "error", "confidence": 0.0, "rationale": str(exc)}
+    status = str(match.get("status") or "error")
+    try:
+        confidence = float(match.get("confidence") or 0.0)
+    except (TypeError, ValueError):
+        confidence = 0.0
+    match["confidence"] = confidence
+    match["matched"] = status == "matched" and confidence >= min_confidence
+    match["min_confidence"] = min_confidence
+    match["checked_at"] = utc_now()
+    return match
+
+
+def create_meeting_from_fields(
+    fields: dict[str, Any],
+    transcript: str,
+    utterances: list[dict[str, Any]],
+    source_path: Path,
+    *,
+    source_type: str,
+    process: bool,
+    dry_run: bool,
+    addons: str,
+    calendar: str,
+) -> dict[str, Any]:
+    """Create a meeting folder from normalized fields, shared by Krisp and manual intake."""
     config = load_config()
-    payload = read_json(payload_path)
-    fields = extract_payload_fields(payload)
-    if fields["event_type"] != "transcript_created":
-        return {"status": "skipped", "reason": f"event_type={fields['event_type']}", "payload_path": str(payload_path)}
-    transcript, utterances = build_transcript(fields)
     gate = quality_gate(fields, transcript, config)
-    manifest = manifest_seed(fields, transcript, payload_path)
+    manifest = manifest_seed(fields, transcript, source_path, source_type=source_type)
     manifest["quality"] = gate
     manifest["transcript_analysis"] = gate["transcript_analysis"]
     manifest["utterance_count"] = len(utterances)
+    if calendar == "off":
+        manifest["calendar_match"] = {"status": "disabled", "confidence": 0.0, "rationale": "calendar add-on disabled by CLI"}
+    elif not should_run_calendar(calendar, config):
+        manifest["calendar_match"] = {"status": "not_requested", "confidence": 0.0, "rationale": "calendar add-on disabled by config"}
+    else:
+        calendar_match = run_calendar_match(manifest, transcript, config, dry_run=dry_run)
+        manifest["calendar_match"] = calendar_match
+        if calendar_match.get("status") in {"no_match", "error"}:
+            gate.setdefault("warnings", []).append(f"calendar_{calendar_match.get('status')}")
+            if gate.get("status") == "processable":
+                gate["status"] = "partial"
+        elif calendar_match.get("status") == "matched" and not calendar_match.get("matched"):
+            gate.setdefault("warnings", []).append("calendar_low_confidence")
+            if gate.get("status") == "processable":
+                gate["status"] = "partial"
+        manifest["quality"] = gate
     date_part = manifest["date"]
-    title_part = safe_slug(manifest["title"], "krisp-meeting")
+    title_part = safe_slug(manifest["title"], f"{source_type}-meeting")
     folder_name = f"{date_part}_{title_part}"
-    target_root = PATHS.rejected if gate["status"] == "needs_review" and "transcript_too_short" in ";".join(gate["reasons"]) else PATHS.needs_review if gate["status"] == "needs_review" else PATHS.active
+    reasons_text = ";".join(gate.get("reasons", []))
+    target_root = PATHS.rejected if gate["status"] == "needs_review" and "transcript_too_short" in reasons_text else PATHS.needs_review if gate["status"] == "needs_review" else PATHS.active
     meeting_dir = unique_folder(target_root, folder_name)
     manifest["meeting_id"] = meeting_dir.name
     if dry_run:
-        logging.info("dry-run: would import payload %s to %s", payload_path, meeting_dir)
-        return {"status": gate["status"], "meeting_dir": str(meeting_dir), "dry_run": True, "quality": gate}
+        logging.info("dry-run: would import %s source %s to %s", source_type, source_path, meeting_dir)
+        return {"status": gate["status"], "meeting_dir": str(meeting_dir), "dry_run": True, "quality": gate, "calendar_match": manifest.get("calendar_match")}
     meeting_dir.mkdir(parents=True, exist_ok=False)
     write_text(meeting_dir / "transcript.original.md", transcript, dry_run=False)
     write_text(meeting_dir / "transcript.md", transcript, dry_run=False)
     write_text(meeting_dir / "transcript.jsonl", "\n".join(json.dumps(u, ensure_ascii=False) for u in utterances) + ("\n" if utterances else ""), dry_run=False)
     write_text(meeting_dir / "ENRICHMENT.yaml", render_enrichment(gate["transcript_analysis"]), dry_run=False)
     write_json(meeting_dir / "manifest.json", manifest, dry_run=False)
-    destination = PATHS.rejected_payloads if target_root == PATHS.rejected else PATHS.processed_payloads
-    destination.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(payload_path, destination / payload_path.name)
+    if source_path.exists() and source_path.is_file():
+        destination = PATHS.rejected_payloads if target_root == PATHS.rejected else PATHS.processed_payloads
+        destination.mkdir(parents=True, exist_ok=True)
+        try:
+            shutil.copy2(source_path, destination / source_path.name)
+        except OSError as exc:
+            logging.warning("could not copy source artifact %s: %s", source_path, exc)
     if gate["status"] == "needs_review":
-        notify(meeting_dir, manifest, "needs_review", "; ".join(gate["reasons"]), dry_run=False)
+        notify(meeting_dir, manifest, "needs_review", "; ".join(gate.get("reasons", [])), dry_run=False)
     elif gate["status"] == "partial":
-        notify(meeting_dir, manifest, "partial", "; ".join(gate["warnings"]), dry_run=False)
+        notify(meeting_dir, manifest, "partial", "; ".join(gate.get("warnings", [])), dry_run=False)
     if process and gate["status"] == "processable":
-        return process_meeting(meeting_dir, dry_run=False, addons=addons)
-    return {"status": gate["status"], "meeting_dir": str(meeting_dir), "quality": gate}
+        return process_meeting(meeting_dir, dry_run=False, addons=addons, calendar=calendar)
+    return {"status": gate["status"], "meeting_dir": str(meeting_dir), "quality": gate, "calendar_match": manifest.get("calendar_match")}
+
+def import_payload(payload_path: Path, *, process: bool, dry_run: bool, addons: str, calendar: str) -> dict[str, Any]:
+    """Import one Krisp payload into Active or review/rejected lanes."""
+    payload = read_json(payload_path)
+    fields = extract_payload_fields(payload)
+    if fields["event_type"] != "transcript_created":
+        return {"status": "skipped", "reason": f"event_type={fields['event_type']}", "payload_path": str(payload_path)}
+    transcript, utterances = build_transcript(fields)
+    return create_meeting_from_fields(
+        fields,
+        transcript,
+        utterances,
+        payload_path,
+        source_type="krisp",
+        process=process,
+        dry_run=dry_run,
+        addons=addons,
+        calendar=calendar,
+    )
+
+
+def import_manual(path: Path, *, title: str | None, date: str | None, participants: str | None, duration_seconds: int | None, process: bool, dry_run: bool, addons: str, calendar: str) -> dict[str, Any]:
+    """Import a manually supplied transcript into the same pipeline."""
+    fields, transcript, utterances = read_manual_transcript(
+        path,
+        title=title,
+        date=date,
+        participants=participants,
+        duration_seconds=duration_seconds,
+    )
+    return create_meeting_from_fields(
+        fields,
+        transcript,
+        utterances,
+        path,
+        source_type="manual",
+        process=process,
+        dry_run=dry_run,
+        addons=addons,
+        calendar=calendar,
+    )
 
 
 def load_block_specs() -> dict[str, dict[str, Any]]:
@@ -606,7 +814,7 @@ def generate_block(meeting_dir: Path, block_id: str, spec: dict[str, Any], manif
     return not partial, "ok" if not partial else "fallback_generated"
 
 
-def process_meeting(meeting_dir: Path, *, dry_run: bool, addons: str) -> dict[str, Any]:
+def process_meeting(meeting_dir: Path, *, dry_run: bool, addons: str, calendar: str = "auto") -> dict[str, Any]:
     """Process one meeting into block files and monthly archive."""
     if not meeting_dir.exists() or not meeting_dir.is_dir():
         raise PipelineError(f"meeting folder not found: {meeting_dir}")
@@ -623,6 +831,18 @@ def process_meeting(meeting_dir: Path, *, dry_run: bool, addons: str) -> dict[st
         manifest["title"] = str(enrichment["title_override"]).strip()
     manifest["status"] = "processing"
     manifest.setdefault("timestamps", {})["processing_started_at"] = utc_now()
+    config = load_config()
+    existing_calendar_status = str((manifest.get("calendar_match") or {}).get("status") or "") if isinstance(manifest.get("calendar_match"), dict) else ""
+    if calendar == "off":
+        manifest["calendar_match"] = {"status": "disabled", "confidence": 0.0, "rationale": "calendar add-on disabled by CLI"}
+    elif not should_run_calendar(calendar, config):
+        if not manifest.get("calendar_match") or existing_calendar_status in {"disabled", "not_requested"}:
+            manifest["calendar_match"] = {"status": "not_requested", "confidence": 0.0, "rationale": "calendar add-on disabled by config"}
+    elif calendar == "on" or not manifest.get("calendar_match") or existing_calendar_status in {"disabled", "not_requested", "dry_run", "error", "unavailable"}:
+        calendar_match = run_calendar_match(manifest, transcript, config, dry_run=dry_run)
+        manifest["calendar_match"] = calendar_match
+        if calendar_match.get("status") in {"no_match", "error"} or (calendar_match.get("status") == "matched" and not calendar_match.get("matched")):
+            manifest.setdefault("quality", {}).setdefault("warnings", []).append(f"calendar_{calendar_match.get('status')}")
     write_json(meeting_dir / "manifest.json", manifest, dry_run=dry_run)
     specs = load_block_specs()
     selected = select_blocks(transcript, addons, specs)
@@ -642,7 +862,7 @@ def process_meeting(meeting_dir: Path, *, dry_run: bool, addons: str) -> dict[st
     if partial:
         notify(meeting_dir, manifest, "partial", f"block failures: {failed}", dry_run=dry_run)
     archive_result = archive_monthly(meeting_dir, manifest, dry_run=dry_run)
-    return {"status": manifest["status"], "meeting_dir": str(meeting_dir), "blocks": manifest["block_completion"], "archive": archive_result}
+    return {"status": manifest["status"], "meeting_dir": str(meeting_dir), "blocks": manifest["block_completion"], "calendar_match": manifest.get("calendar_match"), "archive": archive_result}
 
 
 def archive_monthly(meeting_dir: Path, manifest: dict[str, Any], *, dry_run: bool) -> dict[str, Any]:
@@ -714,9 +934,9 @@ def notify_via_zo_ask(event: dict[str, Any]) -> None:
         logging.warning("zo_ask notification failed: %s", exc)
 
 
-def reprocess_meeting(meeting_dir: Path, *, dry_run: bool, addons: str) -> dict[str, Any]:
+def reprocess_meeting(meeting_dir: Path, *, dry_run: bool, addons: str, calendar: str = "auto") -> dict[str, Any]:
     """Reprocess from immutable transcript plus ENRICHMENT.yaml."""
-    return process_meeting(meeting_dir, dry_run=dry_run, addons=addons)
+    return process_meeting(meeting_dir, dry_run=dry_run, addons=addons, calendar=calendar)
 
 
 def status_command() -> dict[str, Any]:
@@ -745,17 +965,31 @@ def build_parser() -> argparse.ArgumentParser:
     imp.add_argument("payload", help="Path to webhook JSON payload")
     imp.add_argument("--process", action="store_true", help="Process immediately when quality gate passes")
     imp.add_argument("--addons", choices=["auto", "all", "none"], default=None, help="Add-on block policy")
+    imp.add_argument("--calendar", choices=["auto", "on", "off"], default="auto", help="Optional calendar triangulation policy")
     imp.add_argument("--dry-run", action="store_true", help="Preview writes")
 
     proc = sub.add_parser("process", help="Process one meeting folder")
     proc.add_argument("meeting", help="Meeting folder path")
     proc.add_argument("--addons", choices=["auto", "all", "none"], default=None, help="Add-on block policy")
+    proc.add_argument("--calendar", choices=["auto", "on", "off"], default="auto", help="Optional calendar triangulation policy")
     proc.add_argument("--dry-run", action="store_true", help="Preview writes")
 
     rep = sub.add_parser("reprocess", help="Regenerate from transcript.original.md and ENRICHMENT.yaml")
     rep.add_argument("meeting", help="Meeting folder path")
     rep.add_argument("--addons", choices=["auto", "all", "none"], default=None, help="Add-on block policy")
+    rep.add_argument("--calendar", choices=["auto", "on", "off"], default="auto", help="Optional calendar triangulation policy")
     rep.add_argument("--dry-run", action="store_true", help="Preview writes")
+
+    manual = sub.add_parser("manual", help="Import a manually supplied transcript")
+    manual.add_argument("transcript", help="Path to .md/.txt/.json/.jsonl transcript")
+    manual.add_argument("--title", default=None, help="Human meeting title override")
+    manual.add_argument("--date", default=None, help="Meeting date or ISO start time")
+    manual.add_argument("--participants", default=None, help="Comma-separated participant names/emails")
+    manual.add_argument("--duration-seconds", type=int, default=None, help="Meeting duration in seconds")
+    manual.add_argument("--process", action="store_true", help="Process immediately when quality gate passes")
+    manual.add_argument("--addons", choices=["auto", "all", "none"], default=None, help="Add-on block policy")
+    manual.add_argument("--calendar", choices=["auto", "on", "off"], default="auto", help="Optional calendar triangulation policy")
+    manual.add_argument("--dry-run", action="store_true", help="Preview writes")
 
     sub.add_parser("status", help="Show queue/archive status")
     return parser
@@ -780,11 +1014,23 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "init":
             result = init_command(dry_run=args.dry_run)
         elif args.command == "import":
-            result = import_payload(Path(args.payload).expanduser().resolve(), process=args.process, dry_run=args.dry_run, addons=effective_addons(args.addons))
+            result = import_payload(Path(args.payload).expanduser().resolve(), process=args.process, dry_run=args.dry_run, addons=effective_addons(args.addons), calendar=args.calendar)
         elif args.command == "process":
-            result = process_meeting(Path(args.meeting).expanduser().resolve(), dry_run=args.dry_run, addons=effective_addons(args.addons))
+            result = process_meeting(Path(args.meeting).expanduser().resolve(), dry_run=args.dry_run, addons=effective_addons(args.addons), calendar=args.calendar)
+        elif args.command == "manual":
+            result = import_manual(
+                Path(args.transcript).expanduser().resolve(),
+                title=args.title,
+                date=args.date,
+                participants=args.participants,
+                duration_seconds=args.duration_seconds,
+                process=args.process,
+                dry_run=args.dry_run,
+                addons=effective_addons(args.addons),
+                calendar=args.calendar,
+            )
         elif args.command == "reprocess":
-            result = reprocess_meeting(Path(args.meeting).expanduser().resolve(), dry_run=args.dry_run, addons=effective_addons(args.addons))
+            result = reprocess_meeting(Path(args.meeting).expanduser().resolve(), dry_run=args.dry_run, addons=effective_addons(args.addons), calendar=args.calendar)
         elif args.command == "status":
             result = status_command()
         else:  # pragma: no cover

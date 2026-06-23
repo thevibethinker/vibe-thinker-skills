@@ -1,10 +1,10 @@
 ---
 name: krisp-meeting-blocks
-description: Portable Krisp transcript ingestion and meeting block pipeline for Zo Computer. Receives Krisp transcript webhooks, normalizes meetings into repairable folders, generates summary/metadata/decisions/action-item blocks, supports richer v3-style add-on blocks, archives monthly, and notifies the Zo owner when a meeting is partial or needs review.
+description: Portable Krisp transcript ingestion and meeting block pipeline for Zo Computer. Receives Krisp transcript webhooks or manual transcript files, normalizes meetings into repairable folders, optionally triangulates against calendar context, generates summary/metadata/decisions/action-item blocks, supports richer v3-style add-on blocks, archives monthly, and notifies the Zo owner when a meeting is partial or needs review.
 compatibility: Created for Zo Computer
 metadata:
   author: va.zo.computer
-  version: "1.0.0"
+  version: "1.1.0"
   created: 2026-06-23
   last_modified: 2026-06-23
 ---
@@ -20,15 +20,17 @@ Use this skill when you want another Zo to set up its own version of V's Krisp-b
 A standalone pipeline:
 
 1. **Krisp webhook route** receives `transcript_created` events.
-2. **Normalizer** writes source payloads and a canonical meeting folder.
-3. **Quality gate** decides whether the meeting can be processed, is partial, or needs review.
-4. **Repair surface** writes `ENRICHMENT.yaml` and immutable `transcript.original.md`.
-5. **Block generator** writes always-on blocks:
+2. **Manual ingestion** imports `.md`, `.txt`, `.json`, or `.jsonl` transcripts without Krisp.
+3. **Normalizer** writes source payloads/files and a canonical meeting folder.
+4. **Quality gate** decides whether the meeting can be processed, is partial, or needs review.
+5. **Optional calendar add-on** asks the target Zo to match likely calendar events when enabled.
+6. **Repair surface** writes `ENRICHMENT.yaml` and immutable `transcript.original.md`.
+7. **Block generator** writes always-on blocks:
    - `summary.md`
    - `metadata.md`
    - `decisions.md`
    - `action_items.md`
-6. **Add-on block layer** can generate richer v3-inspired blocks:
+8. **Add-on block layer** can generate richer v3-inspired blocks:
    - `open_questions.md`
    - `key_moments.md`
    - `stakeholder_intelligence.md`
@@ -39,8 +41,8 @@ A standalone pipeline:
    - `plan_of_action.md`
    - `thought_provoking_ideas.md`
    - `decision_rationale.md`
-7. **Monthly archive** moves terminal meetings under `Personal/Meetings/YYYY/MM-Month/`.
-8. **Notification hook** notifies the Zo owner when a meeting is partial or needs review.
+9. **Monthly archive** moves terminal meetings under `Personal/Meetings/YYYY/MM-Month/`.
+10. **Notification hook** notifies the Zo owner when a meeting is partial or needs review.
 
 ## Install
 
@@ -67,7 +69,7 @@ In [Settings > Advanced](/?t=settings&s=advanced), add:
 
 - `KRISP_WEBHOOK_SECRET` — any strong random token. Krisp/the webhook caller must send it as `Authorization: Bearer <token>`.
 - `ZO_CLIENT_IDENTITY_TOKEN` — normally already present inside Zo runtime for `/zo/ask` calls.
-- Optional: `MEETING_BLOCK_MODEL_NAME` — override the model used for block generation.
+- Optional: `MEETING_BLOCK_MODEL_NAME` — override the model used for block generation/calendar matching.
 
 ### 2. Create the zo.space Route
 
@@ -108,7 +110,10 @@ Send the configured bearer token in the `Authorization` header.
 python3 Skills/krisp-meeting-blocks/scripts/krisp_blocks.py init [--dry-run]
 
 # Import one Krisp payload saved by the zo.space route
-python3 Skills/krisp-meeting-blocks/scripts/krisp_blocks.py import /path/to/payload.json [--process] [--dry-run]
+python3 Skills/krisp-meeting-blocks/scripts/krisp_blocks.py import /path/to/payload.json [--process] [--calendar auto|on|off] [--dry-run]
+
+# Import a manually supplied transcript
+python3 Skills/krisp-meeting-blocks/scripts/krisp_blocks.py manual /path/to/transcript.md --title "Customer Call" --date 2026-06-23 --participants "Alex,V" [--process] [--calendar auto|on|off] [--dry-run]
 
 # Process one meeting folder into blocks and monthly archive
 python3 Skills/krisp-meeting-blocks/scripts/krisp_blocks.py process Personal/Meetings/Active/<meeting-folder> [--addons auto|all|none] [--dry-run]
@@ -119,6 +124,30 @@ python3 Skills/krisp-meeting-blocks/scripts/krisp_blocks.py reprocess Personal/M
 # Show active/review/archived status
 python3 Skills/krisp-meeting-blocks/scripts/krisp_blocks.py status
 ```
+
+
+## Manual Ingestion
+
+Manual ingestion is first-class. Use it for pasted transcripts, exported notes, historical backfill, or non-Krisp sources that can be represented as text. Supported inputs:
+
+- `.md` / `.txt` — raw transcript text
+- `.json` — object with `text`/`transcript`/`raw_content`, optional `title`, `date`, `participants`, `duration_seconds`
+- `.jsonl` — one utterance per line with `speaker` and `text` fields
+
+Manual imports produce the same meeting folder contract as Krisp imports: immutable `transcript.original.md`, editable `transcript.md`, `ENRICHMENT.yaml`, `manifest.json`, block outputs, review/partial notifications, and monthly archive.
+
+## Optional Calendar Add-on
+
+Calendar triangulation is opt-in and non-blocking. Enable it with either:
+
+```yaml
+calendar:
+  enabled: true
+  window_hours: 8
+  min_confidence: 0.6
+```
+
+or pass `--calendar on`. The skill asks the current Zo to inspect the owner's calendar context and return a compact match object. If calendar access is unavailable or the match is low-confidence, the meeting still imports/processes; the manifest records `calendar_match.status` and warnings instead of failing the pipeline.
 
 ## Storage Contract
 
@@ -145,6 +174,7 @@ Each meeting folder contains:
 manifest.json
 transcript.original.md      # immutable source transcript
 transcript.md               # working/repaired transcript
+transcript.jsonl            # structured utterances when available
 ENRICHMENT.yaml             # editable repair surface
 summary.md
 metadata.md
@@ -186,6 +216,26 @@ Default behavior is portable and auditable:
 
 The skill never hardcodes V's Telegram handle, phone, email, or private notification routes.
 
+## Manual Ingestion
+
+Manual ingestion is first-class, not a separate mini-pipeline. It supports:
+
+- `.md` / `.txt`: imported as plain transcript text.
+- `.json`: accepts keys such as `text`, `transcript`, `title`, `date`, `participants`, `utterances`, and `duration_seconds`.
+- `.jsonl`: one utterance per line with `speaker`, `text`, `start_ms`, and `end_ms` when present.
+
+The manual path writes the same artifacts as Krisp intake and can immediately process/archive with `--process`.
+
+## Optional Calendar Add-on
+
+Calendar triangulation is opt-in and non-blocking:
+
+- `--calendar off` records `calendar_match.status = disabled`.
+- `--calendar auto` follows `config.yaml` (`calendar.enabled`).
+- `--calendar on` forces a read-only calendar matching attempt.
+
+The calendar add-on asks the target Zo to search its connected calendar around the meeting date/title/participants and return a JSON match record. It never creates or edits calendar events. If calendar access is unavailable or low-confidence, the meeting can still process; the result is recorded in `manifest.json` and may mark the meeting partial rather than blocked.
+
 ## Block Specs
 
 Block specs live in `block_specs/*.yaml`. The always-on set is intentionally small and portable. Rich v3-style blocks are declared as add-ons and can be generated with `--addons auto` or `--addons all`.
@@ -196,4 +246,4 @@ Block specs live in `block_specs/*.yaml`. The always-on set is intentionally sma
 - Processing is a pipeline: import → enrich → gate → blocks → archive.
 - State is visible: manifest status, quality flags, block completion, and notifications are recorded.
 - Monthly archive is the default terminal structure.
-- Portable first: no dependency on V's CRM, calendar, research repos, or private N5 scripts.
+- Portable first: no dependency on V's CRM, research repos, or private N5 scripts. Calendar is optional and delegated to the target Zo's own connected calendar.
