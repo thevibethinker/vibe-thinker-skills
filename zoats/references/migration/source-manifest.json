@@ -1,0 +1,28 @@
+{
+  "source_repo": "https://github.com/thevibethinker/ZoATS",
+  "source_visibility": "PRIVATE",
+  "source_commit": "c71739429bfb5439db259b3a9d4967da37f923ba",
+  "migration_conversation": "con_HHuBhesytA3LqFk7",
+  "migrated_at_utc": "2026-06-22T22:49:00Z",
+  "destination": "Skills/zoats",
+  "deletion_status": "archived_not_deleted",
+  "excluded_from_skill_copy": [
+    ".git/",
+    "config/settings.json",
+    "inbox_drop runtime contents",
+    "logs/",
+    "jobs/[redacted-private-job-slug-1]/",
+    "jobs/[redacted-private-job-slug-2]/",
+    "jobs/smoke-test/",
+    "placeholder_scan_report.json",
+    "workers/scoring/_archive/main_v3_semantic.py",
+    "workers/scoring/_archive/main_v3_semantic.py.broken"
+  ],
+  "archived_at_utc": "2026-06-23T06:57:41Z",
+  "archive_verified": {
+    "nameWithOwner": "thevibethinker/ZoATS",
+    "isArchived": true,
+    "isPrivate": true,
+    "url": "https://github.com/thevibethinker/ZoATS"
+  }
+}

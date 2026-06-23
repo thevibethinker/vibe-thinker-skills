@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Candidate",
+  "description": "Schema for candidate/applicant data in ZoATS",
+  "type": "object",
+  "required": ["id", "name", "job_id", "status", "created_at"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique candidate identifier",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Candidate full name"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Candidate email address"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Contact phone number"
+    },
+    "job_id": {
+      "type": "string",
+      "description": "Job requisition ID"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["new", "screening", "interview", "offer", "hired", "rejected", "withdrawn"],
+      "description": "Current candidate status"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["email", "upload", "referral", "api", "manual"],
+      "description": "How candidate entered system"
+    },
+    "resume_path": {
+      "type": "string",
+      "description": "Path to resume file"
+    },
+    "parsed_data": {
+      "type": "object",
+      "description": "Extracted resume data",
+      "properties": {
+        "skills": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "experience_years": {
+          "type": "number"
+        },
+        "education": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "degree": {"type": "string"},
+              "institution": {"type": "string"},
+              "year": {"type": "integer"}
+            }
+          }
+        },
+        "previous_roles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {"type": "string"},
+              "company": {"type": "string"},
+              "duration": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "scores": {
+      "type": "object",
+      "description": "Scoring results",
+      "properties": {
+        "overall": {"type": "number", "minimum": 0, "maximum": 100},
+        "technical": {"type": "number", "minimum": 0, "maximum": 100},
+        "culture_fit": {"type": "number", "minimum": 0, "maximum": 100},
+        "experience": {"type": "number", "minimum": 0, "maximum": 100}
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "tags": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "notes": {
+      "type": "string",
+      "description": "Internal notes"
+    }
+  }
+}

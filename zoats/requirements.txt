@@ -1,0 +1,17 @@
+# ZoATS Python dependencies
+# Install: pip install -r requirements.txt
+
+# PDF parsing (fallback chain: pdfminer → pypdf → PyPDF2)
+pdfminer.six>=20221105
+pypdf>=3.0.0
+PyPDF2>=3.0.0
+
+# Document parsing
+python-docx>=0.8.11
+
+# Google Sheets integration (job sourcing)
+gspread>=5.0.0
+oauth2client>=4.1.3
+
+# Validation used by shipped smoke tests
+jsonschema>=4.0.0

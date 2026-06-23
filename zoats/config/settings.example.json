@@ -1,0 +1,18 @@
+{
+  "version": "0.1.0",
+  "jobs_dir": "jobs",
+  "inbox_drop": "inbox_drop",
+  "logs_dir": "logs",
+  "default_job": "",
+  "auto_pipeline": false,
+  "company_name": "Your Company",
+  "company_tagline": "Hiring for the next phase of growth",
+  "careers_intro": "This is a template careers page. Replace the copy and branding before publishing for a live hiring process.",
+  "template_mode": true,
+  "email": {
+    "default_provider": "file",
+    "from_name": "ZoATS",
+    "from_email": "YOUR_EMAIL",
+    "outbox_dir": "outbox"
+  }
+}

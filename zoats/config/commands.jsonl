@@ -1,0 +1,7 @@
+{"command": "job-source-extract", "file": "commands/job-source-extract.md", "description": "Extract job posting from URL and add to tracking", "category": "jobs", "status": "active", "type": "operator", "script": "scripts/n5_job_source_extract.py"}
+{"command": "job-add", "aliasOf": "job-source-extract", "file": "commands/job-source-extract.md", "description": "Add a job from URL with verification", "category": "jobs", "status": "active", "type": "operator", "script": "scripts/n5_job_source_extract.py"}
+{"command": "jobs-scrape", "file": "commands/jobs-scrape.md", "description": "Scrape open roles from given company list", "category": "jobs", "status": "planned", "type": "operator"}
+{"command": "jobs-review", "file": "commands/jobs-review.md", "description": "TUI to approve/reject PENDING jobs", "category": "jobs", "status": "planned", "type": "operator"}
+{"command": "candidate-intake", "file": "workers/candidate_intake/main.py", "description": "Process new candidate from upload", "category": "candidates", "status": "active", "type": "worker"}
+{"command": "candidate-score", "file": "workers/scoring/main.py", "description": "Score candidate against job rubric", "category": "candidates", "status": "active", "type": "worker"}
+{"command": "pipeline-run", "file": "pipeline/run.py", "description": "Run full candidate processing pipeline", "category": "pipeline", "status": "active", "type": "worker"}

@@ -1,0 +1,5 @@
+{
+  "sheet_id": "YOUR_GOOGLE_SHEET_ID",
+  "credentials_path": "config/credentials/google_service_account.json",
+  "worksheet_index": 0
+}

@@ -1,0 +1,114 @@
+# Instance-specific configuration (do not commit)
+config/settings.json
+
+# Generated/runtime files
+outbox/*.eml
+logs/*.log
+*.pyc
+__pycache__/
+.DS_Store
+
+# ==========================================
+# CANDIDATE DATA - NEVER COMMIT
+# ==========================================
+# All candidate folders and resume files
+jobs/*/candidates/
+jobs/*/candidates/**/
+jobs/*/*/candidates/
+**/candidates/**
+
+# Inbox drop areas (where resumes are uploaded)
+jobs/*/inbox_drop/*
+inbox_drop/*
+!inbox_drop/.gitkeep
+**/inbox_drop/*.pdf
+**/inbox_drop/*.docx
+**/inbox_drop/*.doc
+**/inbox_drop/*.txt
+**/inbox_drop/*.rtf
+
+# Private job data
+jobs/*/.private/
+jobs/**/.private/
+
+# Any resume files anywhere
+**/resume.pdf
+**/resume.docx
+**/cv.pdf
+**/cv.docx
+**/*resume*.pdf
+**/*resume*.docx
+**/*cv*.pdf
+**/*cv*.docx
+
+# ==========================================
+# PII PROTECTION - OWNER SPECIFIC
+# ==========================================
+# Block any files containing owner's name
+**/*vrijen*
+**/*Vrijen*
+**/*VRIJEN*
+**/*attawar*
+**/*Attawar*
+**/*ATTAWAR*
+
+# ==========================================
+# TEST & DEVELOPMENT DATA
+# ==========================================
+# Test candidates and sample data
+**/test_*/
+**/sample*/
+**/demo/candidates/
+**/smoke-test/candidates/
+fixtures/resumes/
+fixtures/candidates/
+
+# Records and workspace files
+records/*.md
+!records/.gitkeep
+records/**/*.pdf
+records/**/*.docx
+
+# ==========================================
+# DEVELOPMENT ENVIRONMENT
+# ==========================================
+# Python virtual environment
+venv/
+.venv/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backups
+*.backup
+*.bak
+*~
+
+# ==========================================
+# ADDITIONAL SECURITY
+# ==========================================
+# Approval records that might contain PII
+jobs/*/approvals/
+**/approvals/**
+
+# Any parsed or extracted candidate data
+**/parsed/
+**/outputs/candidate.*
+**/outputs/dossier.*
+**/outputs/scores.*
+**/outputs/*evaluation*
+data/
+
+# Test artifacts
+jobs/*/pipeline_run.json
+**/__pycache__/

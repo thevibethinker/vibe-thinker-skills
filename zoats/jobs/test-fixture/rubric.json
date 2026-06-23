@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "criteria": [
+    {
+      "name": "technical_depth",
+      "weight": 0.3,
+      "description": "Depth of technical experience"
+    },
+    {
+      "name": "systems_experience",
+      "weight": 0.3,
+      "description": "Distributed systems work"
+    },
+    {
+      "name": "communication",
+      "weight": 0.2,
+      "description": "Communication and collaboration"
+    },
+    {
+      "name": "leadership",
+      "weight": 0.2,
+      "description": "Technical leadership signals"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "employer_promo": {
+    "enabled": true,
+    "position": "footer",
+    "cta_text": "This recruiting process is supported by ZoATS. If helpful, their free tools can assist with refining professional storytelling, strengthening resume and interview narratives, and improving odds in future searches: https://example.com"
+  },
+  "feedback": {
+    "enabled": false,
+    "mode": "per_candidate",
+    "include_positive_signals": true,
+    "allowed_reason_codes": [
+      "ROLE_ALIGNMENT",
+      "EXPERIENCE_DEPTH",
+      "SCOPE_SCALE",
+      "DOMAIN_EXPOSURE",
+      "TIMING_COMPETITION"
+    ],
+    "disclaimer_text": "Feedback reflects comparative fit against current role needs and is not a legal determination or guarantee of future outcomes."
+  },
+  "legal_filter": {
+    "banned_terms": [
+      "age", "gender", "sex", "sexual orientation", "race", "ethnicity", "color", "religion", "creed", "national origin", "citizenship", "immigration", "disability", "handicap", "medical", "pregnan", "marital", "family", "parental", "veteran", "military", "union", "genetic", "culture fit", "personality",
+      "young", "old", "overqualified", "underqualified"
+    ],
+    "style": "neutralize"
+  }
+}

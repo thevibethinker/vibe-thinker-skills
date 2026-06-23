@@ -1,0 +1,8 @@
+[
+  {"file": "api-zoats-jobs.ts", "path": "/api/zoats/jobs", "type": "api", "public": true},
+  {"file": "api-zoats-jobs-id.ts", "path": "/api/zoats/jobs/:id", "type": "api", "public": true},
+  {"file": "api-zoats-apply.ts", "path": "/api/zoats/apply", "type": "api", "public": true},
+  {"file": "careers.tsx", "path": "/careers", "type": "page", "public": true},
+  {"file": "careers-detail.tsx", "path": "/careers/:jobId", "type": "page", "public": true},
+  {"file": "careers-apply.tsx", "path": "/careers/:jobId/apply", "type": "page", "public": true}
+]

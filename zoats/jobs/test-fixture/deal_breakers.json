@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "rules": [
+    {
+      "name": "min_experience",
+      "check": "years_experience >= 5",
+      "reason": "Minimum 5 years required"
+    },
+    {
+      "name": "tech_stack",
+      "check": "has_python OR has_go",
+      "reason": "Must know Python or Go"
+    }
+  ]
+}

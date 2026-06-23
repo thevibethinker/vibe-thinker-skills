@@ -1,0 +1,85 @@
+{
+  "tasks": [
+    {
+      "id": "zoats_rejection_drafts_5min",
+      "label": "💾 ATS Rejection Drafts (5‑min, one-at-a-time)",
+      "rrule": "FREQ=HOURLY;BYMINUTE=0,5,10,15,20,25,30,35,40,45,50,55",
+      "instruction": "Read ZoATS and create at most one new rejection draft. Do not send any emails. Steps: 1) cd "${ZOATS_HOME:-${ZOATS_HOME}}" 2) python workers/rejection_email/batch.py --all-jobs --limit 1 --dry-run Success: 0–1 new draft added; draft queued at jobs/{job}/approvals/reject_pending.json; no errors. Error handling: Skip candidates missing required JSON; never send; stop on first error and log.",
+      "enabled": false,
+      "dry_run": true,
+      "artifacts": [
+        "jobs/{job_id}/candidates/{candidate_id}/outputs/rejection_email.md",
+        "jobs/{job_id}/candidates/{candidate_id}/outputs/feedback.json",
+        "jobs/{job_id}/approvals/reject_pending.json"
+      ],
+      "references": [
+        "ZoATS/workers/rejection_email/README.md",
+        "ZoATS/workers/rejection_email/batch.py",
+        "N5/prefs/operations/scheduled-task-protocol.md"
+      ]
+    },
+    {
+      "id": "zoats_candidate_intake_5min",
+      "label": "📥 ATS Candidate Intake (every 5 min)",
+      "rrule": "FREQ=HOURLY;BYMINUTE=0,5,10,15,20,25,30,35,40,45,50,55",
+      "instruction": "cd "${ZOATS_HOME:-${ZOATS_HOME}}" && python workers/candidate_intake/main.py --job $(jq -r .default_job config/settings.json) --dry-run",
+      "enabled": false,
+      "dry_run": true,
+      "references": ["ZoATS/workers/candidate_intake/main.py"]
+    },
+    {
+      "id": "zoats_parser_queue_5min",
+      "label": "🧾 ATS Parser Queue (single)",
+      "rrule": "FREQ=HOURLY;BYMINUTE=1,6,11,16,21,26,31,36,41,46,51,56",
+      "instruction": "cd "${ZOATS_HOME:-${ZOATS_HOME}}" && JOB=$(jq -r .default_job config/settings.json); CAND=$(ls jobs/$JOB/candidates | while read C; do test -f jobs/$JOB/candidates/$C/raw/* 2>/dev/null && test ! -f jobs/$JOB/candidates/$C/parsed/fields.json && echo $C && break; done); if [ -n \"$CAND\" ]; then python workers/parser/main.py --job $JOB --candidate $CAND --dry-run; fi",
+      "enabled": false,
+      "dry_run": true,
+      "references": ["ZoATS/workers/parser/main.py"]
+    },
+    {
+      "id": "zoats_scoring_queue_5min",
+      "label": "🧠 ATS Scoring Queue (single)",
+      "rrule": "FREQ=HOURLY;BYMINUTE=2,7,12,17,22,27,32,37,42,47,52,57",
+      "instruction": "cd "${ZOATS_HOME:-${ZOATS_HOME}}" && JOB=$(jq -r .default_job config/settings.json); CAND=$(ls jobs/$JOB/candidates | while read C; do test -f jobs/$JOB/candidates/$C/parsed/text.md && test ! -f jobs/$JOB/candidates/$C/outputs/gestalt_evaluation.json && echo $C && break; done); if [ -n \"$CAND\" ]; then python workers/scoring/main_gestalt.py --job $JOB --candidate $CAND --dry-run; python workers/dossier/main.py --job $JOB --candidate $CAND --dry-run; fi",
+      "enabled": false,
+      "dry_run": true,
+      "references": ["ZoATS/workers/scoring/main_gestalt.py","ZoATS/workers/dossier/main.py"]
+    },
+    {
+      "id": "zoats_maybe_clarification_drafts_5min",
+      "label": "✉️ ATS MAYBE Clarification Drafts (single)",
+      "rrule": "FREQ=HOURLY;BYMINUTE=3,8,13,18,23,28,33,38,43,48,53,58",
+      "instruction": "cd "${ZOATS_HOME:-${ZOATS_HOME}}" && python workers/maybe_email/batch.py --all-jobs --dry-run",
+      "enabled": false,
+      "dry_run": true,
+      "references": ["ZoATS/workers/maybe_email/batch.py"]
+    },
+    {
+      "id": "zoats_clarification_response_monitor_10min",
+      "label": "📬 ATS Clarification Response Monitor",
+      "rrule": "FREQ=HOURLY;BYMINUTE=0,10,20,30,40,50",
+      "instruction": "cd "${ZOATS_HOME:-${ZOATS_HOME}}" && python workers/clarification/track_responses.py --job $(jq -r .default_job config/settings.json) --dry-run",
+      "enabled": false,
+      "dry_run": true,
+      "references": ["ZoATS/workers/clarification/track_responses.py"]
+    },
+    {
+      "id": "zoats_clarification_reeval_5min",
+      "label": "🔁 ATS Clarification Re-evaluation (single)",
+      "rrule": "FREQ=HOURLY;BYMINUTE=4,9,14,19,24,29,34,39,44,49,54,59",
+      "instruction": "cd "${ZOATS_HOME:-${ZOATS_HOME}}" && JOB=$(jq -r .default_job config/settings.json); TASK=$(ls jobs/$JOB/reevaluation_queue 2>/dev/null | head -n1); if [ -n \"$TASK\" ]; then CAND=$(echo \"$TASK\" | sed 's/_reeval\\.json$//'); python workers/clarification/reevaluate.py --job $JOB --candidate $CAND --dry-run; fi",
+      "enabled": false,
+      "dry_run": true,
+      "references": ["ZoATS/workers/clarification/reevaluate.py"]
+    },
+    {
+      "id": "zoats_dossier_backfill_5min",
+      "label": "📄 ATS Dossier Backfill (single)",
+      "rrule": "FREQ=HOURLY;BYMINUTE=6,16,26,36,46,56",
+      "instruction": "cd "${ZOATS_HOME:-${ZOATS_HOME}}" && JOB=$(jq -r .default_job config/settings.json); CAND=$(ls jobs/$JOB/candidates | while read C; do test -f jobs/$JOB/candidates/$C/outputs/gestalt_evaluation.json && test ! -f jobs/$JOB/candidates/$C/outputs/dossier.md && echo $C && break; done); if [ -n \"$CAND\" ]; then python workers/dossier/main.py --job $JOB --candidate $CAND --dry-run; fi",
+      "enabled": false,
+      "dry_run": true,
+      "references": ["ZoATS/workers/dossier/main.py"]
+    }
+  ]
+}
