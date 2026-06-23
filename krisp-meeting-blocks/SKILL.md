@@ -4,7 +4,7 @@ description: Portable Krisp transcript ingestion and meeting block pipeline for 
 compatibility: Created for Zo Computer
 metadata:
   author: va.zo.computer
-  version: "1.1.0"
+  version: "1.2.0"
   created: 2026-06-23
   last_modified: 2026-06-23
 ---
@@ -159,6 +159,7 @@ Personal/
       processed/            # copied processed payloads
       rejected/             # too short / invalid payloads
       notifications.jsonl   # local notification ledger
+      dedup_ledger.jsonl    # idempotency ledger (dedupes re-deliveries)
   Meetings/
     Active/                 # in-flight folders
     Needs-Review/           # optional review lane for blocked imports
@@ -247,3 +248,16 @@ Block specs live in `block_specs/*.yaml`. The always-on set is intentionally sma
 - State is visible: manifest status, quality flags, block completion, and notifications are recorded.
 - Monthly archive is the default terminal structure.
 - Portable first: no dependency on V's CRM, research repos, or private N5 scripts. Calendar is optional and delegated to the target Zo's own connected calendar.
+
+## Reliability & Idempotency
+
+This pipeline is hardened against the three most common failure modes for a handed-off meeting system:
+
+**1. Duplicate delivery is deduped.** Every import/process records an entry in `dedup_ledger.jsonl` keyed by a stable `dedup_key`:
+- Krisp re-deliveries key on `event_id`, then `meeting_id`.
+- Manual/text sources key on a SHA-256 content hash.
+A second delivery of the same logical meeting returns `status: existing` (reason `dedup_ledger_match`) instead of creating a duplicate folder. If the original was already archived, the ledger resolves the archived path rather than treating it as new.
+
+**2. The calendar add-on never blocks block generation.** Calendar triangulation is best-effort enrichment only. A `no_match`, `error`, `unavailable`, or low-confidence result annotates `manifest.calendar_match` and may mark the meeting `partial`, but the always-on blocks are still generated and the meeting still archives monthly. Calendar access being unavailable can never strand a meeting in `Active/`.
+
+**3. Partial and needs-review meetings always notify.** Whenever a meeting is classified `needs_review` or `partial` (short/invalid transcript, generic-speaker-without-context, calendar miss, or any block falling back), the pipeline both appends an event to `notifications.jsonl` and mirrors that event into `manifest.notifications[]`, so the signal survives archival and is auditable in the meeting folder itself.

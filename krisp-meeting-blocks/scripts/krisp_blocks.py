@@ -141,6 +141,83 @@ def append_jsonl(path: Path, event: dict[str, Any], *, dry_run: bool) -> None:
         handle.write(json.dumps(event, ensure_ascii=False) + "\n")
 
 
+DEDUP_LEDGER = INTEGRATION_DIR / "dedup_ledger.jsonl"
+
+
+def dedup_key(fields: dict[str, Any], source_type: str) -> str:
+    """Build a stable idempotency key for a meeting source.
+
+    Krisp re-deliveries share event_id/meeting_id, so those are preferred.
+    Manual/text sources fall back to a content hash so identical re-imports
+    collapse to one logical meeting.
+    """
+    event_id = str(fields.get("event_id") or "").strip()
+    meeting_id = str(fields.get("meeting_id") or "").strip()
+    if event_id:
+        return f"{source_type}:event:{event_id}"
+    if meeting_id:
+        return f"{source_type}:meeting:{meeting_id}"
+    raw = str(fields.get("raw_content") or "")
+    digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:32]
+    return f"{source_type}:content:{digest}"
+
+
+def _read_dedup_ledger() -> list[dict[str, Any]]:
+    """Read all dedup ledger entries; tolerate a missing or partial file."""
+    if not DEDUP_LEDGER.exists():
+        return []
+    entries: list[dict[str, Any]] = []
+    for line in DEDUP_LEDGER.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(row, dict):
+            entries.append(row)
+    return entries
+
+
+def _resolve_archived(row: dict[str, Any]) -> Path | None:
+    """Best-effort lookup of an archived meeting folder for a stale ledger row."""
+    meeting_id = str(row.get("meeting_id") or "").strip()
+    if not meeting_id:
+        return None
+    for year_dir in MEETINGS_ROOT.glob("20[0-9][0-9]"):
+        if not year_dir.is_dir():
+            continue
+        candidate = next((c for c in year_dir.rglob(meeting_id) if c.is_dir()), None)
+        if candidate is not None:
+            return candidate
+    return None
+
+
+def dedup_ledger_has(key: str) -> dict[str, Any] | None:
+    """Return the most recent ledger entry for key whose meeting still exists."""
+    if not key:
+        return None
+    match: dict[str, Any] | None = None
+    for row in _read_dedup_ledger():
+        if row.get("dedup_key") != key:
+            continue
+        meeting_dir = row.get("meeting_dir")
+        if meeting_dir and not Path(meeting_dir).exists():
+            archived = _resolve_archived(row)
+            if archived is not None:
+                row = {**row, "meeting_dir": str(archived)}
+            else:
+                continue
+        match = row
+    return match
+
+
+def record_dedup_ledger(entry: dict[str, Any], *, dry_run: bool) -> None:
+    """Append an idempotency record for a processed/imported meeting."""
+    append_jsonl(DEDUP_LEDGER, entry, dry_run=dry_run)
+
+
 def safe_slug(value: str, fallback: str = "meeting") -> str:
     """Return a filesystem-safe slug."""
     slug = re.sub(r"[^a-zA-Z0-9._-]+", "-", str(value or "").strip()).strip("-._")
@@ -588,8 +665,12 @@ def create_meeting_from_fields(
 ) -> dict[str, Any]:
     """Create a meeting folder from normalized fields, shared by Krisp and manual intake."""
     config = load_config()
+    dedup_key_value = dedup_key(fields, source_type)
+    if dedup_ledger_has(dedup_key_value):
+        return {"status": "existing", "reason": "dedup_ledger_match", "dedup_key": dedup_key_value, "source_type": source_type, "source_path": str(source_path)}
     gate = quality_gate(fields, transcript, config)
     manifest = manifest_seed(fields, transcript, source_path, source_type=source_type)
+    manifest["dedup_key"] = dedup_key_value
     manifest["quality"] = gate
     manifest["transcript_analysis"] = gate["transcript_analysis"]
     manifest["utterance_count"] = len(utterances)
@@ -600,12 +681,8 @@ def create_meeting_from_fields(
     else:
         calendar_match = run_calendar_match(manifest, transcript, config, dry_run=dry_run)
         manifest["calendar_match"] = calendar_match
-        if calendar_match.get("status") in {"no_match", "error"}:
+        if calendar_match.get("status") in {"no_match", "error"} or (calendar_match.get("status") == "matched" and not calendar_match.get("matched")):
             gate.setdefault("warnings", []).append(f"calendar_{calendar_match.get('status')}")
-            if gate.get("status") == "processable":
-                gate["status"] = "partial"
-        elif calendar_match.get("status") == "matched" and not calendar_match.get("matched"):
-            gate.setdefault("warnings", []).append("calendar_low_confidence")
             if gate.get("status") == "processable":
                 gate["status"] = "partial"
         manifest["quality"] = gate
@@ -636,8 +713,12 @@ def create_meeting_from_fields(
         notify(meeting_dir, manifest, "needs_review", "; ".join(gate.get("reasons", [])), dry_run=False)
     elif gate["status"] == "partial":
         notify(meeting_dir, manifest, "partial", "; ".join(gate.get("warnings", [])), dry_run=False)
-    if process and gate["status"] == "processable":
+    # Auto-process both clean and partial meetings; only needs_review is held back
+    # for human repair. A partial meeting (e.g. calendar miss or short transcript)
+    # must still get its blocks generated and be archived, not stranded in Active.
+    if process and gate["status"] in {"processable", "partial"}:
         return process_meeting(meeting_dir, dry_run=False, addons=addons, calendar=calendar)
+    record_dedup_ledger({"dedup_key": dedup_key_value, "status": gate["status"], "meeting_dir": str(meeting_dir), "source_type": source_type, "source_path": str(source_path), "meeting_id": manifest["meeting_id"], "title": manifest["title"], "calendar_match": manifest.get("calendar_match"), "at": utc_now()}, dry_run=dry_run)
     return {"status": gate["status"], "meeting_dir": str(meeting_dir), "quality": gate, "calendar_match": manifest.get("calendar_match")}
 
 def import_payload(payload_path: Path, *, process: bool, dry_run: bool, addons: str, calendar: str) -> dict[str, Any]:
@@ -843,6 +924,8 @@ def process_meeting(meeting_dir: Path, *, dry_run: bool, addons: str, calendar: 
         manifest["calendar_match"] = calendar_match
         if calendar_match.get("status") in {"no_match", "error"} or (calendar_match.get("status") == "matched" and not calendar_match.get("matched")):
             manifest.setdefault("quality", {}).setdefault("warnings", []).append(f"calendar_{calendar_match.get('status')}")
+            if manifest.get("status") == "processing":
+                manifest["status"] = "partial"
     write_json(meeting_dir / "manifest.json", manifest, dry_run=dry_run)
     specs = load_block_specs()
     selected = select_blocks(transcript, addons, specs)
@@ -861,6 +944,8 @@ def process_meeting(meeting_dir: Path, *, dry_run: bool, addons: str, calendar: 
     write_json(meeting_dir / "manifest.json", manifest, dry_run=dry_run)
     if partial:
         notify(meeting_dir, manifest, "partial", f"block failures: {failed}", dry_run=dry_run)
+    if not dry_run:
+        record_dedup_ledger({"dedup_key": manifest.get("dedup_key") or dedup_key(manifest, "process"), "status": manifest["status"], "meeting_dir": str(meeting_dir), "source_type": str(manifest.get("source", {}).get("type") or "unknown"), "source_path": str((manifest.get("source") or {}).get("source_path") or (manifest.get("source") or {}).get("source_file") or ""), "meeting_id": manifest.get("meeting_id"), "title": manifest.get("title"), "calendar_match": manifest.get("calendar_match"), "at": utc_now()}, dry_run=False)
     archive_result = archive_monthly(meeting_dir, manifest, dry_run=dry_run)
     return {"status": manifest["status"], "meeting_dir": str(meeting_dir), "blocks": manifest["block_completion"], "calendar_match": manifest.get("calendar_match"), "archive": archive_result}
 
@@ -909,6 +994,12 @@ def notify(meeting_dir: Path, manifest: dict[str, Any], level: str, reason: str,
         run_notify_command(command, event)
     elif mode == "zo_ask":
         notify_via_zo_ask(event)
+    # Mirror the event onto the in-memory manifest the caller still holds so a
+    # later archive write does not clobber it, then persist immediately.
+    notifications = manifest.setdefault("notifications", [])
+    if isinstance(notifications, list):
+        notifications.append(event)
+        write_json(meeting_dir / "manifest.json", manifest, dry_run=False)
 
 
 def run_notify_command(command: str, event: dict[str, Any]) -> None:
