@@ -3,6 +3,10 @@ min_duration_seconds: 120
 addons_default: auto
 notify_mode: zo_ask
 notify_command: ""
+zo_ask:
+  max_retries: 3
+  retry_base_seconds: 2.0
+  timeout_seconds: 90
 calendar:
   enabled: false
   window_hours: 8

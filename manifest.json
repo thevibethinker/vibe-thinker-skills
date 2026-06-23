@@ -54,7 +54,7 @@
     },
     {
       "slug": "krisp-meeting-blocks",
-      "description": "Portable Krisp and manual transcript ingestion with repairable meeting folders, optional calendar triangulation, monthly archive, block generation, and owner notifications for partial/review meetings."
+      "description": "Portable Krisp/manual meeting transcript pipeline with idempotent ingestion, optional calendar matching, retries, diagnostics, block generation, monthly archive, and owner notifications."
     },
     {
       "slug": "landing-page-generator",

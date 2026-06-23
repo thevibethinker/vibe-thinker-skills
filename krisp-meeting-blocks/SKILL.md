@@ -4,7 +4,7 @@ description: Portable Krisp transcript ingestion and meeting block pipeline for 
 compatibility: Created for Zo Computer
 metadata:
   author: va.zo.computer
-  version: "1.2.0"
+  version: "1.3.0"
   created: 2026-06-23
   last_modified: 2026-06-23
 ---
@@ -71,6 +71,20 @@ In [Settings > Advanced](/?t=settings&s=advanced), add:
 - `ZO_CLIENT_IDENTITY_TOKEN` — normally already present inside Zo runtime for `/zo/ask` calls.
 - Optional: `MEETING_BLOCK_MODEL_NAME` — override the model used for block generation/calendar matching.
 
+### Runtime Reliability Defaults
+
+The default `config.yaml` includes:
+
+```yaml
+zo_ask:
+  max_retries: 3
+  retry_base_seconds: 2.0
+  timeout_seconds: 90
+```
+
+These apply to block generation, calendar matching, and Zo-owner notifications. Transient `/zo/ask` failures are retried with bounded exponential backoff; exhausted retries are recorded as partial block failures instead of crashing the pipeline.
+
+
 ### 2. Create the zo.space Route
 
 Create a zo.space API route using `templates/zo-space-krisp-webhook.ts`.
@@ -92,6 +106,15 @@ Then it spawns:
 ```bash
 python3 Skills/krisp-meeting-blocks/scripts/krisp_blocks.py import <payload-file> --process
 ```
+
+The route also supports `GET` as a lightweight health check and writes importer output to:
+
+```text
+Personal/Integrations/krisp-meeting-blocks/importer.log
+Personal/Integrations/krisp-meeting-blocks/importer.err.log
+```
+
+Set `KRISP_BLOCKS_CALENDAR=on|off|auto` in the zo.space environment if you want the webhook importer to force a calendar policy.
 
 ### 3. Configure Krisp
 
@@ -160,6 +183,9 @@ Personal/
       rejected/             # too short / invalid payloads
       notifications.jsonl   # local notification ledger
       dedup_ledger.jsonl    # idempotency ledger (dedupes re-deliveries)
+      webhook.log           # zo.space route request log
+      importer.log          # background importer stdout
+      importer.err.log      # background importer stderr
   Meetings/
     Active/                 # in-flight folders
     Needs-Review/           # optional review lane for blocked imports
@@ -217,25 +243,6 @@ Default behavior is portable and auditable:
 
 The skill never hardcodes V's Telegram handle, phone, email, or private notification routes.
 
-## Manual Ingestion
-
-Manual ingestion is first-class, not a separate mini-pipeline. It supports:
-
-- `.md` / `.txt`: imported as plain transcript text.
-- `.json`: accepts keys such as `text`, `transcript`, `title`, `date`, `participants`, `utterances`, and `duration_seconds`.
-- `.jsonl`: one utterance per line with `speaker`, `text`, `start_ms`, and `end_ms` when present.
-
-The manual path writes the same artifacts as Krisp intake and can immediately process/archive with `--process`.
-
-## Optional Calendar Add-on
-
-Calendar triangulation is opt-in and non-blocking:
-
-- `--calendar off` records `calendar_match.status = disabled`.
-- `--calendar auto` follows `config.yaml` (`calendar.enabled`).
-- `--calendar on` forces a read-only calendar matching attempt.
-
-The calendar add-on asks the target Zo to search its connected calendar around the meeting date/title/participants and return a JSON match record. It never creates or edits calendar events. If calendar access is unavailable or low-confidence, the meeting can still process; the result is recorded in `manifest.json` and may mark the meeting partial rather than blocked.
 
 ## Block Specs
 

@@ -41,6 +41,9 @@ NOTIFICATION_LEDGER = INTEGRATION_DIR / "notifications.jsonl"
 RUN_LOG = INTEGRATION_DIR / "run.log"
 DEFAULT_MODEL = os.environ.get("MEETING_BLOCK_MODEL_NAME") or os.environ.get("ZO_CURRENT_MODEL_NAME") or os.environ.get("ZO_LAUNCH_MODEL_NAME") or ""
 ZO_API_URL = "https://api.zo.computer/zo/ask"
+ZO_TIMEOUT_SECONDS = 90
+ZO_MAX_RETRIES = 3
+ZO_RETRY_BASE_SECONDS = 2.0
 MIN_TRANSCRIPT_CHARS = 300
 MIN_DURATION_SECONDS = 120
 CALENDAR_DEFAULT_WINDOW_HOURS = 8
@@ -259,6 +262,7 @@ def init_command(dry_run: bool) -> dict[str, Any]:
             "addons_default": "auto",
             "notify_mode": "zo_ask",
             "notify_command": "",
+            "zo_ask": {"max_retries": ZO_MAX_RETRIES, "retry_base_seconds": ZO_RETRY_BASE_SECONDS, "timeout_seconds": ZO_TIMEOUT_SECONDS},
             "calendar": {"enabled": False, "window_hours": CALENDAR_DEFAULT_WINDOW_HOURS, "min_confidence": 0.6},
             "archive": {"structure": "monthly", "root": str(MEETINGS_ROOT)},
         }
@@ -807,8 +811,32 @@ def select_blocks(transcript: str, addons: str, specs: dict[str, dict[str, Any]]
     return list(dict.fromkeys(selected))
 
 
+def zo_ask_runtime_config() -> tuple[int, float, int]:
+    """Return retry/timeout settings for /zo/ask calls."""
+    config = load_config()
+    zo_cfg = config.get("zo_ask") if isinstance(config.get("zo_ask"), dict) else {}
+    try:
+        max_retries = int(zo_cfg.get("max_retries", ZO_MAX_RETRIES) or ZO_MAX_RETRIES)
+    except (TypeError, ValueError):
+        max_retries = ZO_MAX_RETRIES
+    try:
+        retry_base = float(zo_cfg.get("retry_base_seconds", ZO_RETRY_BASE_SECONDS) or ZO_RETRY_BASE_SECONDS)
+    except (TypeError, ValueError):
+        retry_base = ZO_RETRY_BASE_SECONDS
+    try:
+        timeout = int(zo_cfg.get("timeout_seconds", ZO_TIMEOUT_SECONDS) or ZO_TIMEOUT_SECONDS)
+    except (TypeError, ValueError):
+        timeout = ZO_TIMEOUT_SECONDS
+    return max(1, max_retries), max(0.0, retry_base), max(5, timeout)
+
+
+def retry_sleep_seconds(attempt: int, retry_base: float) -> float:
+    """Return bounded exponential backoff seconds for a 1-indexed attempt."""
+    return min(30.0, retry_base * (2 ** max(0, attempt - 1)))
+
+
 def call_zo(prompt: str, model: str | None) -> str:
-    """Call /zo/ask and return block content."""
+    """Call /zo/ask with bounded retries and return block content."""
     token = os.environ.get("ZO_CLIENT_IDENTITY_TOKEN")
     if not token:
         raise PipelineError("ZO_CLIENT_IDENTITY_TOKEN is not set")
@@ -816,22 +844,38 @@ def call_zo(prompt: str, model: str | None) -> str:
     if model:
         body["model_name"] = model
     payload = json.dumps(body).encode("utf-8")
-    req = request.Request(
-        ZO_API_URL,
-        data=payload,
-        headers={"authorization": token, "content-type": "application/json", "accept": "application/json"},
-        method="POST",
-    )
-    try:
-        with request.urlopen(req, timeout=90) as response:
-            data = json.loads(response.read().decode("utf-8"))
-    except error.HTTPError as exc:
-        detail = exc.read().decode("utf-8", errors="replace")[:500]
-        raise PipelineError(f"/zo/ask HTTP {exc.code}: {detail}") from exc
-    except error.URLError as exc:
-        raise PipelineError(f"/zo/ask network error: {exc.reason}") from exc
-    output = data.get("output") if isinstance(data, dict) else ""
-    return str(output).strip()
+    max_retries, retry_base, timeout = zo_ask_runtime_config()
+    last_error = "unknown error"
+    for attempt in range(1, max_retries + 1):
+        req = request.Request(
+            ZO_API_URL,
+            data=payload,
+            headers={"authorization": token, "content-type": "application/json", "accept": "application/json"},
+            method="POST",
+        )
+        try:
+            with request.urlopen(req, timeout=timeout) as response:
+                data = json.loads(response.read().decode("utf-8"))
+            output = data.get("output") if isinstance(data, dict) else ""
+            return str(output).strip()
+        except error.HTTPError as exc:
+            detail = exc.read().decode("utf-8", errors="replace")[:500]
+            last_error = f"/zo/ask HTTP {exc.code}: {detail}"
+            retriable = exc.code == 429 or 500 <= exc.code <= 599
+            if not retriable or attempt >= max_retries:
+                raise PipelineError(last_error) from exc
+        except error.URLError as exc:
+            last_error = f"/zo/ask network error: {exc.reason}"
+            if attempt >= max_retries:
+                raise PipelineError(last_error) from exc
+        except json.JSONDecodeError as exc:
+            last_error = f"/zo/ask invalid JSON response: {exc}"
+            if attempt >= max_retries:
+                raise PipelineError(last_error) from exc
+        sleep_for = retry_sleep_seconds(attempt, retry_base)
+        logging.warning("/zo/ask attempt %s/%s failed: %s; retrying in %.1fs", attempt, max_retries, last_error, sleep_for)
+        time.sleep(sleep_for)
+    raise PipelineError(last_error)
 
 
 def fallback_block(block_id: str) -> str:
@@ -1043,6 +1087,60 @@ def status_command() -> dict[str, Any]:
     }
 
 
+def doctor_command() -> dict[str, Any]:
+    """Run a read-only installation health check for handoff/setup."""
+    errors: list[str] = []
+    warnings: list[str] = []
+    checks: dict[str, Any] = {
+        "workspace": str(WORKSPACE),
+        "skill_dir": str(SKILL_DIR),
+        "config_path": str(CONFIG_PATH),
+        "zo_token_present": bool(os.environ.get("ZO_CLIENT_IDENTITY_TOKEN")),
+        "krisp_webhook_secret_present": bool(os.environ.get("KRISP_WEBHOOK_SECRET")),
+    }
+    if not WORKSPACE.exists():
+        errors.append(f"workspace_missing:{WORKSPACE}")
+    if not SKILL_DIR.exists():
+        errors.append(f"skill_dir_missing:{SKILL_DIR}")
+    if not CONFIG_PATH.exists():
+        warnings.append("config_missing_run_init_or_copy_config_example")
+    else:
+        try:
+            config = load_config()
+            checks["config_loaded"] = True
+            checks["calendar_enabled"] = bool((config.get("calendar") or {}).get("enabled")) if isinstance(config.get("calendar"), dict) else False
+            checks["notify_mode"] = str(config.get("notify_mode") or "ledger")
+        except PipelineError as exc:
+            errors.append(f"config_invalid:{exc}")
+            checks["config_loaded"] = False
+    try:
+        specs = load_block_specs()
+        missing_always = [block for block in ALWAYS_BLOCKS if block not in specs]
+        if missing_always:
+            errors.append(f"missing_always_blocks:{','.join(missing_always)}")
+        checks["block_spec_count"] = len(specs)
+    except PipelineError as exc:
+        errors.append(f"block_specs_invalid:{exc}")
+        checks["block_spec_count"] = 0
+    template_path = SKILL_DIR / "templates" / "zo-space-krisp-webhook.ts"
+    if not template_path.exists():
+        errors.append(f"webhook_template_missing:{template_path}")
+    checks["webhook_template"] = str(template_path)
+    if not checks["zo_token_present"]:
+        warnings.append("ZO_CLIENT_IDENTITY_TOKEN_missing_block_generation_will_fallback")
+    if not checks["krisp_webhook_secret_present"]:
+        warnings.append("KRISP_WEBHOOK_SECRET_missing_route_will_reject_webhooks")
+    checks["runtime_paths"] = {
+        "incoming": str(PATHS.incoming),
+        "processed_payloads": str(PATHS.processed_payloads),
+        "rejected_payloads": str(PATHS.rejected_payloads),
+        "notifications": str(PATHS.notification_ledger),
+        "dedup_ledger": str(DEDUP_LEDGER),
+        "run_log": str(PATHS.run_log),
+    }
+    return {"ok": not errors, "status": "ready" if not errors else "failed", "errors": errors, "warnings": warnings, "checks": checks}
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Build CLI parser."""
     parser = argparse.ArgumentParser(description="Portable Krisp meeting blocks pipeline")
@@ -1083,6 +1181,7 @@ def build_parser() -> argparse.ArgumentParser:
     manual.add_argument("--dry-run", action="store_true", help="Preview writes")
 
     sub.add_parser("status", help="Show queue/archive status")
+    sub.add_parser("doctor", help="Run read-only installation health checks")
     return parser
 
 
@@ -1124,10 +1223,14 @@ def main(argv: list[str] | None = None) -> int:
             result = reprocess_meeting(Path(args.meeting).expanduser().resolve(), dry_run=args.dry_run, addons=effective_addons(args.addons), calendar=args.calendar)
         elif args.command == "status":
             result = status_command()
+        elif args.command == "doctor":
+            result = doctor_command()
         else:  # pragma: no cover
             parser.error("unknown command")
         result["elapsed_seconds"] = round(time.time() - start, 3)
         print(json.dumps(result, indent=2, ensure_ascii=False))
+        if args.command == "doctor" and not result.get("ok", False):
+            return 1
         return 0
     except PipelineError as exc:
         logging.error("%s", exc)
