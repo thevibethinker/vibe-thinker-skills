@@ -1,0 +1,15 @@
+id: deliverable_map
+name: Deliverable Map
+purpose: Track requested artifacts, owners, audiences, acceptance criteria, and dependencies.
+trigger: addon
+detect_cue:
+  - deliverable
+  - send me
+  - draft
+  - share
+  - follow up with
+inputs: [transcript, manifest]
+expected_outputs:
+  sections: [deliverables, owners, criteria]
+  length_budget: null
+context_aware: false

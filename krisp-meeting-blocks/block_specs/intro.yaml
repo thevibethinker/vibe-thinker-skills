@@ -1,0 +1,17 @@
+id: intro
+name: Intro Deliverable
+purpose: Draft a warm introduction when the transcript explicitly asks to introduce or connect people.
+trigger: ai_detected
+detect_cue:
+  - introduce you to
+  - introduce me to
+  - intro me to
+  - connect you with
+  - connect me with
+  - make an introduction
+  - make an intro
+inputs: [transcript, manifest]
+expected_outputs:
+  sections: [intro_draft]
+  length_budget: 200
+context_aware: false

@@ -1,0 +1,10 @@
+id: decisions
+name: Decisions
+purpose: Decisions, provisional alignments, rationale, and unresolved decision points grounded in the transcript.
+trigger: always
+detect_cue: []
+inputs: [transcript, manifest]
+expected_outputs:
+  sections: [decisions, provisional_alignments, unresolved]
+  length_budget: null
+context_aware: false

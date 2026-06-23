@@ -1,0 +1,15 @@
+id: plan_of_action
+name: Plan of Action
+purpose: Synthesize a concrete plan from the discussion when the meeting implies a coordinated sequence of steps.
+trigger: addon
+detect_cue:
+  - plan
+  - next steps
+  - sequence
+  - roadmap
+  - timeline
+inputs: [transcript, manifest]
+expected_outputs:
+  sections: [plan, sequence, risks]
+  length_budget: null
+context_aware: false

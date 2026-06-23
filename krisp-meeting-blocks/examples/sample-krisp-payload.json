@@ -1,0 +1,15 @@
+{
+  "event_type": "transcript_created",
+  "event_id": "evt_sample_001",
+  "data": {
+    "meeting": {
+      "id": "mtg_sample_001",
+      "title": "Sample Product Call",
+      "start_date": "2026-06-23T14:00:00Z",
+      "end_date": "2026-06-23T14:30:00Z",
+      "duration": 1800,
+      "participants": ["Alex", "Jordan"]
+    },
+    "raw_content": "Alex: Thanks for joining.\nJordan: We decided to send the proposal by Friday.\nAlex: Please draft a blurb about the pilot for the team."
+  }
+}

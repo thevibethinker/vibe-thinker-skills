@@ -1,0 +1,8 @@
+min_transcript_chars: 300
+min_duration_seconds: 120
+addons_default: auto
+notify_mode: zo_ask
+notify_command: ""
+archive:
+  structure: monthly
+  root: /home/workspace/Personal/Meetings

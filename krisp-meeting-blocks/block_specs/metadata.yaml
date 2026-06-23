@@ -1,0 +1,11 @@
+id: metadata
+name: Metadata
+purpose: >-
+  Structured facts about the meeting: date, title, source, duration, participants, speaker reliability, quality status, and archive target.
+trigger: always
+detect_cue: []
+inputs: [manifest]
+expected_outputs:
+  sections: [date, title, source, duration, participants, quality, archive]
+  length_budget: null
+context_aware: false

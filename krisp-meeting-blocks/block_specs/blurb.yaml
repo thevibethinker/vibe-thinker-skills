@@ -1,0 +1,15 @@
+id: blurb
+name: Blurb Deliverable
+purpose: Draft a short bio, project description, or positioning blurb when explicitly requested in the meeting.
+trigger: ai_detected
+detect_cue:
+  - write a blurb
+  - draft a blurb
+  - write up a blurb
+  - blurb about
+  - blurb for
+inputs: [transcript, manifest]
+expected_outputs:
+  sections: [blurb_draft]
+  length_budget: 150
+context_aware: false

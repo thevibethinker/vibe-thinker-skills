@@ -1,0 +1,15 @@
+id: thought_provoking_ideas
+name: Thought Provoking Ideas
+purpose: Novel ideas, speculative insights, or reusable thought seeds worth preserving separately from meeting recap.
+trigger: addon
+detect_cue:
+  - idea
+  - interesting
+  - thought
+  - what if
+  - hypothesis
+inputs: [transcript, manifest]
+expected_outputs:
+  sections: [ideas, why_it_matters]
+  length_budget: null
+context_aware: false

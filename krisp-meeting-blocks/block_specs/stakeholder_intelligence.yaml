@@ -1,0 +1,15 @@
+id: stakeholder_intelligence
+name: Stakeholder Intelligence
+purpose: Participant interests, motivations, constraints, objections, decision power, and relationship notes grounded in the transcript.
+trigger: addon
+detect_cue:
+  - stakeholder
+  - cares about
+  - worried about
+  - decision maker
+  - buyer
+inputs: [transcript, manifest]
+expected_outputs:
+  sections: [stakeholders, motivations, risks]
+  length_budget: null
+context_aware: false

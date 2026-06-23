@@ -1,0 +1,15 @@
+id: decision_rationale
+name: Decision Rationale
+purpose: Explain why decisions or non-decisions happened, including tradeoffs and constraints named in the meeting.
+trigger: addon
+detect_cue:
+  - because
+  - rationale
+  - tradeoff
+  - decided
+  - constraint
+inputs: [transcript, manifest]
+expected_outputs:
+  sections: [rationale, tradeoffs, evidence]
+  length_budget: null
+context_aware: false

@@ -1,0 +1,11 @@
+id: summary
+name: Summary
+purpose: >-
+  Core narrative recap of the meeting: what was discussed, the conversation flow, key points, risks, objections, and next-step path.
+trigger: always
+detect_cue: []
+inputs: [transcript, manifest]
+expected_outputs:
+  sections: [narrative, key_points, risks, next_steps]
+  length_budget: 900
+context_aware: false

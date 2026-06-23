@@ -18,7 +18,7 @@ Or clone the full collection:
 git clone https://github.com/thevibethinker/vibe-thinker-skills.git
 ```
 
-## Included Skills (27)
+## Included Skills (29)
 
 | Skill | Description |
 |-------|-------------|
@@ -36,6 +36,7 @@ git clone https://github.com/thevibethinker/vibe-thinker-skills.git
 | [gamma](./gamma/) | Generate presentations, webpages, and social content using Gamma's API. |
 | [landing-page-generator](./landing-page-generator/) | Self-contained landing-page generator with bundled design foundations, anti-slop references, reusable templates, and target file-structure guidance. |
 | [meeting-ingestion](./meeting-ingestion/) | Unified skill for ingesting meeting transcripts from Google Drive and orchestrating the processing pipeline. |
+| [krisp-meeting-blocks](./krisp-meeting-blocks/) | Portable Krisp transcript ingestion and meeting block pipeline with zo.space webhook template, monthly archive, v3-style add-on blocks, and owner notifications for partial/review meetings. |
 | [meme-factory](./meme-factory/) | Generate memes with memegen.link templates and text controls. |
 | [mentor-handler](./mentor-handler/) | Handle escalation requests from partner instances and provide mentor guidance based on precedent and context analysis. |
 | [persona-optimization](./persona-optimization/) | Persona agency bootloader for Zo Computer with hard-switch rules and methodology injection. |

@@ -53,6 +53,10 @@
       "description": "Generate presentations, webpages, and social content using Gamma's API."
     },
     {
+      "slug": "krisp-meeting-blocks",
+      "description": "Portable Krisp transcript ingestion and meeting block pipeline with zo.space webhook template, monthly archive, v3-style add-on blocks, and owner notifications for partial/review meetings."
+    },
+    {
       "slug": "landing-page-generator",
       "description": "Self-contained landing-page generator with bundled design foundations, anti-slop references, reusable templates, and target file-structure guidance."
     },

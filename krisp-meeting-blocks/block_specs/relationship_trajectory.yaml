@@ -1,0 +1,15 @@
+id: relationship_trajectory
+name: Relationship Trajectory
+purpose: Assess relationship direction, trust, friction, momentum, and next relationship move.
+trigger: addon
+detect_cue:
+  - relationship
+  - trust
+  - momentum
+  - partnership
+  - next conversation
+inputs: [transcript, manifest]
+expected_outputs:
+  sections: [trajectory, trust, next_move]
+  length_budget: null
+context_aware: false

@@ -1,0 +1,16 @@
+id: strategic_intelligence
+name: Strategic Intelligence
+purpose: Higher-order strategic implications, landscape signals, leverage points, and non-obvious takeaways.
+trigger: addon
+detect_cue:
+  - strategy
+  - strategic
+  - opportunity
+  - risk
+  - leverage
+  - market
+inputs: [transcript, manifest]
+expected_outputs:
+  sections: [signals, implications, recommendations]
+  length_budget: null
+context_aware: false

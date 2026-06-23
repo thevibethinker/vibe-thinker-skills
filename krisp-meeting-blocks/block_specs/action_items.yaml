@@ -1,0 +1,10 @@
+id: action_items
+name: Action Items
+purpose: Concrete follow-ups, commitments, owners, timing, and dependencies stated or clearly implied by the meeting.
+trigger: always
+detect_cue: []
+inputs: [transcript, manifest]
+expected_outputs:
+  sections: [action_items, commitments]
+  length_budget: null
+context_aware: false

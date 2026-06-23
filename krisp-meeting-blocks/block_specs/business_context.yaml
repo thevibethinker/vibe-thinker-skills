@@ -1,0 +1,16 @@
+id: business_context
+name: Business Context
+purpose: Company, market, commercial, legal, procurement, or operating context surfaced in the meeting.
+trigger: addon
+detect_cue:
+  - business
+  - pricing
+  - procurement
+  - contract
+  - market
+  - customer
+inputs: [transcript, manifest]
+expected_outputs:
+  sections: [context, implications]
+  length_budget: null
+context_aware: false

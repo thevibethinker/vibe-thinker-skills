@@ -1,0 +1,15 @@
+id: open_questions
+name: Open Questions
+purpose: Unresolved questions, blockers, unknowns, and information needed after the meeting.
+trigger: addon
+detect_cue:
+  - open question
+  - unresolved
+  - need to figure out
+  - not sure
+  - question is
+inputs: [transcript, manifest]
+expected_outputs:
+  sections: [questions, blockers, owners]
+  length_budget: null
+context_aware: false

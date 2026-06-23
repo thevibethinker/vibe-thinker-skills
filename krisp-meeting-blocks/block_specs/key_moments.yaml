@@ -1,0 +1,15 @@
+id: key_moments
+name: Key Moments
+purpose: Turning points, high-signal quotes, objections, commitments, and moments that changed meeting direction.
+trigger: addon
+detect_cue:
+  - key moment
+  - important
+  - critical
+  - turning point
+  - changed
+inputs: [transcript, manifest]
+expected_outputs:
+  sections: [moments, evidence]
+  length_budget: null
+context_aware: false
