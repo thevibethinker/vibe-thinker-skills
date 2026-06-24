@@ -14,6 +14,7 @@ import subprocess
 import sys
 import textwrap
 import time
+import socket
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -866,6 +867,10 @@ def call_zo(prompt: str, model: str | None) -> str:
                 raise PipelineError(last_error) from exc
         except error.URLError as exc:
             last_error = f"/zo/ask network error: {exc.reason}"
+            if attempt >= max_retries:
+                raise PipelineError(last_error) from exc
+        except (TimeoutError, socket.timeout) as exc:
+            last_error = f"/zo/ask timeout after {timeout}s: {exc}"
             if attempt >= max_retries:
                 raise PipelineError(last_error) from exc
         except json.JSONDecodeError as exc:

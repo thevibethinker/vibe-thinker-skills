@@ -84,6 +84,15 @@ zo_ask:
 
 These apply to block generation, calendar matching, and Zo-owner notifications. Transient `/zo/ask` failures are retried with bounded exponential backoff; exhausted retries are recorded as partial block failures instead of crashing the pipeline.
 
+Runtime logs are written to:
+
+```text
+Personal/Integrations/krisp-meeting-blocks/run.log
+Personal/Integrations/krisp-meeting-blocks/webhook.log
+Personal/Integrations/krisp-meeting-blocks/importer.log
+Personal/Integrations/krisp-meeting-blocks/importer.err.log
+```
+
 
 ### 2. Create the zo.space Route
 
@@ -131,6 +140,9 @@ Send the configured bearer token in the `Authorization` header.
 ```bash
 # Create folders and config
 python3 Skills/krisp-meeting-blocks/scripts/krisp_blocks.py init [--dry-run]
+
+# Verify setup, config, folders, block specs, and optional env vars
+python3 Skills/krisp-meeting-blocks/scripts/krisp_blocks.py doctor
 
 # Import one Krisp payload saved by the zo.space route
 python3 Skills/krisp-meeting-blocks/scripts/krisp_blocks.py import /path/to/payload.json [--process] [--calendar auto|on|off] [--dry-run]
