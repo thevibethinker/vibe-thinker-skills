@@ -10,17 +10,23 @@ import subprocess
 import sys
 from pathlib import Path
 
-SCRIPT = Path("/home/workspace/Skills/research-engine/scripts/research_engine.py")
-TMP_ROOT = Path("/home/.z/workspaces/con_zAgcy3AP0A6vzikR/test-research-engine")
+SKILL_ROOT = Path(__file__).resolve().parents[1]
+SCRIPT = SKILL_ROOT / "scripts" / "research_engine.py"
+TEST_WORKSPACE = Path(os.environ.get("RESEARCH_ENGINE_TEST_WORKSPACE", "/tmp/research-engine-test-workspace"))
+TMP_ROOT = TEST_WORKSPACE / "Research" / "_engine" / "test-state"
 
 sys.path.insert(0, str(SCRIPT.parent))
 
 
 def run_cmd(*args: str, expect: int = 0) -> dict:
     env = os.environ.copy()
+    env["ZO_WORKSPACE"] = str(TEST_WORKSPACE)
+    TEST_WORKSPACE.mkdir(parents=True, exist_ok=True)
     env["RESEARCH_ENGINE_ROOT"] = str(TMP_ROOT / "repos")
     env["RESEARCH_ENGINE_STATE_ROOT"] = str(TMP_ROOT)
-    result = subprocess.run([sys.executable, str(SCRIPT), *args], cwd="/home/workspace", env=env, text=True, capture_output=True)
+    env["ZO_WORKSPACE"] = str(TEST_WORKSPACE)
+    TEST_WORKSPACE.mkdir(parents=True, exist_ok=True)
+    result = subprocess.run([sys.executable, str(SCRIPT), *args], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
     assert result.returncode == expect, result.stderr + result.stdout
     return json.loads(result.stdout)
 
@@ -72,7 +78,7 @@ def test_append_failure_logs_repair_without_unhandled_error() -> None:
     assert status["reasons"]["repo_not_found"] == 1
 
 
-EXAMPLES = Path("/home/workspace/Skills/research-engine/assets/examples")
+EXAMPLES = SKILL_ROOT / "assets" / "examples"
 
 
 def test_validate_accepts_valid_fixtures() -> None:
@@ -113,7 +119,7 @@ def test_overlay_seed_is_idempotent_and_populates_personal_nodes() -> None:
 
 def test_map_ontology_matches_aliases_and_suggests_unknowns() -> None:
     import sys as _sys
-    _sys.path.insert(0, "Skills/research-engine/scripts")
+    _sys.path.insert(0, str(SCRIPT.parent))
     from profile_loader import profile_get  # type: ignore
 
     run_cmd("overlay-seed")
@@ -141,18 +147,20 @@ def test_one_shot_executes_without_approval_or_questions() -> None:
         {"url": "https://example.com/b", "title": "B Source", "text": "Beta evidence sentence. More text."},
     ])
     env = os.environ.copy()
+    env["ZO_WORKSPACE"] = str(TEST_WORKSPACE)
+    TEST_WORKSPACE.mkdir(parents=True, exist_ok=True)
     env["RESEARCH_ENGINE_ROOT"] = str(TMP_ROOT / "repos")
     env["RESEARCH_ENGINE_STATE_ROOT"] = str(TMP_ROOT)
     env["RESEARCH_ENGINE_FAKE_EXA_RESULTS"] = fake
     result = subprocess.run([
         sys.executable, str(SCRIPT), "run", "--query", "What is alpha beta?", "--depth", "one-shot", "--mode", "explainer"
-    ], cwd="/home/workspace", env=env, text=True, capture_output=True)
+    ], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
     assert result.returncode == 0, result.stderr + result.stdout
     data = json.loads(result.stdout)
     assert data["status"] == "complete"
     assert data["approval_required"] is False
-    assert Path("/home/workspace", data["artifacts"]["synthesis"]).exists()
-    assert Path("/home/workspace", data["artifacts"]["topic_index"]).exists()
+    assert Path(TEST_WORKSPACE, data["artifacts"]["synthesis"]).exists()
+    assert Path(TEST_WORKSPACE, data["artifacts"]["topic_index"]).exists()
 
 
 def test_standard_run_pauses_until_approval_then_executes() -> None:
@@ -160,19 +168,21 @@ def test_standard_run_pauses_until_approval_then_executes() -> None:
         {"url": "https://example.com/std", "title": "Standard Source", "text": "Standard evidence sentence."},
     ])
     env = os.environ.copy()
+    env["ZO_WORKSPACE"] = str(TEST_WORKSPACE)
+    TEST_WORKSPACE.mkdir(parents=True, exist_ok=True)
     env["RESEARCH_ENGINE_ROOT"] = str(TMP_ROOT / "repos")
     env["RESEARCH_ENGINE_STATE_ROOT"] = str(TMP_ROOT)
     env["RESEARCH_ENGINE_FAKE_EXA_RESULTS"] = fake
     created = subprocess.run([
         sys.executable, str(SCRIPT), "run", "--query", "Standard run query", "--depth", "standard", "--mode", "strategy-research"
-    ], cwd="/home/workspace", env=env, text=True, capture_output=True)
+    ], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
     assert created.returncode == 0, created.stderr + created.stdout
     data = json.loads(created.stdout)
     assert data["status"] == "awaiting_approval"
     assert data["approval_required"] is True
     approved = subprocess.run([
         sys.executable, str(SCRIPT), "approve-run", "--run-id", data["run_id"]
-    ], cwd="/home/workspace", env=env, text=True, capture_output=True)
+    ], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
     assert approved.returncode == 0, approved.stderr + approved.stdout
     approved_data = json.loads(approved.stdout)
     assert approved_data["status"] == "complete"
@@ -181,21 +191,23 @@ def test_standard_run_pauses_until_approval_then_executes() -> None:
 def test_local_workspace_scan_requires_explicit_authorization() -> None:
     fake = json.dumps([])
     env = os.environ.copy()
+    env["ZO_WORKSPACE"] = str(TEST_WORKSPACE)
+    TEST_WORKSPACE.mkdir(parents=True, exist_ok=True)
     env["RESEARCH_ENGINE_ROOT"] = str(TMP_ROOT / "repos")
     env["RESEARCH_ENGINE_STATE_ROOT"] = str(TMP_ROOT)
     env["RESEARCH_ENGINE_FAKE_EXA_RESULTS"] = fake
     no_scan = subprocess.run([
         sys.executable, str(SCRIPT), "run", "--query", "hiring robotics", "--depth", "one-shot", "--mode", "knowledge-scan"
-    ], cwd="/home/workspace", env=env, text=True, capture_output=True)
+    ], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
     yes_scan = subprocess.run([
         sys.executable, str(SCRIPT), "run", "--query", "hiring robotics", "--depth", "one-shot", "--mode", "knowledge-scan", "--allow-local-scan"
-    ], cwd="/home/workspace", env=env, text=True, capture_output=True)
+    ], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
     assert no_scan.returncode == 0, no_scan.stderr + no_scan.stdout
     assert yes_scan.returncode == 0, yes_scan.stderr + yes_scan.stdout
     no_data = json.loads(no_scan.stdout)
     yes_data = json.loads(yes_scan.stdout)
-    no_sources = Path("/home/workspace", no_data["artifacts"]["run_dir"], "SOURCES.jsonl").read_text()
-    yes_sources = Path("/home/workspace", yes_data["artifacts"]["run_dir"], "SOURCES.jsonl").read_text()
+    no_sources = Path(TEST_WORKSPACE, no_data["artifacts"]["run_dir"], "SOURCES.jsonl").read_text()
+    yes_sources = Path(TEST_WORKSPACE, yes_data["artifacts"]["run_dir"], "SOURCES.jsonl").read_text()
     assert "local_scan" not in no_sources
     assert "local_scan" in yes_sources
 
@@ -207,18 +219,20 @@ def test_promotion_candidate_dry_run_and_confirm_gate() -> None:
         {"url": "https://example.com/promote", "title": "Promotion Source", "text": "Promotion-worthy evidence sentence."},
     ])
     env = os.environ.copy()
+    env["ZO_WORKSPACE"] = str(TEST_WORKSPACE)
+    TEST_WORKSPACE.mkdir(parents=True, exist_ok=True)
     env["RESEARCH_ENGINE_ROOT"] = str(TMP_ROOT / "repos")
     env["RESEARCH_ENGINE_STATE_ROOT"] = str(TMP_ROOT)
     env["RESEARCH_ENGINE_KNOWLEDGE_ROOT"] = str(TMP_ROOT / "Knowledge")
     env["RESEARCH_ENGINE_FAKE_EXA_RESULTS"] = fake
     run = subprocess.run([
         sys.executable, str(SCRIPT), "run", "--query", "Promotion gate topic", "--depth", "one-shot", "--mode", "explainer"
-    ], cwd="/home/workspace", env=env, text=True, capture_output=True)
+    ], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
     assert run.returncode == 0, run.stderr + run.stdout
     topic = json.loads(run.stdout)["topic_slug"]
     proposed = subprocess.run([
         sys.executable, str(SCRIPT), "propose-promotion", "--topic", topic, "--target", "Knowledge/research-engine-test/promotion.md"
-    ], cwd="/home/workspace", env=env, text=True, capture_output=True)
+    ], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
     assert proposed.returncode == 0, proposed.stderr + proposed.stdout
     pdata = json.loads(proposed.stdout)
     assert pdata["ok"] is True
@@ -228,7 +242,7 @@ def test_promotion_candidate_dry_run_and_confirm_gate() -> None:
         target.unlink()
     dry = subprocess.run([
         sys.executable, str(SCRIPT), "promote", "--candidate-id", candidate_id, "--dry-run"
-    ], cwd="/home/workspace", env=env, text=True, capture_output=True)
+    ], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
     assert dry.returncode == 0, dry.stderr + dry.stdout
     dry_data = json.loads(dry.stdout)
     assert dry_data["ok"] is True
@@ -236,12 +250,12 @@ def test_promotion_candidate_dry_run_and_confirm_gate() -> None:
     assert not target.exists()
     blocked = subprocess.run([
         sys.executable, str(SCRIPT), "promote", "--candidate-id", candidate_id
-    ], cwd="/home/workspace", env=env, text=True, capture_output=True)
+    ], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
     assert blocked.returncode == 0, blocked.stderr + blocked.stdout
     assert json.loads(blocked.stdout)["ok"] is False
     confirmed = subprocess.run([
         sys.executable, str(SCRIPT), "promote", "--candidate-id", candidate_id, "--confirm"
-    ], cwd="/home/workspace", env=env, text=True, capture_output=True)
+    ], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
     assert confirmed.returncode == 0, confirmed.stderr + confirmed.stdout
     cdata = json.loads(confirmed.stdout)
     assert cdata["ok"] is True
@@ -255,18 +269,20 @@ def test_promotion_refuses_non_knowledge_target() -> None:
         {"url": "https://example.com/promote2", "title": "Promotion Source", "text": "Evidence."},
     ])
     env = os.environ.copy()
+    env["ZO_WORKSPACE"] = str(TEST_WORKSPACE)
+    TEST_WORKSPACE.mkdir(parents=True, exist_ok=True)
     env["RESEARCH_ENGINE_ROOT"] = str(TMP_ROOT / "repos")
     env["RESEARCH_ENGINE_STATE_ROOT"] = str(TMP_ROOT)
     env["RESEARCH_ENGINE_KNOWLEDGE_ROOT"] = str(TMP_ROOT / "Knowledge")
     env["RESEARCH_ENGINE_FAKE_EXA_RESULTS"] = fake
     run = subprocess.run([
         sys.executable, str(SCRIPT), "run", "--query", "Bad promotion target", "--depth", "one-shot", "--mode", "explainer"
-    ], cwd="/home/workspace", env=env, text=True, capture_output=True)
+    ], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
     assert run.returncode == 0, run.stderr + run.stdout
     topic = json.loads(run.stdout)["topic_slug"]
     bad = subprocess.run([
         sys.executable, str(SCRIPT), "propose-promotion", "--topic", topic, "--target", "Research/not-knowledge.md"
-    ], cwd="/home/workspace", env=env, text=True, capture_output=True)
+    ], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
     assert bad.returncode == 0, bad.stderr + bad.stdout
     data = json.loads(bad.stdout)
     assert data["ok"] is False
@@ -278,15 +294,17 @@ def test_one_shot_plan_records_context_scan_and_worker_defaults() -> None:
         {"url": "https://example.com/context", "title": "Context Source", "text": "Context evidence sentence."},
     ])
     env = os.environ.copy()
+    env["ZO_WORKSPACE"] = str(TEST_WORKSPACE)
+    TEST_WORKSPACE.mkdir(parents=True, exist_ok=True)
     env["RESEARCH_ENGINE_ROOT"] = str(TMP_ROOT / "repos")
     env["RESEARCH_ENGINE_STATE_ROOT"] = str(TMP_ROOT)
     env["RESEARCH_ENGINE_FAKE_EXA_RESULTS"] = fake
     result = subprocess.run([
         sys.executable, str(SCRIPT), "run", "--query", "What should one shot research do?", "--depth", "one-shot", "--mode", "explainer"
-    ], cwd="/home/workspace", env=env, text=True, capture_output=True)
+    ], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
     assert result.returncode == 0, result.stderr + result.stdout
     data = json.loads(result.stdout)
-    plan = json.loads(Path("/home/workspace", data["artifacts"]["run_dir"], "PLAN.json").read_text())
+    plan = json.loads(Path(TEST_WORKSPACE, data["artifacts"]["run_dir"], "PLAN.json").read_text())
     assert plan["context_scan_authorized"] is True
     assert plan["zoask_worker_drops"] == 2
     assert plan["exa_num_results"] == 5
@@ -329,7 +347,7 @@ def test_diligence_worker_prompt_preserves_source_isolation() -> None:
 def test_investor_diligence_plan_records_manual_context_and_approved_internal_policy() -> None:
     import research_run  # type: ignore
     import sys as _sys
-    _sys.path.insert(0, "Skills/research-engine/scripts")
+    _sys.path.insert(0, str(SCRIPT.parent))
     from profile_loader import profile_get  # type: ignore
 
     plan = research_run.plan_for(
@@ -372,15 +390,17 @@ def test_one_shot_synthesis_includes_citations_and_worker_drop_section() -> None
         {"url": "https://example.com/cited", "title": "Cited Source", "text": "Cited evidence sentence. More text."},
     ])
     env = os.environ.copy()
+    env["ZO_WORKSPACE"] = str(TEST_WORKSPACE)
+    TEST_WORKSPACE.mkdir(parents=True, exist_ok=True)
     env["RESEARCH_ENGINE_ROOT"] = str(TMP_ROOT / "repos")
     env["RESEARCH_ENGINE_STATE_ROOT"] = str(TMP_ROOT)
     env["RESEARCH_ENGINE_FAKE_EXA_RESULTS"] = fake
     result = subprocess.run([
         sys.executable, str(SCRIPT), "run", "--query", "How should citations work?", "--depth", "one-shot", "--mode", "explainer"
-    ], cwd="/home/workspace", env=env, text=True, capture_output=True)
+    ], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
     assert result.returncode == 0, result.stderr + result.stdout
     data = json.loads(result.stdout)
-    synthesis = Path("/home/workspace", data["artifacts"]["synthesis"]).read_text()
+    synthesis = Path(TEST_WORKSPACE, data["artifacts"]["synthesis"]).read_text()
     assert "Cited Source [^1]" in synthesis
     assert "[^1]: https://example.com/cited" in synthesis
     assert "## Zoask Worker Drops" in synthesis
@@ -414,7 +434,7 @@ def test_investor_diligence_collects_evergreen_and_approved_content_library(tmp_
     old_workspace = research_run.WORKSPACE
     old_disable = os.environ.get("RESEARCH_ENGINE_DISABLE_CONTENT_LIBRARY_SCAN")
     old_profile_env = os.environ.get("RESEARCH_ENGINE_PROFILE")
-    fixture_profile = "/home/workspace/Skills/research-engine/assets/examples/profile.test.json"
+    fixture_profile = str(SKILL_ROOT / "assets" / "examples" / "profile.test.json")
     try:
         os.environ["RESEARCH_ENGINE_PROFILE"] = fixture_profile
         profile_loader.clear_cache()
@@ -488,3 +508,114 @@ def test_investor_diligence_still_runs_external_search_despite_internal_sources(
     finally:
         research_run.exa_search = old_exa
         research_run.approved_content_library_scan = old_cl
+
+
+def test_product_diligence_plan_records_preference_discovery_and_review_policy() -> None:
+    import research_run  # type: ignore
+
+    plan = research_run.plan_for(
+        "Find the best on-person AI recorder for in-person meetings, walks, and voice notes",
+        "product-diligence",
+        "standard",
+        "ai-recorder-product-diligence",
+        [],
+        False,
+    )
+
+    assert plan["mode"] == "product-diligence"
+    assert plan["source_scope"] == "external_product_reviews_first_with_preference_discovery"
+    assert plan["context_scan_authorized"] is False
+    assert plan["socratic_preference_discovery"] is True
+    assert plan["brief_size"] == "standard"
+    assert any("hands-on professional reviews" in item for item in plan["source_quality_order"])
+    assert any(item["criterion"] == "Workflow/export/API fit" for item in plan["default_ranking_criteria"])
+    assert "affiliate" in plan["source_policy"].lower()
+    assert "purchase" in plan["source_policy"].lower()
+
+
+def test_product_diligence_one_shot_states_assumptions_instead_of_pausing() -> None:
+    import research_run  # type: ignore
+
+    plan = research_run.plan_for(
+        "Quickly compare Plaud, Fieldy, and similar AI recorders",
+        "product-diligence",
+        "one-shot",
+        "ai-recorder-quick-compare",
+        [],
+        False,
+    )
+
+    assert plan["socratic_preference_discovery"] is False
+    assert "Do not pause" in plan["one_shot_preference_behavior"]
+    assert plan["zoask_worker_drops"] == 2
+
+
+def test_product_diligence_brief_size_can_be_overridden() -> None:
+    import research_run  # type: ignore
+
+    plan = research_run.plan_for(
+        "Diligence Plaud NotePin for in-person meeting capture",
+        "product-diligence",
+        "quick",
+        "plaud-notepin-product-diligence",
+        [],
+        False,
+        "full-dossier",
+    )
+
+    assert plan["brief_size"] == "full-dossier"
+
+
+def test_product_diligence_worker_prompt_includes_socratic_and_source_quality_context() -> None:
+    import research_run  # type: ignore
+
+    plan = research_run.plan_for(
+        "Find the best AI recorder for meetings and walks",
+        "product-diligence",
+        "standard",
+        "ai-recorder-product-diligence",
+        [],
+        False,
+    )
+    prompt = research_run.build_worker_prompt(plan, 0, [], [])
+
+    assert "Socratic preference" in prompt
+    assert "independent reviews" in prompt
+    assert "Workflow/export/API fit" in prompt
+
+
+def test_product_diligence_one_shot_executes_with_fake_external_sources() -> None:
+    fake = json.dumps([
+        {"url": "https://example.com/recorder-review", "title": "Recorder Review", "text": "Hands-on recorder review evidence."},
+        {"url": "https://example.com/recorder-api", "title": "Recorder API Docs", "text": "API and export documentation evidence."},
+    ])
+    env = os.environ.copy()
+    env["ZO_WORKSPACE"] = str(TEST_WORKSPACE)
+    TEST_WORKSPACE.mkdir(parents=True, exist_ok=True)
+    env["RESEARCH_ENGINE_ROOT"] = str(TMP_ROOT / "repos")
+    env["RESEARCH_ENGINE_STATE_ROOT"] = str(TMP_ROOT)
+    env["RESEARCH_ENGINE_FAKE_EXA_RESULTS"] = fake
+    result = subprocess.run([
+        sys.executable,
+        str(SCRIPT),
+        "run",
+        "--query",
+        "Find the best AI recorder for in-person meetings and voice notes",
+        "--depth",
+        "one-shot",
+        "--mode",
+        "product-diligence",
+        "--topic",
+        "ai-recorder-product-diligence",
+    ], cwd=str(TEST_WORKSPACE), env=env, text=True, capture_output=True)
+    assert result.returncode == 0, result.stderr + result.stdout
+    data = json.loads(result.stdout)
+    assert data["status"] == "complete"
+    plan = json.loads(Path(TEST_WORKSPACE, data["artifacts"]["run_dir"], "PLAN.json").read_text())
+    assert plan["mode"] == "product-diligence"
+    assert plan["topic_slug"] == "ai-recorder-product-diligence"
+    assert plan["context_scan_authorized"] is False
+    assert plan["source_scope"] == "external_product_reviews_first_with_preference_discovery"
+    sources = Path(TEST_WORKSPACE, data["artifacts"]["run_dir"], "SOURCES.jsonl").read_text()
+    assert "Recorder Review" in sources
+    assert "local_scan" not in sources

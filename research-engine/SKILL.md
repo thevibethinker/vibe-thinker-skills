@@ -6,14 +6,14 @@ metadata:
   author: va.zo.computer
 created: 2026-06-13
 last_edited: 2026-06-18
-version: 2.0
+version: 2.1
 provenance: con_XbMMeD3u4MxlbvOE
 ---
 # Research Engine
 
 Use this skill when a workflow needs to maintain durable research repositories and a wiki-style compendium under `Research/repos/`.
 
-> **Portable skill.** Owner/venture identity, accounts, and canonical links are **not** hardcoded — they live in `config/profile.json` (git-ignored) with a neutral `config/profile.default.json` fallback. After importing onto a new Zo, run `scripts/install.py` and edit the profile. See `file Skills/research-engine/references/portability.md`.
+> **Portable skill.** Owner/venture identity, accounts, and canonical links are **not** hardcoded — they live in `file config/profile.json` (git-ignored) with a neutral `file config/profile.default.json` fallback. After importing onto a new Zo, run `file scripts/install.py` and edit the profile. See `file Skills/research-engine/references/portability.md`.
 
 Research Engine is intentionally separate from Pulse Orchestrator:
 
@@ -66,6 +66,8 @@ python3 Skills/research-engine/scripts/research_engine.py run --query "Explain X
 python3 Skills/research-engine/scripts/research_engine.py run --query "Review evidence on X" --mode literature-review --depth standard --source Research/foo/source.md
 python3 Skills/research-engine/scripts/research_engine.py run --query "Diligence <Fund> for <your venture> investor prep" --mode investor-diligence --depth standard --topic <fund>-investor-diligence
 python3 Skills/research-engine/scripts/research_engine.py run --query "Diligence <Fund> for <your venture> investor prep" --mode investor-diligence --depth standard --brief-size full-dossier --topic <fund>-investor-diligence
+python3 Skills/research-engine/scripts/research_engine.py run --query "Find the best on-person AI recorder / meeting transcription product for in-person meetings, walks, and voice notes" --mode product-diligence --depth standard --topic ai-recorder-product-diligence
+python3 Skills/research-engine/scripts/research_engine.py run --query "Diligence Plaud NotePin for in-person meeting capture and voice note workflows" --mode product-diligence --depth standard --brief-size full-dossier --topic plaud-notepin-product-diligence
 python3 Skills/research-engine/scripts/research_engine.py approve-run --run-id run_YYYYMMDD_HHMMSS_xxxxxx_hash
 python3 Skills/research-engine/scripts/research_engine.py run-status --run-id run_YYYYMMDD_HHMMSS_xxxxxx_hash
 ```
@@ -82,10 +84,10 @@ When the research run is for meeting prep, due diligence, a company/person brief
 
 Required behavior:
 
-1. Use `N5/scripts/research_router.py "<topic>" --create --slug <slug>` to establish the routed working folder when the output is meant for the owner to open. If `research_router.py` is absent on this Zo, place the brief under `Research/<slug>/` manually.
-2. Put the primary human-facing artifact in that routed folder, usually as `MEETING_BRIEF.md`, `DILIGENCE_BRIEF.md`, or `BRIEF.md` depending on the task.
+1. Use `N5/scripts/research_router.py "<topic>" --create --slug <slug>` to establish the routed working folder when the output is meant for the owner to open. If `file research_router.py` is absent on this Zo, place the brief under `Research/<slug>/` manually.
+2. Put the primary human-facing artifact in that routed folder, usually as `file MEETING_BRIEF.md`, `file DILIGENCE_BRIEF.md`, or `file BRIEF.md` depending on the task.
 3. Treat `Research/_engine/runs/<run-id>/` and `Research/repos/<topic-slug>/` as provenance / machine-index layers unless the owner explicitly asks for raw engine artifacts.
-4. Add a short `README.md` or top-of-file pointer when more than one folder is involved, naming the canonical deliverable first and raw provenance second.
+4. Add a short `file README.md` or top-of-file pointer when more than one folder is involved, naming the canonical deliverable first and raw provenance second.
 5. Final responses must surface the canonical human-facing artifact first; raw engine paths are secondary references only.
 6. Do not create additional sibling folders for the same topic unless there is a materially different research question. If a sibling folder is created accidentally and is empty, remove it after protection checks. If it contains artifacts, add a canonical pointer rather than silently leaving duplicate surfaces.
 
@@ -102,7 +104,7 @@ For pre-meeting due diligence, investor/vendor/person/company research, and stak
 Common research modes should stay distinct:
 
 - **Pre-meeting DD:** external/company/person evidence first; same-stakeholder internal context only.
-- **Investor diligence:** manual named-entity VC/fund/partner prep. A meeting is optional, not required. If a calendar scan is requested, inspect only the accounts in `config/profile.json` (`allowed_calendar_accounts`), prioritize the next 72 hours, and use a 14-day lookahead. Never inspect accounts listed in `excluded_calendar_accounts`.
+- **Investor diligence:** manual named-entity VC/fund/partner prep. A meeting is optional, not required. If a calendar scan is requested, inspect only the accounts in `file config/profile.json` (`allowed_calendar_accounts`), prioritize the next 72 hours, and use a 14-day lookahead. Never inspect accounts listed in `excluded_calendar_accounts`.
 - **Physical intelligence / science research:** field developments, papers, labs, datasets, robotics/data science evidence; internal context only on request or when directly relevant.
 - **Travel/local search:** maps/web/local-source led; no internal strategic context unless requested.
 
@@ -118,7 +120,7 @@ Default invocation is named-entity first and manual:
 python3 Skills/research-engine/scripts/research_engine.py run --query "Diligence <VC/Fund/Partner> for <your venture> investor prep" --mode investor-diligence --depth standard --topic <slug>
 ```
 
-Meeting-aware invocation is optional. If the owner asks to prepare for upcoming investor calls, use the connected calendar tools only for the accounts in `config/profile.json` (`allowed_calendar_accounts`); prioritize meetings inside 72 hours and look up to 14 days ahead. Do not inspect excluded accounts.
+Meeting-aware invocation is optional. If the owner asks to prepare for upcoming investor calls, use the connected calendar tools only for the accounts in `file config/profile.json` (`allowed_calendar_accounts`); prioritize meetings inside 72 hours and look up to 14 days ahead. Do not inspect excluded accounts.
 
 Brief sizes are selectable with `--brief-size skim|standard|full-dossier`; default is `standard`.
 
@@ -131,11 +133,41 @@ Required investor-diligence lens:
 - LinkedIn layer: investor/fund profile signals, key figures, mutuals, and plausible intro paths when connected LinkedIn tools can provide them; otherwise label web-visible LinkedIn limitations.
 - X/public discourse layer: what they publicly support, discuss, amplify, or avoid in the venture's domain and toward founders.
 - Private email layer, when explicitly used: summarize relevant history only and include subject/date/source account/counterparty for traceability. Do not dump full private email bodies.
-- Internal layer: use approved Content Library material and evergreen approved links only (from `config/profile.json`). Do not use applications, unrelated Research folders, or broad workspace search.
+- Internal layer: use approved Content Library material and evergreen approved links only (from `file config/profile.json`). Do not use applications, unrelated Research folders, or broad workspace search.
 
-Evergreen internal links are sourced from `config/profile.json` (`evergreen_internal_sources`).
+Evergreen internal links are sourced from `file config/profile.json` (`evergreen_internal_sources`).
 
 Explicit resources should usually be provided up front via `--source`. Exa is used for external search. Local workspace scan is forbidden unless `--allow-local-scan` is explicitly passed.
+
+### Product diligence mode
+
+Use `--mode product-diligence` for product, service, or product-category buying/testing decisions. It is a focused decision-research mode for finding credible top candidates, collecting objective and semi-objective reviews, clarifying the owner's preferences, and producing a ranked recommendation with explicit tradeoffs.
+
+Default invocation is category-first:
+
+```bash
+python3 Skills/research-engine/scripts/research_engine.py run --query "Find the best on-person AI recorder / meeting transcription product for in-person meetings, walks, and voice notes" --mode product-diligence --depth standard --topic ai-recorder-product-diligence
+```
+
+Specific-product invocation:
+
+```bash
+python3 Skills/research-engine/scripts/research_engine.py run --query "Diligence Plaud NotePin for in-person meeting capture and voice note workflows" --mode product-diligence --depth standard --topic plaud-notepin-product-diligence
+```
+
+Brief sizes are selectable with `--brief-size skim|standard|full-dossier`; default is `standard`.
+
+Required product-diligence lens:
+
+- Initial category scan before ranking.
+- Socratic preference discovery for non-one-shot runs: primary job, non-goals, must-not-fail constraints, privacy posture, workflow/export needs, form factor, price/subscription tolerance, and relevant substitution tradeoffs.
+- External-review-first evidence: hands-on reviews, customer reviews, forum/community first-hand reports, independent comparisons, product docs, API/support docs, pricing pages, privacy policies, and changelogs.
+- Affiliate listicles and vendor marketing are weak evidence unless corroborated.
+- Ranking criteria and weights must be explicit, with defaults around reliability, output quality, workflow/export/API fit, use-case/form-factor fit, privacy/control, and cost/lock-in.
+- Output disposition for each candidate should be one of `buy`, `trial`, `watch`, `avoid`, or `not-enough-evidence`.
+- Persona lenses such as Teacher, Builder, Debugger, and Strategist may be used for explanation and tradeoff analysis, but factual claims must stay source-grounded.
+
+For one-shot product diligence, do not pause for the preference interview. State assumptions, rank with caveats, and surface the unresolved questions that would most change the recommendation.
 
 ### Promotion Gate
 
@@ -195,6 +227,7 @@ python3 Skills/research-engine/scripts/research_engine.py repair-sweep
 - `file Skills/research-engine/references/ontology.md` — ontology spine policy: Wikidata/Wikipedia references, personal overlay, and the Knowledge-ontology boundary.
 - `Skills/research-engine/assets/examples/` — valid and invalid fixtures used by `validate` and the test suite.
 - `file Skills/research-engine/references/investor-diligence.md` — investor/VC diligence mode workflow, source policy, portfolio classification, and dossier template.
+- `file Skills/research-engine/references/product-diligence.md` — product/service/category diligence workflow, Socratic preference discovery, source taxonomy, ranking criteria, and dossier template.
 - `file Skills/research-engine/references/run-pipeline.md` — Phase 3 run pipeline, depth semantics, Exa/source policy, and output contract.
 - `file Skills/research-engine/references/promotion.md` — Phase 4 Knowledge promotion gate policy and commands.
 
@@ -207,8 +240,20 @@ pytest -q Skills/research-engine/scripts/test_research_engine.py
 
 ## Install / Acclimatize on a new Zo
 
+Install just this skill from the public Vibe Thinker skills repo:
+
+```bash
+slug="research-engine"; dest="Skills"; repo="https://github.com/thevibethinker/vibe-thinker-skills/archive/refs/heads/main.tar.gz"; archive_root="vibe-thinker-skills-main"; mkdir -p "$dest" && curl -L "$repo" | tar -xz -C "$dest" --strip-components=1 "$archive_root/$slug"
+```
+
+Then initialize the local profile/state:
+
 ```bash
 python3 Skills/research-engine/scripts/install.py            # probe + dry-run report
 python3 Skills/research-engine/scripts/install.py --apply    # scaffold dirs + seed local profile
 $EDITOR Skills/research-engine/config/profile.json           # remap identity
+python3 Skills/research-engine/scripts/research_engine.py modes
+python3 Skills/research-engine/scripts/research_engine.py validate Skills/research-engine/assets/examples/valid
 ```
+
+`config/profile.json` is intentionally git-ignored; public installs ship only `config/profile.default.json`.

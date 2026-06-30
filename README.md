@@ -37,7 +37,6 @@ git clone https://github.com/thevibethinker/vibe-thinker-skills.git
 | [landing-page-generator](./landing-page-generator/) | Self-contained landing-page generator with bundled design foundations, anti-slop references, reusable templates, and target file-structure guidance. |
 | [krisp-meeting-blocks](./krisp-meeting-blocks/) | Portable Krisp/manual meeting transcript pipeline with idempotent ingestion, optional calendar matching, retries, diagnostics, block generation, monthly archive, and owner notifications. |
 | [meeting-ingestion](./meeting-ingestion/) | Unified skill for ingesting meeting transcripts from Google Drive and orchestrating the processing pipeline. |
-| [krisp-meeting-blocks](./krisp-meeting-blocks/) | Portable Krisp/manual meeting transcript pipeline with idempotent ingestion, optional calendar matching, retries, diagnostics, block generation, monthly archive, and owner notifications. |
 | [meme-factory](./meme-factory/) | Generate memes with memegen.link templates and text controls. |
 | [mentor-handler](./mentor-handler/) | Handle escalation requests from partner instances and provide mentor guidance based on precedent and context analysis. |
 | [persona-optimization](./persona-optimization/) | Persona agency bootloader for Zo Computer with hard-switch rules and methodology injection. |
@@ -45,6 +44,7 @@ git clone https://github.com/thevibethinker/vibe-thinker-skills.git
 | [prompt-to-skill](./prompt-to-skill/) | Turn complex prompts into reusable skill structures. |
 | [rapid-context-extractor](./rapid-context-extractor/) | Prepare structured packets for deeper source analysis and teaching. |
 | [remotion](./remotion/) | Create code-driven videos with React and Remotion. |
+| [research-engine](./research-engine/) | Portable, profile-driven research engine: maintain research repos and a wiki-style compendium, run cited research/diligence pipelines including investor and product diligence, with owner/venture identity externalized to a local profile. |
 | [startup-memo-generator](./startup-memo-generator/) | Generate gated, analytics-enabled founder memo pages for investors, customers, and vendors on zo.space. |
 | [systematic-debugging](./systematic-debugging/) | Apply a disciplined debugging process before proposing fixes. |
 | [text-commute-info](./text-commute-info/) | Fetch commute details and text them to the user. |
