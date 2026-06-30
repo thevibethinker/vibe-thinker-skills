@@ -49,7 +49,7 @@ gracefully when absent. `scripts/install.py` probes all of them.
 | --- | --- | --- |
 | Exa key (`EXA_N5OS_KEY`/`EXA_API_KEY`) | External search | Explicit `--source` only; external search errors clearly |
 | `Knowledge/content-library/` (data) | Approved-internal scan | Scan returns `[]`; no crash. n5os-ode ships docs only — seed it |
-| `N5/scripts/research_router.py` | Canonical-deliverable routing | Place briefs under `Research/<slug>/` manually |
+| `Skills/research-engine/scripts/research_router.py` | Packaged canonical-deliverable routing | Installed with the skill; `scripts/install.py --apply` also creates legacy `N5/scripts/research_router.py` shim |
 | `Skills/meeting-ingestion/` | `repair-sweep` replays meeting appends | `repair-sweep` is inert; engine unaffected |
 
 

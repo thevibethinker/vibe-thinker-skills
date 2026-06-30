@@ -435,9 +435,13 @@ def test_investor_diligence_collects_evergreen_and_approved_content_library(tmp_
     old_workspace = research_run.WORKSPACE
     old_disable = os.environ.get("RESEARCH_ENGINE_DISABLE_CONTENT_LIBRARY_SCAN")
     old_profile_env = os.environ.get("RESEARCH_ENGINE_PROFILE")
+    old_fake_exa = os.environ.get("RESEARCH_ENGINE_FAKE_EXA_RESULTS")
     fixture_profile = str(SKILL_ROOT / "assets" / "examples" / "profile.test.json")
     try:
         os.environ["RESEARCH_ENGINE_PROFILE"] = fixture_profile
+        os.environ["RESEARCH_ENGINE_FAKE_EXA_RESULTS"] = json.dumps([
+            {"url": "https://vc.example.com/lux", "title": "Lux Capital", "text": "External investor evidence."}
+        ])
         profile_loader.clear_cache()
         research_run.WORKSPACE = tmp_path
         source = tmp_path / "Knowledge" / "content-library" / "positions" / "canonical.md"
@@ -468,6 +472,10 @@ def test_investor_diligence_collects_evergreen_and_approved_content_library(tmp_
             os.environ.pop("RESEARCH_ENGINE_PROFILE", None)
         else:
             os.environ["RESEARCH_ENGINE_PROFILE"] = old_profile_env
+        if old_fake_exa is None:
+            os.environ.pop("RESEARCH_ENGINE_FAKE_EXA_RESULTS", None)
+        else:
+            os.environ["RESEARCH_ENGINE_FAKE_EXA_RESULTS"] = old_fake_exa
         profile_loader.clear_cache()
         if old_disable is None:
             os.environ.pop("RESEARCH_ENGINE_DISABLE_CONTENT_LIBRARY_SCAN", None)
@@ -664,6 +672,7 @@ def test_install_apply_reports_post_write_profile_state(tmp_path: Path) -> None:
     copied_skill = tmp_path / "Skills" / "research-engine"
     shutil.copytree(SKILL_ROOT, copied_skill, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache", "profile.json"))
     workspace = tmp_path / "workspace"
+    workspace.mkdir(parents=True)
     env = os.environ.copy()
     env["ZO_WORKSPACE"] = str(workspace)
     result = subprocess.run(
@@ -678,3 +687,60 @@ def test_install_apply_reports_post_write_profile_state(tmp_path: Path) -> None:
     assert data["status"]["local_profile"] is True
     assert (copied_skill / "config" / "profile.json").exists()
     assert not any("No local profile" in item for item in data["degraded_capabilities"])
+
+
+def test_packaged_router_and_legacy_shim_work_after_install_apply(tmp_path: Path) -> None:
+    copied_skill = tmp_path / "Skills" / "research-engine"
+    shutil.copytree(SKILL_ROOT, copied_skill, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache", "profile.json"))
+    workspace = tmp_path / "workspace"
+    workspace.mkdir(parents=True)
+    env = os.environ.copy()
+    env["ZO_WORKSPACE"] = str(workspace)
+
+    dry = subprocess.run(
+        [sys.executable, str(copied_skill / "scripts" / "install.py")],
+        cwd=str(workspace),
+        env=env,
+        text=True,
+        capture_output=True,
+    )
+    assert dry.returncode == 0, dry.stderr + dry.stdout
+    dry_data = json.loads(dry.stdout)
+    assert dry_data["status"]["research_router"] is True
+    assert dry_data["status"]["legacy_research_router"] is False
+
+    applied = subprocess.run(
+        [sys.executable, str(copied_skill / "scripts" / "install.py"), "--apply"],
+        cwd=str(workspace),
+        env=env,
+        text=True,
+        capture_output=True,
+    )
+    assert applied.returncode == 0, applied.stderr + applied.stdout
+    applied_data = json.loads(applied.stdout)
+    assert applied_data["status"]["research_router"] is True
+    assert applied_data["status"]["legacy_research_router"] is True
+
+    packaged = subprocess.run(
+        [sys.executable, str(copied_skill / "scripts" / "research_router.py"), "Diligence Acme Robotics", "--create", "--slug", "acme-robotics", "--json"],
+        cwd=str(workspace),
+        env=env,
+        text=True,
+        capture_output=True,
+    )
+    assert packaged.returncode == 0, packaged.stderr + packaged.stdout
+    packaged_data = json.loads(packaged.stdout)
+    assert packaged_data["category"] == "market-intel"
+    assert Path(packaged_data["item_path"]).exists()
+
+    legacy = subprocess.run(
+        [sys.executable, str(workspace / "N5" / "scripts" / "research_router.py"), "Health device market scan", "--slug", "health-device", "--json"],
+        cwd=str(workspace),
+        env=env,
+        text=True,
+        capture_output=True,
+    )
+    assert legacy.returncode == 0, legacy.stderr + legacy.stdout
+    legacy_data = json.loads(legacy.stdout)
+    assert legacy_data["item_slug"] == "health-device"
+    assert legacy_data["router"] == "Skills/research-engine/scripts/research_router.py"

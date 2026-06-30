@@ -84,7 +84,7 @@ When the research run is for meeting prep, due diligence, a company/person brief
 
 Required behavior:
 
-1. Use `N5/scripts/research_router.py "<topic>" --create --slug <slug>` to establish the routed working folder when the output is meant for the owner to open. If `file research_router.py` is absent on this Zo, place the brief under `Research/<slug>/` manually.
+1. Use `Skills/research-engine/scripts/research_router.py "<topic>" --create --slug <slug> --json` to establish the routed working folder when the output is meant for the owner to open. After `scripts/install.py --apply`, the legacy compatibility path `N5/scripts/research_router.py` should also work for older prompts. If both router paths are absent, place the brief under `Research/<slug>/` manually.
 2. Put the primary human-facing artifact in that routed folder, usually as `file MEETING_BRIEF.md`, `file DILIGENCE_BRIEF.md`, or `file BRIEF.md` depending on the task.
 3. Treat `Research/_engine/runs/<run-id>/` and `Research/repos/<topic-slug>/` as provenance / machine-index layers unless the owner explicitly asks for raw engine artifacts.
 4. Add a short `file README.md` or top-of-file pointer when more than one folder is involved, naming the canonical deliverable first and raw provenance second.

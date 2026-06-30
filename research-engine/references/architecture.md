@@ -27,7 +27,7 @@ Sources → Extracts → Claims/Topic views → Promotion Candidates → Knowled
 
 ## Boundary rules (non-negotiable)
 
-1. **The engine wraps the router; it does not replace it.** `N5/scripts/research_router.py` stays the placement brain (LLM classification into the existing ~30 categories / 116 folders). The engine calls the router to decide *where* a topic lives, then manages state *there*.
+1. **The engine wraps the router; it does not replace it.** `Skills/research-engine/scripts/research_router.py` stays the placement brain (LLM classification into the existing ~30 categories / 116 folders). The engine calls the router to decide *where* a topic lives, then manages state *there*.
 2. **No parallel namespace.** There is no `Research/wiki/`, `Research/repos/` (as topic home), or `Research/runs/` as a topic's home. Topic views render into the existing router-chosen folder. The engine keeps only its *own* operational state under `Research/_engine/`.
 3. **Ontology references Knowledge; it never duplicates or writes it.** `Research/_engine/ontology/` maps topics to nodes and, where useful, to `Knowledge/semantic-memory/ontology/` node IDs by reference. Research runs never write under `Knowledge/`.
 4. **Knowledge is pure.** Only `promote --confirm` mutates `Knowledge/`, only to an explicit target path, and only with logged provenance. Every other command is tested to leave `Knowledge/` untouched.
