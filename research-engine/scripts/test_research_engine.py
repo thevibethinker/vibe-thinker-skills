@@ -12,6 +12,7 @@ from pathlib import Path
 
 SKILL_ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = SKILL_ROOT / "scripts" / "research_engine.py"
+INSTALL_SCRIPT = SKILL_ROOT / "scripts" / "install.py"
 TEST_WORKSPACE = Path(os.environ.get("RESEARCH_ENGINE_TEST_WORKSPACE", "/tmp/research-engine-test-workspace"))
 TMP_ROOT = TEST_WORKSPACE / "Research" / "_engine" / "test-state"
 
@@ -619,3 +620,61 @@ def test_product_diligence_one_shot_executes_with_fake_external_sources() -> Non
     sources = Path(TEST_WORKSPACE, data["artifacts"]["run_dir"], "SOURCES.jsonl").read_text()
     assert "Recorder Review" in sources
     assert "local_scan" not in sources
+
+
+def test_one_shot_context_scan_does_not_mask_missing_exa_key(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    prior_repo = workspace / "Research" / "repos" / "prior-topic"
+    prior_repo.mkdir(parents=True)
+    (prior_repo / "INDEX.md").write_text("# Prior Topic\nUnrelated prior local context.\n", encoding="utf-8")
+    env = os.environ.copy()
+    env.update({
+        "ZO_WORKSPACE": str(workspace),
+        "RESEARCH_ENGINE_ROOT": str(workspace / "Research" / "repos"),
+        "RESEARCH_ENGINE_STATE_ROOT": str(workspace / "Research" / "_engine"),
+        "EXA_N5OS_KEY": "",
+        "EXA_API_KEY": "",
+        "RESEARCH_ENGINE_DISABLE_ZOASK_WORKERS": "1",
+    })
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "run",
+            "--query",
+            "Needs external evidence",
+            "--mode",
+            "explainer",
+            "--depth",
+            "one-shot",
+            "--topic",
+            "missing-exa-regression",
+        ],
+        cwd=str(workspace),
+        env=env,
+        text=True,
+        capture_output=True,
+    )
+    assert result.returncode != 0
+    assert "External search requires EXA_N5OS_KEY or EXA_API_KEY" in result.stderr
+
+
+
+def test_install_apply_reports_post_write_profile_state(tmp_path: Path) -> None:
+    copied_skill = tmp_path / "Skills" / "research-engine"
+    shutil.copytree(SKILL_ROOT, copied_skill, ignore=shutil.ignore_patterns("__pycache__", ".pytest_cache", "profile.json"))
+    workspace = tmp_path / "workspace"
+    env = os.environ.copy()
+    env["ZO_WORKSPACE"] = str(workspace)
+    result = subprocess.run(
+        [sys.executable, str(copied_skill / "scripts" / "install.py"), "--apply"],
+        cwd=str(tmp_path),
+        env=env,
+        text=True,
+        capture_output=True,
+    )
+    assert result.returncode == 0, result.stderr + result.stdout
+    data = json.loads(result.stdout)
+    assert data["status"]["local_profile"] is True
+    assert (copied_skill / "config" / "profile.json").exists()
+    assert not any("No local profile" in item for item in data["degraded_capabilities"])
