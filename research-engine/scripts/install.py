@@ -76,6 +76,8 @@ def main() -> int:
     ws = workspace_root()
     status = probe(ws)
     actions = scaffold(ws, args.apply)
+    if args.apply:
+        status = probe(ws)
 
     degraded = []
     if not status["exa_key"]:

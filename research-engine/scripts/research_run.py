@@ -735,8 +735,8 @@ def collect_sources(plan: dict[str, Any]) -> list[dict[str, Any]]:
         rows.extend(targeted_context_scan(plan["query"]))
     if plan.get("local_workspace_scan_authorized"):
         rows.extend(local_workspace_scan(plan["query"]))
-    internal_only_types = {"url_reference", "file_reference", "approved_content_library"}
-    external_rows = [r for r in rows if r.get("type") not in internal_only_types]
+    exa_substitute_types = {"file", "url", "exa"}
+    external_rows = [r for r in rows if r.get("type") in exa_substitute_types]
     if not external_rows or len(external_rows) < 2:
         for item in exa_search(plan["query"], int(plan["exa_num_results"])):
             rows.append({
