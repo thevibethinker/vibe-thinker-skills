@@ -52,6 +52,13 @@ gracefully when absent. `scripts/install.py` probes all of them.
 | `N5/scripts/research_router.py` | Canonical-deliverable routing | Place briefs under `Research/<slug>/` manually |
 | `Skills/meeting-ingestion/` | `repair-sweep` replays meeting appends | `repair-sweep` is inert; engine unaffected |
 
+
+## Public repo install snippet
+
+```bash
+slug="research-engine"; dest="Skills"; repo="https://github.com/thevibethinker/vibe-thinker-skills/archive/refs/heads/main.tar.gz"; archive_root="vibe-thinker-skills-main"; mkdir -p "$dest" && curl -L "$repo" | tar -xz -C "$dest" --strip-components=1 "$archive_root/$slug"
+```
+
 ## Install on a new Zo
 
 ```bash

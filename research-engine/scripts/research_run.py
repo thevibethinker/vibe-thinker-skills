@@ -71,7 +71,15 @@ DEPTHS: dict[str, dict[str, Any]] = {
     },
 }
 
-ISOLATED_SOURCE_MODES = {"diligence", "investor-diligence"}
+ISOLATED_SOURCE_MODES = {"diligence", "investor-diligence", "product-diligence"}
+PRODUCT_DILIGENCE_DEFAULT_CRITERIA = [
+    {"criterion": "Reliability / capture success", "default_weight": 25, "notes": "Does it consistently capture the needed event, audio, or workflow?"},
+    {"criterion": "Output quality", "default_weight": 20, "notes": "Transcript accuracy, summary quality, searchability, and downstream usefulness."},
+    {"criterion": "Workflow/export/API fit", "default_weight": 20, "notes": "Can the owner get audio, transcripts, notes, or records into the rest of their system?"},
+    {"criterion": "Use-case fit / form factor", "default_weight": 15, "notes": "Does the product fit actual contexts of use and devices already carried?"},
+    {"criterion": "Privacy/control", "default_weight": 10, "notes": "Cloud/local posture, retention, permissions, and policy clarity."},
+    {"criterion": "Cost / lock-in", "default_weight": 10, "notes": "Hardware cost, subscription, cancellation, and export friction."},
+]
 _VENTURE = profile_get("venture_name", "the venture")
 ISOLATED_SOURCE_POLICY = (
     "External/company/person evidence first. Do not use prior internal outputs, meeting artifacts, "
@@ -121,6 +129,31 @@ DEFAULT_MODE_REGISTRY: dict[str, dict[str, Any]] = {
             "Source Scope / Tool Provenance",
         ],
         "exa_num_results": {"one-shot": 6, "quick": 8, "standard": 12, "deep": 18},
+        "brief_sizes": ["skim", "standard", "full-dossier"],
+        "brief_size_default": "standard",
+    },
+    "product-diligence": {
+        "label": "Product Diligence",
+        "objective": "Research a specific product, service, or product category; surface objective reviews, decision tradeoffs, and ranked recommendations after preference discovery.",
+        "sections": [
+            "Invocation Context",
+            "Bottom Line Recommendation",
+            "Preference Profile And Assumptions",
+            "Socratic Preference Interview",
+            "Category Map And Product Archetypes",
+            "Candidate Shortlist",
+            "Ranking Criteria And Weights",
+            "Ranked Product Table",
+            "Product Deep Dives",
+            "Objective Review Evidence And Source Quality Notes",
+            "Common Complaints And Failure Modes",
+            "Privacy, Subscription, And Lock-In Analysis",
+            "Workflow/API/Export Analysis",
+            "Decision Recommendation",
+            "Next Test Plan",
+            "Source Scope / Tool Provenance",
+        ],
+        "exa_num_results": {"one-shot": 6, "quick": 8, "standard": 14, "deep": 22},
         "brief_sizes": ["skim", "standard", "full-dossier"],
         "brief_size_default": "standard",
     },
@@ -531,6 +564,45 @@ def plan_for(query: str, mode: str, depth: str, topic: str | None, sources: list
             "brief_size": requested_brief_size,
             "brief_size_default": mode_data.get("brief_size_default", "standard"),
         }
+    if mode == "product-diligence":
+        requested_brief_size = brief_size or mode_data.get("brief_size_default") or "standard"
+        allowed_brief_sizes = mode_data.get("brief_sizes") or ["skim", "standard", "full-dossier"]
+        if requested_brief_size not in allowed_brief_sizes:
+            raise ValueError(f"unknown product-diligence brief size: {requested_brief_size}")
+        context_scan = False
+        source_scope = "external_product_reviews_first_with_preference_discovery"
+        source_policy = (
+            "Product/category diligence. Use public external evidence first: hands-on professional reviews with methodology, "
+            "customer reviews with volume/recency, forum reports with concrete first-hand usage details, independent comparisons, "
+            "product documentation, API/support docs, pricing pages, privacy policies, changelogs, and public discourse. Treat affiliate "
+            "listicles and vendor marketing as weak evidence unless corroborated. Do not use internal workspace notes unless explicitly "
+            "provided via --source or --allow-local-scan. Never purchase, sign up, send outbound messages, or mutate external state without explicit owner approval."
+        )
+        mode_extras = {
+            "manual_trigger_only": True,
+            "socratic_preference_discovery": depth != "one-shot",
+            "one_shot_preference_behavior": "Do not pause for questions; state preference assumptions and rank with confidence caveats.",
+            "preference_discovery_policy": "Run an initial category scan, then ask a short Socratic interview focused on the tradeoffs that matter for this category before final ranking unless depth is one-shot.",
+            "source_quality_order": [
+                "hands-on professional reviews with stated testing methods",
+                "customer reviews from retailer/app-store/SaaS marketplaces with volume and recency",
+                "forum/community first-hand reports with concrete failure details",
+                "independent comparison articles with methodology",
+                "product documentation, support docs, API docs, pricing pages, privacy policies, and changelogs",
+                "founder/company announcements for roadmap, availability, and policy claims",
+                "social discourse as weak signal unless it contains concrete first-hand usage evidence",
+            ],
+            "default_ranking_criteria": PRODUCT_DILIGENCE_DEFAULT_CRITERIA,
+            "dispositions": ["buy", "trial", "watch", "avoid", "not-enough-evidence"],
+            "persona_lenses": [
+                {"lens": "teacher", "use": "Explain unfamiliar category concepts and tradeoffs plainly."},
+                {"lens": "builder", "use": "Inspect API/export/workflow feasibility."},
+                {"lens": "debugger", "use": "Stress-test failure modes and reliability claims."},
+                {"lens": "strategist", "use": "Make the final decision recommendation and opportunity-cost tradeoffs."},
+            ],
+            "brief_size": requested_brief_size,
+            "brief_size_default": mode_data.get("brief_size_default", "standard"),
+        }
     return {
         "query": query,
         "mode": mode,
@@ -578,12 +650,12 @@ provenance: research-engine
 
 # Research Run: {run['run_id']}
 
-**Status:** {run['status']}  
-**Query:** {plan['query']}  
-**Mode:** {plan['mode_label']} (`{plan['mode']}`)  
-**Depth:** {plan['depth']}  
-**Approval required:** {run['approval_required']}  
-**Local workspace scan authorized:** {plan['local_workspace_scan_authorized']}  
+**Status:** {run['status']}
+**Query:** {plan['query']}
+**Mode:** {plan['mode_label']} (`{plan['mode']}`)
+**Depth:** {plan['depth']}
+**Approval required:** {run['approval_required']}
+**Local workspace scan authorized:** {plan['local_workspace_scan_authorized']}
 
 ## Contract
 
@@ -608,14 +680,14 @@ provenance: research-engine
 
 # Summary for Approval: {run['run_id']}
 
-**Query:** {plan['query']}  
-**Mode:** {plan['mode_label']} (`{plan['mode']}`)  
-**Depth:** {plan['depth']}  
-**Execution policy:** {plan['execution_policy']}  
-**Exa target results:** {plan['exa_num_results']}  
-**Targeted context scan authorized:** {plan.get('context_scan_authorized', False)}  
-**Zoask worker drops:** {plan.get('zoask_worker_drops', 0)}  
-**Local workspace scan authorized:** {plan['local_workspace_scan_authorized']}  
+**Query:** {plan['query']}
+**Mode:** {plan['mode_label']} (`{plan['mode']}`)
+**Depth:** {plan['depth']}
+**Execution policy:** {plan['execution_policy']}
+**Exa target results:** {plan['exa_num_results']}
+**Targeted context scan authorized:** {plan.get('context_scan_authorized', False)}
+**Zoask worker drops:** {plan.get('zoask_worker_drops', 0)}
+**Local workspace scan authorized:** {plan['local_workspace_scan_authorized']}
 
 ## Provided Resources
 
@@ -701,6 +773,8 @@ def build_worker_prompt(plan: dict[str, Any], worker_index: int, sources: list[d
         "excluded_calendar_accounts", "allowed_private_email_accounts", "private_email_policy",
         "internal_context_policy", "evergreen_internal_sources", "content_library_policy",
         "linkedin_policy", "x_discourse_policy", "portfolio_classification_schema",
+        "socratic_preference_discovery", "one_shot_preference_behavior", "preference_discovery_policy",
+        "source_quality_order", "default_ranking_criteria", "dispositions", "persona_lenses",
     ]
     mode_context = "\n".join(
         f"- {key}: {json.dumps(plan[key], ensure_ascii=False)}"
@@ -720,7 +794,7 @@ Source policy:
 Mode-specific context:
 {mode_context}
 
-Use your available tools if useful, including web/search, LinkedIn, connected apps, or X search for trend/pattern discovery when relevant. Do not send outbound messages or mutate external state. Cite URLs or workspace source paths for any evidence you rely on. For investor diligence, do not broadly search the workspace for the owner's venture; use only approved Content Library sources and evergreen links unless the owner explicitly authorizes more.
+Use your available tools if useful, including web/search, LinkedIn, connected apps, or X search for trend/pattern discovery when relevant. Do not send outbound messages or mutate external state. Cite URLs or workspace source paths for any evidence you rely on. For investor diligence, do not broadly search the workspace for the owner's venture; use only approved Content Library sources and evergreen links unless the owner explicitly authorizes more. For product diligence, prioritize independent reviews, customer/community evidence, product docs, pricing/privacy/API/support docs, and concrete first-hand usage reports over vendor marketing; include Socratic preference questions when the depth is not one-shot.
 
 Known sources from the coordinator:
 {source_brief}
@@ -882,11 +956,11 @@ provenance: research-engine
 
 # Synthesis: {plan['query']}
 
-**Mode:** {plan['mode']}  
-**Depth:** {plan['depth']}  
-**Targeted context scan authorized:** {plan.get('context_scan_authorized', False)}  
-**Zoask worker drops requested:** {plan.get('zoask_worker_drops', 0)}  
-**Local workspace scan authorized:** {plan['local_workspace_scan_authorized']}  
+**Mode:** {plan['mode']}
+**Depth:** {plan['depth']}
+**Targeted context scan authorized:** {plan.get('context_scan_authorized', False)}
+**Zoask worker drops requested:** {plan.get('zoask_worker_drops', 0)}
+**Local workspace scan authorized:** {plan['local_workspace_scan_authorized']}
 
 ## Sources Consulted
 
@@ -1001,7 +1075,7 @@ def register_run_subcommands(sub: argparse._SubParsersAction[argparse.ArgumentPa
     p.add_argument("--depth", default="standard", choices=sorted(DEPTHS))
     p.add_argument("--topic")
     p.add_argument("--source", action="append", help="Explicit source path or URL; may be repeated")
-    p.add_argument("--brief-size", choices=["skim", "standard", "full-dossier"], help="Investor diligence brief size; defaults to standard for investor-diligence")
+    p.add_argument("--brief-size", choices=["skim", "standard", "full-dossier"], help="Investor/product diligence brief size; defaults to standard for those modes")
     p.add_argument("--allow-local-scan", action="store_true", help="Authorize local workspace scan; otherwise forbidden")
     p.set_defaults(func=cmd_run)
 
