@@ -225,7 +225,7 @@ To create an accurate template, analyze the generated page systematically:
 #### 1. Start with the Schema
 Copy `templates/_TEMPLATE.yaml` as your starting point:
 ```bash
-cp Skills/frontend/templates/_TEMPLATE.yaml Skills/frontend/templates/your-template-name.yaml
+cp templates/_TEMPLATE.yaml templates/your-template-name.yaml
 ```
 
 #### 2. Fill in Structured Fields
